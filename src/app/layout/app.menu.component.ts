@@ -18,25 +18,20 @@ export class AppMenuComponent implements OnInit {
                 label: 'Home',
                 items: [
                     { 
-                        label: 'Dashboard',
+                        label: 'Facilities',
                         icon: 'pi pi-fw pi-home',
-                        routerLink: ['/']
+                        routerLink: ['/facilities']
+                    },
+                    { 
+                        label: 'Categories',
+                        icon: 'pi pi-fw pi-share-alt',
+                        routerLink: ['/categories']
                     },
                     {
                         label: 'Login',
                         icon: 'pi pi-fw pi-sign-in',
                         routerLink: ['/auth/login']
                     },
-                    {
-                        label: 'Error',
-                        icon: 'pi pi-fw pi-times-circle',
-                        routerLink: ['/auth/error']
-                    },
-                    {
-                        label: 'Access Denied',
-                        icon: 'pi pi-fw pi-lock',
-                        routerLink: ['/auth/access']
-                    }
                 ]
             }
         ];
