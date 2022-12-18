@@ -1,6 +1,8 @@
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { AppLayoutComponent } from "./layout/app.layout.component";
+import { AuthGuard } from './demo/components/auth/login/auth.guard';
+import { UserRole } from './demo/components/auth/login/user.model';
 
 @NgModule({
     imports: [
@@ -8,9 +10,22 @@ import { AppLayoutComponent } from "./layout/app.layout.component";
             {
                 path: '', component: AppLayoutComponent,
                 children: [
-                    { path: 'facilities', loadChildren: () => import('./demo/components/facilities/facilities.module').then(m => m.FacilitiesModule) },
-                    { path: '', redirectTo: '/facilities', pathMatch: 'full'},
-                    { path: 'categories', loadChildren: () => import('./demo/components/categories/categories.module').then(m => m.CategoriesModule) },
+                    {
+                        path: 'facilities',
+                        canActivate: [AuthGuard],
+                        data: {
+                            allowedRoles: [UserRole.ADMIN],
+                        },
+                        loadChildren: () => import('./demo/components/facilities/facilities.module').then(m => m.FacilitiesModule)
+                    },
+                    {
+                        path: 'categories',
+                        canActivate: [AuthGuard],
+                        data: {
+                            allowedRoles: [UserRole.FACILITY],
+                        },
+                        loadChildren: () => import('./demo/components/categories/categories.module').then(m => m.CategoriesModule)
+                    },
                 ]
             },
             { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },

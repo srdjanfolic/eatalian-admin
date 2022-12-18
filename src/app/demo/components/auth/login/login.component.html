@@ -1,19 +1,36 @@
-<div class="surface-ground grid min-h-screen min-w-screen align-items-center">
-    <div class="col-10 col-offset-1 md:col-4 md:col-offset-4 p-0">
-        <div class="card shadow-2 border-round">
-            <div class="grid">
-                <div class="col-12">
-                    <div class="field">
-                        <label for="username">USERNAME</label>
-                        <input id="username" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-                    </div>
-                    <div class="field">
-                        <label for="password">PASWORD</label>
-                        <input id="password" type="password" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-                    </div>
-                    <button pButton pRipple label="Sign In" class="w-full p-3 text-xl" [routerLink]="['/']"></button>
-                </div>
+<div class="flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
+    <form
+        [formGroup]="authForm"
+        (ngSubmit)="onSubmit()"
+        class="surface-card p-4 shadow-2 border-round w-11 md:w-5 lg:w-3 flex flex-column  align-items-center justify-content-center"
+    >
+        <div class="formgrid grid w-full">
+            <div class="field col">
+                <label for="username">USERNAME:</label>
+                <input
+                    id="username"
+                    type="text"
+                    formControlName="username"
+                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                >
             </div>
         </div>
-    </div>
+        <div class="formgrid grid w-full">
+            <div class="field col">
+                <label for="password">PASSWORD:</label>
+                <input
+                    id="password"
+                    type="password"
+                    formControlName="password"
+                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                >
+            </div>
+        </div>
+        <div class="formgrid grid w-full">
+            <div class="field col">
+                <button pButton pRipple label="Sign In" icon="pi pi-user" class="w-full" type="submit"></button>
+            </div>
+        </div>
+       
+    </form>
 </div>

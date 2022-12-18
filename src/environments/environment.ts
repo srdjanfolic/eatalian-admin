@@ -3,7 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  apiURL: 'http://localhost',
+  //apiURL: 'http://192.168.100.5',
+  apiPort: 3000,
+  eventURL: 'ws://localhost',
+  //eventURL: 'ws://192.168.100.5',
+  eventPort: 3000,
+  gmaApiURL: 'http://localhost',
+  gmaApiPort: 3003,
 };
 
 /*
