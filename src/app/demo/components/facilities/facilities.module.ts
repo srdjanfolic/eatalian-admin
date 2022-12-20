@@ -8,7 +8,8 @@ import { FacilitiesRoutingModule } from './facilities-routing.module';
   declarations: [],
   imports: [
     CommonModule,
-    FacilitiesRoutingModule
-  ]
+    FacilitiesRoutingModule,
+  ],
+  exports: []
 })
-export class FacilitiesModule { }
+export class FacilitiesModule {}

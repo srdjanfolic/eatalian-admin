@@ -1,1 +1,118 @@
-<p>facilities works!</p>
+<p-toast></p-toast>
+<div class="card">
+    <p-toolbar styleClass="p-mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+            <button pButton pRipple  icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedFacilities()" [disabled]="!selectedFacilities || !selectedFacilities.length"></button>
+        </ng-template>
+    </p-toolbar>
+
+    <p-table #dt [value]="facilities" [rows]="10" [paginator]="true" [globalFilterFields]="['name','username']"
+        [(selection)]="selectedFacilities" [rowHover]="true" dataKey="_id"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <h5 class="m-0">Manage Facilities</h5>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal(applyFilterGlobal($event), 'contains')" placeholder="Search..." />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+                <th pSortableColumn="image">Image<p-sortIcon field="image"></p-sortIcon></th>
+                <th pSortableColumn="title">Title <p-sortIcon field="title"></p-sortIcon></th>
+                <th pSortableColumn="description">Description<p-sortIcon field="description"></p-sortIcon></th>
+                <th pSortableColumn="city">City <p-sortIcon field="city"></p-sortIcon></th>
+                <th pSortableColumn="address">Address <p-sortIcon field="address"></p-sortIcon></th>
+                <th pSortableColumn="phone">Phone <p-sortIcon field="phone"></p-sortIcon></th>
+                <th pSortableColumn="username">Username <p-sortIcon field="username"></p-sortIcon></th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-facility>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="facility"></p-tableCheckbox>
+                </td>
+
+                <td>{{facility.name}}</td>
+                <td><p-avatar [image]="facility.image" styleclass="mr-2" size="large" shape="circle" class="p-element"></p-avatar></td>
+                
+                <td>{{facility.title}}</td>
+                <td>{{facility.description}}</td>
+                <td>{{facility.city}}</td>
+                <td>{{facility.address}}</td>
+                <td>{{facility.phone}}</td>
+                <td>{{facility.username}}</td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editFacility(facility)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteFacility(facility)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                In total there are {{facilities ? facilities.length : 0 }} facilities.
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="facilityDialog" [style]="{width: '60vw'}" header="Product Details" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field">
+            <label for="name">Name</label>
+            <input type="text" pInputText id="name" [(ngModel)]="facility.name" required autofocus />
+            <small class="p-invalid" *ngIf="submitted && !facility.name">Name is required.</small>
+        </div>
+        <div class="p-field mt-2">
+            <label for="title">Title</label>
+            <input id="title" pInputTextarea [(ngModel)]="facility.title" required />
+        </div>
+        <div class="p-field mt-2">
+            <label for="description">Description</label>
+            <textarea id="description" pInputTextarea [(ngModel)]="facility.description" required rows="3" cols="20"></textarea>
+        </div>
+        <div class="p-field mt-2">
+            <label for="phone">Phone</label>
+            <input id="phone" pInputText [(ngModel)]="facility.phone" [pKeyFilter]="'num'" id="phone"  required/>
+        </div>
+        <div class="p-formgrid p-grid">
+            <div class="p-field mt-2 p-col">
+                <label for="address">Address</label>
+                <input type="text" pInputText id="address" [(ngModel)]="facility.address"/>
+            </div>
+            <div class="p-field mt-2 p-col">
+                <label for="city">City</label>
+                <input type="text" pInputText id="city" [(ngModel)]="facility.city"/>
+            </div>
+        </div>
+        <div class="p-formgrid p-grid">
+            <div class="p-field mt-2 p-col">
+                <label for="username">Username</label>
+                <input type="text" pInputText id="username" [(ngModel)]="facility.username"/>
+            </div>
+            <div class="p-field mt-2 p-col">
+                <label for="password">Password</label>
+                <input type="password" pInputText id="password" [(ngModel)]="facility.password"/>
+            </div>
+        </div>
+        <div class="p-field mt-2">
+            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Image" chooseLabel="Image"  (onSelect)="uploadFile($event)" class="p-mr-2 p-d-inline-block"></p-fileUpload>
+        </div>
+    </ng-template>
+    
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton *ngIf="!editMode" pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveFacility()"></button>
+        <button pButton *ngIf="editMode" pRipple label="Update" icon="pi pi-check" class="p-button-text" (click)="updateFacility()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
