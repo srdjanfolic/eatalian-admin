@@ -1,0 +1,95 @@
+<div class="grid">
+    <div class="col-4">
+        <p-card header="{{facility.name}}" subheader="{{facility.title}}"
+            styleClass="p-card-shadow">
+            <ng-template pTemplate="header">
+                <img src="{{facility.image}}">
+            </ng-template>
+            <ng-template pTemplate="content">
+                <p>{{facility.description}}</p>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <!-- <p-button label="Save" icon="pi pi-check"></p-button>
+        <p-button label="Cancel" icon="pi pi-times" styleClass="p-button-secondary" [style]="{'margin-left': '.5em'}"></p-button> -->
+            </ng-template>
+        </p-card>
+    </div>
+    <div class="col-3">
+        <p-card header="RADNO VRIJEME">
+            <ng-template pTemplate="content">
+                <div class="radnoVrijeme border-solid border-1 border-round p-1 border-200">
+                    <div class="grid">
+                        <div class="col">Dan:</div>
+                        <div class="col">Od:</div>
+                        <div class="col">Do:</div>
+                    </div>
+                    <div class="grid">
+                        <div class="col">{{facility.workingHours?.monday?.shorthand}}</div>
+                        <div class="col">{{facility.workingHours?.monday?.openingHours | number:
+                            '2.0'}}:{{facility.workingHours?.monday?.openingMinutes | number: '2.0'}}</div>
+                        <div class="col">{{facility.workingHours?.monday?.closingHours | number:
+                            '2.0'}}:{{facility.workingHours?.monday?.closingMinutes | number: '2.0'}}</div>
+                    </div>
+                    <div class="grid">
+                        <div class="col">{{facility.workingHours?.tuesday?.shorthand}}</div>
+                        <div class="col">{{facility.workingHours?.tuesday?.openingHours | number:
+                            '2.0'}}:{{facility.workingHours?.tuesday?.openingMinutes | number: '2.0'}}</div>
+                        <div class="col">{{facility.workingHours?.tuesday?.closingHours | number:
+                            '2.0'}}:{{facility.workingHours?.tuesday?.closingMinutes | number: '2.0'}}</div>
+                    </div>
+                    <div class="grid">
+                        <div class="col">{{facility.workingHours?.wednesday?.shorthand}}</div>
+                        <div class="col">{{facility.workingHours?.wednesday?.openingHours | number:
+                            '2.0'}}:{{facility.workingHours?.wednesday?.openingMinutes | number: '2.0'}}</div>
+                        <div class="col">{{facility.workingHours?.wednesday?.closingHours | number:
+                            '2.0'}}:{{facility.workingHours?.wednesday?.closingMinutes | number: '2.0'}}</div>
+                    </div>
+                    <div class="grid">
+                        <div class="col">{{facility.workingHours?.thursday?.shorthand}}</div>
+                        <div class="col">{{facility.workingHours?.thursday?.openingHours | number:
+                            '2.0'}}:{{facility.workingHours?.thursday?.openingMinutes | number: '2.0'}}</div>
+                        <div class="col">{{facility.workingHours?.thursday?.closingHours | number:
+                            '2.0'}}:{{facility.workingHours?.thursday?.closingMinutes | number: '2.0'}}</div>
+                    </div>
+                    <div class="grid">
+                        <div class="col">{{facility.workingHours?.friday?.shorthand}}</div>
+                        <div class="col">{{facility.workingHours?.friday?.openingHours | number:
+                            '2.0'}}:{{facility.workingHours?.friday?.openingMinutes | number: '2.0'}}</div>
+                        <div class="col">{{facility.workingHours?.friday?.closingHours | number:
+                            '2.0'}}:{{facility.workingHours?.friday?.closingMinutes | number: '2.0'}}</div>
+                    </div>
+                    <div class="grid">
+                        <div class="col">{{facility.workingHours?.saturday?.shorthand}}</div>
+                        <div class="col">{{facility.workingHours?.saturday?.openingHours | number:
+                            '2.0'}}:{{facility.workingHours?.saturday?.openingMinutes | number: '2.0'}}</div>
+                        <div class="col">{{facility.workingHours?.saturday?.closingHours | number:
+                            '2.0'}}:{{facility.workingHours?.saturday?.closingMinutes | number: '2.0'}}</div>
+                    </div>
+                    <div class="grid">
+                        <div class="col">{{facility.workingHours?.sunday?.shorthand}}</div>
+                        <div class="col">{{facility.workingHours?.sunday?.openingHours | number:
+                            '2.0'}}:{{facility.workingHours?.sunday?.openingMinutes | number: '2.0'}}</div>
+                        <div class="col">{{facility.workingHours?.sunday?.closingHours | number:
+                            '2.0'}}:{{facility.workingHours?.sunday?.closingMinutes | number: '2.0'}}</div>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <div class="info border-solid border-1 border-round p-1 border-50">
+                    <div class="grid">
+                        <div class="col-2"><i class="pi pi-mobile"></i></div>
+                        <div class="col-10">{{facility.phone}}</div>
+                    </div>
+                    <div class="grid">
+                        <div class="col-2"><i class="pi pi-home"></i></div>
+                        <div class="col-10">{{facility.city}}</div>
+                    </div>
+                    <div class="grid">
+                        <div class="col-2"><i class="pi pi-map-marker"></i></div>
+                        <div class="col-10">{{facility.address}}</div>
+                    </div>
+                </div>
+            </ng-template>
+        </p-card>
+    </div>
+</div>

@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
         user => {
           if (user) {
             if (user._role === UserRole.ADMIN) {
-              this.router.navigate([`/facilities`]);
+              this.router.navigate([`/facilities/all`]);
             } else {
               this.router.navigate([`/categories`]);
             }
@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
                 console.log(user);
                 if (user) {
                   if (user._role === UserRole.ADMIN) {
-                    this.router.navigate([`/facilities`]);
+                    this.router.navigate([`/facilities/all`]);
                   } else {
                     this.router.navigate([`/categories`]);
                   }

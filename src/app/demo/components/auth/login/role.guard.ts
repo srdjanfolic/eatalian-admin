@@ -24,7 +24,7 @@ export class RoleGuard implements CanActivate {
       tokenPayload && (!this.auth.isAuthenticated() ||
       allowedRoles.indexOf(tokenPayload._role) === -1)
     ) {
-      this.router.navigate(['/uath/login']);
+      this.router.navigate(['/auth/login']);
       return false;
     }
     return true;

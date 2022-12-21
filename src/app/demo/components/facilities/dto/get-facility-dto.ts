@@ -1,3 +1,5 @@
+import { WorkingWeek } from "./working-hours.dto";
+
 export class GetFacilityDto {
         _id?: string;
         password?:string;
@@ -10,4 +12,5 @@ export class GetFacilityDto {
         username?: string;
         image?: string;
         pictureFile?: File;
+        workingHours?: WorkingWeek;
 }

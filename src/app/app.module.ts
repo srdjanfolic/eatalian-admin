@@ -10,8 +10,9 @@ import { ButtonModule } from 'primeng/button';
 import {FileUploadModule} from 'primeng/fileupload';
 import {TableModule} from 'primeng/table';
 import {ToastModule} from 'primeng/toast';
-import {DialogModule} from 'primeng/dialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule} from 'primeng/dialog';
+import { CardModule} from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { AvatarModule} from 'primeng/avatar'
@@ -19,6 +20,9 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { CommonModule } from '@angular/common';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {KeyFilterModule} from 'primeng/keyfilter';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptorService } from './demo/components/auth/login/auth-interceptor.service';
+import { FacilityComponent } from './demo/components/facilities/facility.component';
 
 
 @NgModule({
@@ -26,6 +30,7 @@ import {KeyFilterModule} from 'primeng/keyfilter';
         AppComponent,
         CategoriesComponent,
         FacilitiesComponent,
+        FacilityComponent
     ],
     imports: [
         AppRoutingModule,
@@ -34,6 +39,7 @@ import {KeyFilterModule} from 'primeng/keyfilter';
         ReactiveFormsModule,
         ToastModule,
         ToolbarModule,
+        CardModule,
         ButtonModule,
         FileUploadModule,
         TableModule,
@@ -48,7 +54,12 @@ import {KeyFilterModule} from 'primeng/keyfilter';
     ],
     providers: [
         MessageService,
-        ConfirmationService
+        ConfirmationService,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptorService,
+            multi: true
+          }
     ],
     bootstrap: [AppComponent]
 })

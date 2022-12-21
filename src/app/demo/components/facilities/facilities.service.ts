@@ -23,6 +23,7 @@ export class FacilitiesService {
     private http: HttpClient,
   ) {}
 
+  /**ADMIN PART */
   getFacilities() {
     return this.http.get<GetFacilityDto[]>(
       `${this.facilitiesURl}`
@@ -43,6 +44,21 @@ export class FacilitiesService {
   deleteManyFacilities(deleteManyFacilities: DeleteManyFacilitiesDto){
     return this.http.post<GetFacilityDto>(`${this.facilitiesURl}/many`, deleteManyFacilities, httpOptions);
   }
+
+  /**ADMIN PART */
+
+  /**FACILITY PART */
+
+  getOwnFacility() {
+    return this.http.get<GetFacilityDto>(
+      `${this.facilitiesURl}/own`
+    );
+  }
+
+  updateOwnFacility(id:string|undefined, facility: FormData){
+    return this.http.patch<GetFacilityDto>(`${this.facilitiesURl}/own`, facility);
+  }
+  /**FACILITY PART */
 
   
 }
