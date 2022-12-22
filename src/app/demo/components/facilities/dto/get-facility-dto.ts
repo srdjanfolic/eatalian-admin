@@ -1,3 +1,4 @@
+import { DeliveryTime } from "./delivery-time.dto";
 import { WorkingWeek } from "./working-hours.dto";
 
 export class GetFacilityDto {
@@ -13,4 +14,5 @@ export class GetFacilityDto {
         image?: string;
         pictureFile?: File;
         workingHours?: WorkingWeek;
+        deliveryTime?: DeliveryTime;
 }

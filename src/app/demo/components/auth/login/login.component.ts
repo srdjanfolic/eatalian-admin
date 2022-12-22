@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
             if (user._role === UserRole.ADMIN) {
               this.router.navigate([`/facilities/all`]);
             } else {
-              this.router.navigate([`/categories`]);
+              this.router.navigate([`/facilities/my`]);
             }
           }
         }
@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
                   if (user._role === UserRole.ADMIN) {
                     this.router.navigate([`/facilities/all`]);
                   } else {
-                    this.router.navigate([`/categories`]);
+                    this.router.navigate([`/facilities/my`]);
                   }
                 }
               }
