@@ -6,6 +6,7 @@ import { FacilitiesService } from './facilities.service';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { DeleteManyFacilitiesDto } from './dto/delete-many-facilities.dto';
+import { getFormData } from '../../shared/sharedFunctions';
 
 
 @Component({
@@ -32,11 +33,6 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
     private messageService: MessageService
   ) { }
 
-  getFormData(object: any) {
-    const formData = new FormData();
-    Object.keys(object).forEach(key => formData.append(key, object[key]));
-    return formData;
-  }
 
 
   ngOnInit(): void {
@@ -119,7 +115,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
   saveFacility() {
     this.submitted = true;
     this.facilityDialog = false;
-    let facilityFormData: FormData = this.getFormData(this.facility);
+    let facilityFormData: FormData = getFormData(this.facility);
 
     this.facilityService.createFacility(facilityFormData).subscribe({
       next: (createdFacility) => {
@@ -139,7 +135,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
     this.submitted = true;
     this.facilityDialog = false;
     this.editMode = false;
-    let facilityFormData: FormData = this.getFormData(this.facility);
+    let facilityFormData: FormData = getFormData(this.facility);
 
     this.facilityService.updateFacility(this.facility._id, facilityFormData).subscribe({
       next: (updatedFacility) => {

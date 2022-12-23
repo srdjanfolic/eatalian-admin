@@ -5,6 +5,7 @@ import { FacilitiesService } from './facilities.service';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { WorkingHours } from './dto/working-hours.dto';
+import { getFormData } from '../../shared/sharedFunctions';
 
 
 
@@ -44,21 +45,7 @@ export class FacilityComponent implements OnInit, OnDestroy {
     private messageService: MessageService
   ) { }
 
-  getFormData(object: any) {
-    const formData = new FormData();
-    Object.keys(object).forEach(key => {
-
-      if (typeof object[key] === 'object' && !(object[key] instanceof Blob)) {
-        console.log(key);
-        formData.append(key, JSON.stringify(object[key]));
-
-      }
-      else 
-      formData.append(key, object[key]);
-    }
-    );
-    return formData;
-  }
+  
 
   setHours() {
 
@@ -142,7 +129,7 @@ export class FacilityComponent implements OnInit, OnDestroy {
     this.clonedFacility.workingHours!.saturday = new WorkingHours("SUB", this.saturdayOpeningTime!.getHours(), this.saturdayOpeningTime!.getMinutes(), this.saturdayClosingTime!.getHours(), this.saturdayClosingTime!.getMinutes());
     this.clonedFacility.workingHours!.sunday = new WorkingHours("NED", this.sundayOpeningTime!.getHours(), this.sundayOpeningTime!.getMinutes(), this.sundayClosingTime!.getHours(), this.sundayClosingTime!.getMinutes());
     
-    let facilityFormData: FormData = this.getFormData(this.clonedFacility);
+    let facilityFormData: FormData = getFormData(this.clonedFacility);
 
     this.facilityService.updateOwnFacility(this.clonedFacility._id, facilityFormData).subscribe({
       next: (updatedFacility) => {
