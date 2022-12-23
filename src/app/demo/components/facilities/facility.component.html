@@ -1,11 +1,15 @@
-<p-card>
-
+<p-toast></p-toast>
+<p-card *ngIf="facility">
     <div class="edit">
-        <p-avatar icon="pi pi-pencil" shape="circle" size="xlarge" style="color: green;position:absolute;right:50px"></p-avatar>
+        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
+            (click)="editFacility()"
+            style="position: absolute; right: 50px;"
+        >
+        </button>
     </div>
     <div class="grid">
         <div class="col-12 md:col-4">
-            <p-image src="{{facility.image}}"></p-image>
+            <img style="max-width: 100%;height: auto;" src="{{ facility.image}}">
         </div>
         <div class="col-12 md:col-8">
             <div class="grid">
@@ -102,3 +106,133 @@
         </div>
     </div>
 </p-card>
+
+<p-dialog [(visible)]="facilityDialog" [style]="{width: '60vw'}" header="Detalji Objekta" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="formgrid grid">
+            <div class="field col-7">
+                <label for="name">Naziv</label>
+                <input class="mb-2" type="text" pInputText id="name" [(ngModel)]="clonedFacility.name" required autofocus />
+                <small class="p-invalid" *ngIf="submitted && !clonedFacility.name">Naziv is required.</small>
+                <label for="title">Naslov</label>
+                <input class="mb-2" id="title" pInputTextarea [(ngModel)]="clonedFacility.title" required />
+                <label for="description">Opis</label>
+                <textarea id="description" pInputTextarea [(ngModel)]="clonedFacility.description" required rows="3"></textarea>
+                <label for="phone">Telefon</label>
+                <input class="mb-2" id="phone" pInputText [(ngModel)]="clonedFacility.phone" [pKeyFilter]="'num'" id="phone"  required/>
+                <label for="address">Adresa</label>
+                <input class="mb-2" type="text" pInputText id="address" [(ngModel)]="clonedFacility.address"/>
+                <label for="city">Grad</label>
+                <input class="mb-2" type="text" pInputText id="city" [(ngModel)]="clonedFacility.city"/>
+                <label for="username">Username</label>
+                <input class="mb-2" type="text" pInputText id="username" [(ngModel)]="clonedFacility.username"/>
+                <label for="password">Password</label>
+                <input class="mb-2" type="password" pInputText id="password" [(ngModel)]="clonedFacility.password"/>
+                <p-fileUpload class="mb-2" mode="basic" accept="image/*" [maxFileSize]="1000000" label="Slika" chooseLabel="Slika"  (onSelect)="uploadFile($event)" class="p-mr-2 p-d-inline-block"></p-fileUpload>
+            </div>
+            <div class="field col-5">
+                <div class="radnoVrijeme border-solid border-1 border-round p-3 border-200">
+                    <div class="formgrid grid">
+                        <div class="col"> <h5>RADNO VRIJEME:</h5></div>
+                    </div>
+                    <div class="formgrid grid align-items-center">
+                        <div class="field col-2">
+                            {{clonedFacility.workingHours?.monday?.shorthand}}
+                        </div>
+                        <div class="field col-5">
+                            <p-calendar [(ngModel)]="mondayOpeningTime" [timeOnly]="true" [hourFormat]="'24'" inputId="mondayOpeningTime"></p-calendar>
+                        </div>
+                        <div class="field col-5">
+                            <p-calendar [(ngModel)]="mondayClosingTime" [timeOnly]="true" [hourFormat]="'24'" inputId="mondayClosingTime"></p-calendar>
+                        </div>
+                    </div>
+                    <div class="formgrid grid align-items-center">
+                        <div class="field col-2">
+                            {{clonedFacility.workingHours?.tuesday?.shorthand}}
+                        </div>
+                        <div class="field col-5">
+                            <p-calendar [(ngModel)]="tuesdayOpeningTime" [timeOnly]="true" [hourFormat]="'24'" inputId="tuesdayOpeningTime"></p-calendar>
+                        </div>
+                        <div class="field col-5">
+                            <p-calendar [(ngModel)]="tuesdayClosingTime" [timeOnly]="true" [hourFormat]="'24'" inputId="tuesdayClosingTime"></p-calendar>
+                        </div>
+                    </div>
+                    <div class="formgrid grid align-items-center">
+                        <div class="field col-2">
+                            {{clonedFacility.workingHours?.wednesday?.shorthand}}
+                        </div>
+                        <div class="field col-5">
+                            <p-calendar [(ngModel)]="wednesdayOpeningTime" [timeOnly]="true" [hourFormat]="'24'" inputId="wednesdayOpeningTime"></p-calendar>
+                        </div>
+                        <div class="field col-5">
+                            <p-calendar [(ngModel)]="wednesdayClosingTime" [timeOnly]="true" [hourFormat]="'24'" inputId="wednesdayClosingTime"></p-calendar>
+                        </div>
+                    </div>
+                    <div class="formgrid grid align-items-center">
+                        <div class="field col-2">
+                            {{clonedFacility.workingHours?.thursday?.shorthand}}
+                        </div>
+                        <div class="field col-5">
+                            <p-calendar [(ngModel)]="thursdayOpeningTime" [timeOnly]="true" [hourFormat]="'24'" inputId="thursdayOpeningTime"></p-calendar>
+                        </div>
+                        <div class="field col-5">
+                            <p-calendar [(ngModel)]="thursdayClosingTime" [timeOnly]="true" [hourFormat]="'24'" inputId="thursdayClosingTime"></p-calendar>
+                        </div>
+                    </div>
+                    <div class="formgrid grid align-items-center">
+                        <div class="field col-2">
+                            {{clonedFacility.workingHours?.friday?.shorthand}}
+                        </div>
+                        <div class="field col-5">
+                            <p-calendar [(ngModel)]="fridayOpeningTime" [timeOnly]="true" [hourFormat]="'24'" inputId="fridayOpeningTime"></p-calendar>
+                        </div>
+                        <div class="field col-5">
+                            <p-calendar [(ngModel)]="fridayClosingTime" [timeOnly]="true" [hourFormat]="'24'" inputId="fridayClosingTime"></p-calendar>
+                        </div>
+                    </div>
+                    <div class="formgrid grid align-items-center">
+                        <div class="field col-2">
+                            {{clonedFacility.workingHours?.saturday?.shorthand}}
+                        </div>
+                        <div class="field col-5">
+                            <p-calendar [(ngModel)]="saturdayOpeningTime" [timeOnly]="true" [hourFormat]="'24'" inputId="saturdayOpeningTime"></p-calendar>
+                        </div>
+                        <div class="field col-5">
+                            <p-calendar [(ngModel)]="saturdayClosingTime" [timeOnly]="true" [hourFormat]="'24'" inputId="saturdayClosingTime"></p-calendar>
+                        </div>
+                    </div>
+                    <div class="formgrid grid align-items-center">
+                        <div class="field col-2">
+                            {{clonedFacility.workingHours?.sunday?.shorthand}}
+                        </div>
+                        <div class="field col-5">
+                            <p-calendar [(ngModel)]="sundayOpeningTime" [timeOnly]="true" [hourFormat]="'24'" inputId="sundayOpeningTime"></p-calendar>
+                        </div>
+                        <div class="field col-5">
+                            <p-calendar [(ngModel)]="sundayClosingTime" [timeOnly]="true" [hourFormat]="'24'" inputId="sundayClosingTime"></p-calendar>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="info border-solid border-1 border-round p-3 border-200 mt-3">
+                    <div class="formgrid grid align-items-center">
+                        <div class="field col-6">Vrijeme dostave(min)</div>
+                        <div class="field col">
+                            <input [(ngModel)]="clonedFacility.deliveryTime!.from" pInputText [pKeyFilter]="'num'"/>
+                        </div>
+                        <div class="field col">
+                            <input [(ngModel)]="clonedFacility.deliveryTime!.to" pInputText [pKeyFilter]="'num'"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Update" icon="pi pi-check" class="p-button-text" (click)="updateFacility()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

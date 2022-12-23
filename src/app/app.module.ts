@@ -21,6 +21,7 @@ import { CommonModule } from '@angular/common';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {KeyFilterModule} from 'primeng/keyfilter';
 import {ImageModule} from 'primeng/image';
+import {CalendarModule} from 'primeng/calendar';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './demo/components/auth/login/auth-interceptor.service';
 import { FacilityComponent } from './demo/components/facilities/facility.component';
@@ -52,6 +53,7 @@ import { FacilityComponent } from './demo/components/facilities/facility.compone
         AvatarModule,
         KeyFilterModule,
         ImageModule,
+        CalendarModule,
         CommonModule
     ],
     providers: [
