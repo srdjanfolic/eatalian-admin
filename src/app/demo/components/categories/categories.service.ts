@@ -33,6 +33,7 @@ export class CategoriesService {
   }
 
   updateCategory(id:string|undefined, category: FormData){
+  
     return this.http.patch<GetCategoryDto>(`${this.categoriesURl}/${id}`, category);
   }
 
