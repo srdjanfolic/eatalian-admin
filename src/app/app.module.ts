@@ -25,10 +25,12 @@ import {ColorPickerModule} from 'primeng/colorpicker';
 import {CalendarModule} from 'primeng/calendar';
 import {DataViewModule} from 'primeng/dataview';
 import {DropdownModule} from 'primeng/dropdown';
+import {InputSwitchModule} from 'primeng/inputswitch';
 import {NgxPhotoEditorModule} from "ngx-photo-editor";
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './demo/components/auth/login/auth-interceptor.service';
 import { FacilityComponent } from './demo/components/facilities/facility.component';
+import { ProductsComponent } from './demo/components/products/products.component';
 
 
 @NgModule({
@@ -36,6 +38,7 @@ import { FacilityComponent } from './demo/components/facilities/facility.compone
         AppComponent,
         CategoriesComponent,
         FacilitiesComponent,
+        ProductsComponent,
         FacilityComponent
     ],
     imports: [
@@ -60,6 +63,7 @@ import { FacilityComponent } from './demo/components/facilities/facility.compone
         ColorPickerModule,
         DataViewModule,
         DropdownModule,
+        InputSwitchModule,
         NgxPhotoEditorModule,
         CalendarModule,
         CommonModule

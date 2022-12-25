@@ -1,0 +1,97 @@
+<p-toast></p-toast>
+<p-dataView #dv [value]="products" [paginator]="true" [rows]="9" filterBy="name" [sortField]="sortField"
+    [sortOrder]="sortOrder" layout="grid">
+    <ng-template pTemplate="header">
+        <div class="flex flex-column md:flex-row md:justify-content-between">
+            <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sortiraj po nazivu"
+                (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0"></p-dropdown>
+            <span class="p-input-icon-left mb-2 md:mb-0">
+                <i class="pi pi-search"></i>
+                <input type="search" pInputText placeholder="Naziv.." (input)="dv.filter(applyFilterGlobal($event))">
+            </span>
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
+                (click)="openNew()"></button>
+        </div>
+    </ng-template>
+
+    <ng-template ngFor let-product [ngForOf]="products" let-i="index" [ngForTrackBy]="trackProduct"
+        pTemplate="gridItem">
+
+        <div class="col-12 md:col-4">
+            <div class="product-grid-item card border-solid border-3 p-3" style="border-radius: 20px;">
+
+                <div class="product-grid-item-content">
+                    <img src="{{product.image}}">
+
+                </div>
+                <div class="product-grid-item-bottom flex justify-content-between">
+                    <div class="product-name">{{product.name}}</div>
+                    <div class="product-list-action">
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
+                            (click)="editProduct(product)"></button>
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                            (click)="deleteProduct(product)"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</p-dataView>
+
+<p-dialog [(visible)]="productDialog" [style]="{width: '30vw'}" header="Detalji kategorije" [modal]="true"
+    styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="field">
+            <label for="name">Naziv</label>
+            <input type="text" pInputText id="name" [(ngModel)]="clonedProduct.name" required autofocus />
+            <small class="p-invalid" *ngIf="submitted && !clonedProduct.name">Naziv is required.</small>
+        </div>
+        <div class="field mt-2">
+            <!-- <p-dropdown [options]="categoriesList" [(ngModel)]="clonedProduct.category" optionLabel="name"
+                optionValue="_id"></p-dropdown> -->
+            <p-dropdown
+                [options]="categoriesList"
+                [(ngModel)]="clonedProduct.category"
+                optionLabel="name"
+                [filter]="true"
+                filterBy="name"
+                [showClear]="true"
+                placeholder="Kategorija"
+                optionValue="_id"
+            >
+            </p-dropdown>
+        </div>
+        <div class="field mt-2">
+            <label for="title">Naslov</label>
+            <input type="text" pInputText id="title" [(ngModel)]="clonedProduct.title" required autofocus />
+            <small class="p-invalid" *ngIf="submitted && !clonedProduct.title">Naziv is required.</small>
+        </div>
+        <div class="field mt-2">
+            <label for="description">Opis</label>
+            <input type="text" pInputText id="description" [(ngModel)]="clonedProduct.description" required autofocus />
+            <small class="p-invalid" *ngIf="submitted && !clonedProduct.description">Naziv is required.</small>
+        </div>
+        <div class="field mt-2">
+            <label for="price">Cijena</label>
+            <input type="number" pInputText id="price" [(ngModel)]="clonedProduct.price" required autofocus />
+            <small class="p-invalid" *ngIf="submitted && !clonedProduct.price">Naziv is required.</small>
+        </div>
+        <div class="field mt-2">
+            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="10000000" label="Slika" chooseLabel="Slika"
+            (onSelect)="fileChangeHandler($event)" class="p-mr-2 p-d-inline-block"></p-fileUpload>
+        </div>
+        <div class="field flex align-items-center mt-2">
+            <p-inputSwitch inputId="isFeatured" [(ngModel)]="clonedProduct.isFeatured"></p-inputSwitch>&nbsp;Promovisan?
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton *ngIf="!editMode" pRipple label="Save" icon="pi pi-check" class="p-button-text"
+            (click)="saveProduct()"></button>
+        <button pButton *ngIf="editMode" pRipple label="Update" icon="pi pi-check" class="p-button-text"
+            (click)="updateProduct()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { GetFacilityDto } from '../facilities/dto/get-facility-dto';
 import { DeleteManyCategoriesDto } from './dto/delete-many-categories.dto';
+import { GetCategoryListDto } from './dto/get-category-list.dto';
 import { GetCategoryDto } from './dto/get-category.dto';
 
 const httpOptions = {
@@ -26,6 +27,11 @@ export class CategoriesService {
   getCategories() {
     return this.http.get<GetCategoryDto[]>(
       `${this.categoriesURl}`
+    );
+  }
+  getCategoriesList() {
+    return this.http.get<GetCategoryListDto[]>(
+      `${this.categoriesURl}/list`
     );
   }
   createCategory(category: FormData){

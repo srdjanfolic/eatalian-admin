@@ -22,6 +22,14 @@ import { UserRole } from './demo/components/auth/login/user.model';
                         },
                         loadChildren: () => import('./demo/components/categories/categories.module').then(m => m.CategoriesModule)
                     },
+                    {
+                        path: 'products',
+                        canActivate: [AuthGuard],
+                        data: {
+                            allowedRoles: [UserRole.FACILITY],
+                        },
+                        loadChildren: () => import('./demo/components/products/products.module').then(m => m.ProductsModule)
+                    },
                 ]
             },
             { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
