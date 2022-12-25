@@ -7,6 +7,8 @@ import { CategoriesService } from './categories.service';
 import { DeleteManyCategoriesDto } from './dto/delete-many-categories.dto';
 import { GetCategoryDto } from './dto/get-category.dto';
 
+import {NgxCroppedEvent, NgxPhotoEditorService} from "ngx-photo-editor";
+
 @Component({
   selector: 'app-categories',
   templateUrl: './categories.component.html',
@@ -28,18 +30,33 @@ export class CategoriesComponent implements OnInit {
   editMode: boolean = false;
   index: number = -1;
 
+  output?: NgxCroppedEvent;
+
   private getCategoriesSubscription!: Subscription;
 
   constructor(
     private categoriesService: CategoriesService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
+    private ngxPhotoEditorService: NgxPhotoEditorService
   ) { }
 
 
   trackCategory(index: number, category: GetCategoryDto) {
     return category ? category._id : undefined;
 
+}
+
+fileChangeHandler($event: any) {
+  console.log($event);
+  this.ngxPhotoEditorService.open($event.currentFiles[0], {
+    aspectRatio: 3 / 2,
+    autoCropArea: 1,
+    resizeToWidth: 300,
+    resizeToHeight: 200
+  }).subscribe(data => {
+    this.clonedCategory.pictureFile = data.file;
+  });
 }
 
   ngOnInit(): void {
