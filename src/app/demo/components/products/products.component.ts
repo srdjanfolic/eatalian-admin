@@ -33,6 +33,7 @@ export class ProductsComponent implements OnInit {
   selectedProducts: GetProductDto[] = [];
   clonedProduct!: GetProductDto;
   categoriesList: GetCategoryListDto[] = [];
+  selectedCategory?: GetCategoryListDto;
 
   productDialog!: boolean;
   submitted!: boolean;
@@ -61,7 +62,6 @@ export class ProductsComponent implements OnInit {
 }
 
 fileChangeHandler($event: any) {
-  console.log($event);
   this.ngxPhotoEditorService.open($event.currentFiles[0], {
     aspectRatio: 3 / 2,
     autoCropArea: 1,
@@ -82,7 +82,6 @@ fileChangeHandler($event: any) {
       
     this.getCategoriesListSubscription = this.productsService.getCategoryList().subscribe(
       (categoriesList: GetCategoryListDto[]) => {
-        console.log(categoriesList);
         this.categoriesList= categoriesList;
       }
     );
@@ -126,6 +125,7 @@ fileChangeHandler($event: any) {
     this.clonedProduct = {
       isFeatured: false
     };
+    this.selectedCategory = {};
     this.submitted = false;
     this.productDialog = true;
   }
@@ -138,12 +138,11 @@ fileChangeHandler($event: any) {
   editProduct(product: GetProductDto) { 
     this.editMode = true;
     this.index = this.products.indexOf(product);
-    console.log(this.index);
     this.clonedProduct = {... product};
+    this.selectedCategory = this.clonedProduct.category;
     this.submitted = false;
     this.productDialog = true;
-    console.log(product, "kategorija na edit klik");
-    console.log(this.clonedProduct, "clon kategorija na edit klik");
+    console.log(this.selectedCategory);
   }
 
 
@@ -173,8 +172,9 @@ fileChangeHandler($event: any) {
 
     this.submitted = true;
     this.productDialog = false;
+    this.clonedProduct.category = this.selectedCategory;
+    console.log(this.selectedCategory, "SAVE");
     let productFormData: FormData = getFormData(this.clonedProduct);
-console.log(this.clonedProduct);
     this.productsService.createProduct(productFormData).subscribe({
       next: (createdProduct) => {
         this.products = [...this.products, createdProduct];
@@ -191,17 +191,15 @@ console.log(this.clonedProduct);
     this.submitted = true;
     this.productDialog = false;
     this.editMode = false;
-    console.log(this.clonedProduct, 'cloned prije snimanja');
+    console.log(this.selectedCategory, "SAVE");
+    this.clonedProduct.category = this.selectedCategory;
     let productFormData: FormData = getFormData(this.clonedProduct);
 
     this.productsService.updateProduct(this.clonedProduct._id, productFormData).subscribe({
       next: (updatedProduct) => {
-        console.log(updatedProduct, 'posle update-a');
-          //const index = this.products.indexOf(this.clonedProduct);
-          console.log(this.index, "index");
+
           this.products[this.index] = {...updatedProduct};
           this.products = [...this.products];
-          console.log(this.products, 'posle update-a kategorije');
           this.clonedProduct = {};
           this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product updated!', life: 3000 });
       },

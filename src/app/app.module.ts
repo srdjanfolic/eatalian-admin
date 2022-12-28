@@ -26,6 +26,7 @@ import {CalendarModule} from 'primeng/calendar';
 import {DataViewModule} from 'primeng/dataview';
 import {DropdownModule} from 'primeng/dropdown';
 import {InputSwitchModule} from 'primeng/inputswitch';
+import {RatingModule} from 'primeng/rating';
 import {NgxPhotoEditorModule} from "ngx-photo-editor";
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './demo/components/auth/login/auth-interceptor.service';
@@ -64,6 +65,7 @@ import { ProductsComponent } from './demo/components/products/products.component
         DataViewModule,
         DropdownModule,
         InputSwitchModule,
+        RatingModule,
         NgxPhotoEditorModule,
         CalendarModule,
         CommonModule
