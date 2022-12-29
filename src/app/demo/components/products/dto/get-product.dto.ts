@@ -9,5 +9,6 @@ export class GetProductDto {
     public pictureFile?: File;
     public price?: number;
     public rating?: number;
+    public isAddon?: boolean;
     public isFeatured?: boolean;
 }

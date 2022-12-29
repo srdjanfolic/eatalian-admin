@@ -123,7 +123,8 @@ fileChangeHandler($event: any) {
 
   openNew() {
     this.clonedProduct = {
-      isFeatured: false
+      isFeatured: false,
+      isAddon: false,
     };
     this.selectedCategory = {};
     this.submitted = false;

@@ -102,6 +102,9 @@
                 (onSelect)="fileChangeHandler($event)" class="p-mr-2 p-d-inline-block"></p-fileUpload>
         </div>
         <div class="field flex align-items-center mt-2">
+            <p-inputSwitch inputId="isAddon" [(ngModel)]="clonedProduct.isAddon"></p-inputSwitch>&nbsp;Prilog
+        </div>
+        <div class="field flex align-items-center mt-2">
             <p-inputSwitch inputId="isFeatured" [(ngModel)]="clonedProduct.isFeatured"></p-inputSwitch>&nbsp;Promovisan?
         </div>
     </ng-template>
