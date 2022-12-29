@@ -30,12 +30,12 @@
                 <div class="product-list-action">
                     <span class="product-price">{{product.price | number :'.2'}} Eur</span>
                     <div class="buttons">
-                          <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
                             (click)="editProduct(product)"></button>
                         <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
                             (click)="deleteProduct(product)"></button>
                     </div>
-                  
+
                 </div>
             </div>
         </div>
@@ -48,8 +48,9 @@
                         <i class="pi pi-tag product-category-icon"></i>
                         <span class="product-category">{{product.category.name}}</span>
                     </div>
-                    <span
-                        [class]="'product-badge status-' + product.inventoryStatus?.toLowerCase()">{{product.inventoryStatus}}</span>
+                    <button pButton pRipple icon="pi pi-paperclip"
+                        class="p-button-rounded p-button-info p-button-outlined p-button p-component p-button-icon-only"
+                        (click)="editSuggestedProducts(product)"></button>
                 </div>
                 <div class="product-grid-item-content">
                     <img src="{{product.image}}" alt="{{product.name}}">
@@ -115,6 +116,31 @@
             (click)="saveProduct()"></button>
         <button pButton *ngIf="editMode" pRipple label="Update" icon="pi pi-check" class="p-button-text"
             (click)="updateProduct()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="suggestedProductsDialog" [style]="{'width': '60vw', 'min-height' : '50vh'}"
+    header="Preporuceni proizvodi" [modal]="true" styleClass="p-fluid">
+
+    <ng-template pTemplate="content">
+        <h5>Vezani proizvodi</h5>
+        <span class="p-fluid">
+            <p-autoComplete [(ngModel)]="selectedSuggestedProducts" [suggestions]="filteredSuggestedProducts"
+                (completeMethod)="filterSuggestedProducts($event)" field="name" [multiple]="true">
+            </p-autoComplete>
+        </span>
+        <h5>Vezani dodaci</h5>
+        <span class="p-fluid">
+            <p-autoComplete [(ngModel)]="selectedSuggestedAddons" [suggestions]="filteredSuggestedAddons"
+                (completeMethod)="filterSuggestedAddons($event)" field="name" [multiple]="true">
+            </p-autoComplete>
+        </span>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton *ngIf="editMode" pRipple label="Update" icon="pi pi-check" class="p-button-text"
+            (click)="updateSuggestedProducts()"></button>
     </ng-template>
 </p-dialog>
 

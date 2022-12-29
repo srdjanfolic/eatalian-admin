@@ -10,5 +10,7 @@ export class GetProductDto {
     public price?: number;
     public rating?: number;
     public isAddon?: boolean;
+    public suggestedProducts?: GetProductDto[];
+    public suggestedAddons?: GetProductDto[];
     public isFeatured?: boolean;
 }
