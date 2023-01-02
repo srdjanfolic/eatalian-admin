@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { AuthResponseDto } from './dto/auth-response.dto';
-import { Subject, BehaviorSubject, Subscription } from 'rxjs';
+import { Subject, BehaviorSubject, Subscription, Observable, of } from 'rxjs';
 import { User } from './user.model';
-import { tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import decode from 'jwt-decode';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { MessageService } from 'primeng/api';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -30,6 +31,7 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
+    private messageService: MessageService
   ) { }
 
   signIn(authCredentials: AuthCredentialsDto) {
@@ -43,10 +45,18 @@ export class AuthService {
         this.user.next(user);
         console.log(tokenPayload.exp - tokenPayload.iat, user)
         this.autoSignOut(tokenPayload.exp - tokenPayload.iat);
-      })
+      }),
+      catchError(this.handleError<any>('signIn'))
     );
   }
 
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(error.error.message, "error"); // log to console instead
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message, life: 3000 });
+      return of(result as T);
+    };
+  }
   signOut() {
 
     localStorage.removeItem('token');

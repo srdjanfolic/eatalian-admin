@@ -1,4 +1,5 @@
 <div class="flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
+    <p-toast></p-toast>
     <form
         [formGroup]="authForm"
         (ngSubmit)="onSubmit()"
@@ -11,8 +12,16 @@
                     id="username"
                     type="text"
                     formControlName="username"
-                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                    pInputText
+                    class="p-inputtext p-component p-element  p-2 w-full"
                 >
+                <small
+                    id="username-help" class="p-error"
+                    *ngIf="!authForm.get('username')?.valid && authForm.get('username')?.touched"
+                >
+                    Username neophodan
+                </small>
+
             </div>
         </div>
         <div class="formgrid grid w-full">
@@ -22,13 +31,19 @@
                     id="password"
                     type="password"
                     formControlName="password"
-                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                    class="p-inputtext p-component p-element  p-2 w-full"
                 >
+                <small
+                    id="pasword-help" class="p-invalid"
+                    *ngIf="!authForm.get('password')?.valid && authForm.get('password')?.touched"
+                >
+                    Password neophodan
+                </small>
             </div>
         </div>
         <div class="formgrid grid w-full">
             <div class="field col">
-                <button pButton pRipple label="Sign In" icon="pi pi-user" class="w-full" type="submit"></button>
+                <button pButton pRipple label="Sign In" [disabled]="!authForm.valid" icon="pi pi-user" class="w-full" type="submit"></button>
             </div>
         </div>
        
