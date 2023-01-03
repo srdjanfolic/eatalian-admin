@@ -34,6 +34,30 @@ import { AuthInterceptorService } from './demo/components/auth/login/auth-interc
 import { FacilityComponent } from './demo/components/facilities/facility.component';
 import { ProductsComponent } from './demo/components/products/products.component';
 
+const NG_MODULES=  [
+    ToastModule,
+    ToolbarModule,
+    CardModule,
+    ButtonModule,
+    FileUploadModule,
+    TableModule,
+    DialogModule,
+    ConfirmDialogModule,
+    InputTextModule,
+    InputTextareaModule,
+    MultiSelectModule,
+    AvatarModule,
+    KeyFilterModule,
+    ImageModule,
+    ColorPickerModule,
+    DataViewModule,
+    DropdownModule,
+    InputSwitchModule,
+    RatingModule,
+    AutoCompleteModule,
+    NgxPhotoEditorModule,
+    CalendarModule,
+];
 
 @NgModule({
     declarations: [
@@ -48,29 +72,8 @@ import { ProductsComponent } from './demo/components/products/products.component
         AppLayoutModule,
         FormsModule,
         ReactiveFormsModule,
-        ToastModule,
-        ToolbarModule,
-        CardModule,
-        ButtonModule,
-        FileUploadModule,
-        TableModule,
-        DialogModule,
-        ConfirmDialogModule,
-        InputTextModule,
-        InputTextareaModule,
-        MultiSelectModule,
-        AvatarModule,
-        KeyFilterModule,
-        ImageModule,
-        ColorPickerModule,
-        DataViewModule,
-        DropdownModule,
-        InputSwitchModule,
-        RatingModule,
-        AutoCompleteModule,
-        NgxPhotoEditorModule,
-        CalendarModule,
-        CommonModule
+        CommonModule,
+        ...NG_MODULES
     ],
     providers: [
         MessageService,

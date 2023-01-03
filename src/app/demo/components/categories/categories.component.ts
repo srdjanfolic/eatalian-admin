@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService, PrimeNGConfig, SelectItem } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { getFormData } from '../../shared/sharedFunctions';
+import { getFormData, noWhitespaceValidator } from '../../shared/sharedFunctions';
 
 import { CategoriesService } from './categories.service';
 import { DeleteManyCategoriesDto } from './dto/delete-many-categories.dto';
 import { GetCategoryDto } from './dto/get-category.dto';
 
-import {NgxCroppedEvent, NgxPhotoEditorService} from "ngx-photo-editor";
+import { NgxCroppedEvent, NgxPhotoEditorService } from "ngx-photo-editor";
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-categories',
@@ -33,6 +34,7 @@ export class CategoriesComponent implements OnInit {
   output?: NgxCroppedEvent;
 
   private getCategoriesSubscription!: Subscription;
+  categoryForm!: FormGroup;
 
   constructor(
     private categoriesService: CategoriesService,
@@ -45,30 +47,57 @@ export class CategoriesComponent implements OnInit {
   trackCategory(index: number, category: GetCategoryDto) {
     return category ? category._id : undefined;
 
-}
+  }
 
-fileChangeHandler($event: any) {
-  console.log($event);
-  this.ngxPhotoEditorService.open($event.currentFiles[0], {
-    aspectRatio: 3 / 2,
-    autoCropArea: 1,
-    resizeToWidth: 300,
-    resizeToHeight: 200
-  }).subscribe(data => {
-    this.clonedCategory.pictureFile = data.file;
-  });
-}
+  fileChangeHandler($event: any, fileUpload: any) {
+    const file = $event.currentFiles[0];
+    let extensionAllowed = ["png", "jpeg", "jpg"];
+    if (file!.size / 1024 / 1024 > 20) {
+      alert("File size should be less than 20MB")
+      fileUpload.clear()
+      return;
+    }
+    if (extensionAllowed) {
+      var nam = file!.name.split('.').pop() || "xxx";
+
+      if (!extensionAllowed.includes(nam)) {
+        alert("Please upload " + extensionAllowed.toString() + " file.")
+        fileUpload.clear()
+        return;
+      }
+    }
+    this.ngxPhotoEditorService.open($event.currentFiles[0], {
+      aspectRatio: 3 / 2,
+      autoCropArea: 1,
+      resizeToWidth: 300,
+      resizeToHeight: 200
+    }).subscribe(data => {
+
+      //this.clonedCategory.pictureFile = data.file;
+      this.categoryForm.controls["pictureFile"].setValue(data.file);
+    });
+  }
 
   ngOnInit(): void {
     this.getCategoriesSubscription = this.categoriesService.getCategories().subscribe(
       (categories: GetCategoryDto[]) => {
-        this.categories= categories;
+        this.categories = categories;
       }
     );
     this.sortOptions = [
-      {label: 'A-Š', value: 'name'},
-      {label: 'Š-A', value: '!name'}
-  ];
+      { label: 'A-Š', value: 'name' },
+      { label: 'Š-A', value: '!name' }
+    ];
+
+    this.categoryForm = new FormGroup({
+      name: new FormControl(null, [
+        Validators.required,
+        noWhitespaceValidator,
+      ]),
+      color: new FormControl(null),
+      pictureFile: new FormControl(null),
+    });
+
   }
 
   ngOnDestroy(): void {
@@ -85,7 +114,7 @@ fileChangeHandler($event: any) {
         deleteManyCategoriesDto.ids = this.selectedCategories.map(category => category._id);
         this.categoriesService.deleteManyCategories(deleteManyCategoriesDto).subscribe({
           next: () => {
-            this.categories= this.categories.filter(val => !this.selectedCategories.includes(val));
+            this.categories = this.categories.filter(val => !this.selectedCategories.includes(val));
             this.selectedCategories = [];
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Categories Deleted', life: 3000 });
           },
@@ -100,9 +129,6 @@ fileChangeHandler($event: any) {
   }
 
   openNew() {
-    this.clonedCategory = {
-      color: '#dee2e6'
-    };
     this.submitted = false;
     this.categoryDialog = true;
   }
@@ -112,11 +138,17 @@ fileChangeHandler($event: any) {
     this.submitted = false;
   }
 
-  editCategory(category: GetCategoryDto) { 
+  editCategory(category: GetCategoryDto) {
     this.editMode = true;
     this.index = this.categories.indexOf(category);
     console.log(this.index);
-    this.clonedCategory = {... category};
+    this.clonedCategory = {...category};
+    this.categoryForm.patchValue(
+      {
+        "name": category.name,
+        "color": category.color
+      }
+    );
     this.submitted = false;
     this.categoryDialog = true;
     console.log(category, "kategorija na edit klik");
@@ -132,7 +164,7 @@ fileChangeHandler($event: any) {
       accept: () => {
         this.categoriesService.deleteCategory(category._id).subscribe({
           next: () => {
-            this.categories= this.categories.filter(val => val._id !== category._id);
+            this.categories = this.categories.filter(val => val._id !== category._id);
             this.clonedCategory = {};
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Category Deleted', life: 5000 });
           },
@@ -150,7 +182,8 @@ fileChangeHandler($event: any) {
 
     this.submitted = true;
     this.categoryDialog = false;
-    let categoryFormData: FormData = getFormData(this.clonedCategory);
+    let categoryFormData: FormData = getFormData(this.categoryForm.getRawValue());
+    this.categoryForm.reset();
 
     this.categoriesService.createCategory(categoryFormData).subscribe({
       next: (createdCategory) => {
@@ -162,27 +195,27 @@ fileChangeHandler($event: any) {
       }
     });
   }
-  
+
   updateCategory() {
-    
+
     this.submitted = true;
     this.categoryDialog = false;
     this.editMode = false;
     console.log(this.clonedCategory, 'cloned prije snimanja');
-    let categoryFormData: FormData = getFormData(this.clonedCategory);
+    let categoryFormData: FormData = getFormData(this.categoryForm.getRawValue());
 
     this.categoriesService.updateCategory(this.clonedCategory._id, categoryFormData).subscribe({
       next: (updatedCategory) => {
         console.log(updatedCategory, 'posle update-a');
-          //const index = this.categories.indexOf(this.clonedCategory);
-          console.log(this.index, "index");
-          this.categories[this.index] = {...updatedCategory};
-          this.categories = [...this.categories];
-          console.log(this.categories, 'posle update-a kategorije');
-          this.clonedCategory = {};
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Category updated!', life: 3000 });
+        //const index = this.categories.indexOf(this.clonedCategory);
+        console.log(this.index, "index");
+        this.categories[this.index] = { ...updatedCategory };
+        this.categories = [...this.categories];
+        console.log(this.categories, 'posle update-a kategorije');
+        this.clonedCategory = {};
+        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Category updated!', life: 3000 });
       },
-      error : () => {
+      error: () => {
         this.clonedCategory = {};
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error updating category', life: 5000 });
       }
@@ -201,12 +234,12 @@ fileChangeHandler($event: any) {
     let value = event.value;
 
     if (value.indexOf('!') === 0) {
-        this.sortOrder = -1;
-        this.sortField = value.substring(1, value.length);
+      this.sortOrder = -1;
+      this.sortField = value.substring(1, value.length);
     }
     else {
-        this.sortOrder = 1;
-        this.sortField = value;
+      this.sortOrder = 1;
+      this.sortField = value;
     }
-}
+  }
 }
