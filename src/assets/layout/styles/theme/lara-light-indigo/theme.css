@@ -41,7 +41,7 @@
   --surface-border:#dfe7ef;
   --surface-hover:#f6f9fc;
   --focus-ring: 0 0 0 0.2rem #C7D2FE;
-  --maskbg: rgba(0, 0, 0, 0.4);
+  --maskbg: rgba(0, 0, 0, 0.6);
   color-scheme: light;
 }
 
@@ -56,7 +56,7 @@
 }
 
 .p-component-overlay {
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.6);
   transition-duration: 0.2s;
 }
 

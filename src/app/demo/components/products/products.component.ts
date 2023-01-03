@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService, PrimeNGConfig, SelectItem } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { getFormData } from '../../shared/sharedFunctions';
+import { getFormData, noWhitespaceValidator } from '../../shared/sharedFunctions';
 
 import { DeleteManyProductsDto } from './dto/delete-many-products.dto';
 import { GetProductDto } from './dto/get-product.dto';
@@ -10,6 +10,7 @@ import { NgxCroppedEvent, NgxPhotoEditorService } from "ngx-photo-editor";
 import { ProductsService } from './products.service';
 import { GetCategoryListDto } from '../categories/dto/get-category-list.dto';
 import { UpdateSuggestedProductsDto } from './dto/update-suggested-products.dto';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 
 interface City {
@@ -51,12 +52,14 @@ export class ProductsComponent implements OnInit {
   index: number = -1;
 
   output?: NgxCroppedEvent;
-
+  
+  productForm!: FormGroup;
 
 
   private getProductsSubscription!: Subscription;
   private getCategoriesListSubscription!: Subscription;
 
+  
 
   constructor(
     private productsService: ProductsService,
@@ -71,14 +74,31 @@ export class ProductsComponent implements OnInit {
 
   }
 
-  fileChangeHandler($event: any) {
+  fileChangeHandler($event: any, fileUpload: any) {
+    const file = $event.currentFiles[0];
+    let extensionAllowed = ["png", "jpeg", "jpg"];
+    if (file!.size / 1024 / 1024 > 20) {
+      alert("File size should be less than 20MB")
+      fileUpload.clear()
+      return;
+    }
+    if (extensionAllowed) {
+      var nam = file!.name.split('.').pop() || "xxx";
+
+      if (!extensionAllowed.includes(nam)) {
+        alert("Please upload " + extensionAllowed.toString() + " file.")
+        fileUpload.clear()
+        return;
+      }
+    }
     this.ngxPhotoEditorService.open($event.currentFiles[0], {
       aspectRatio: 3 / 2,
       autoCropArea: 1,
       resizeToWidth: 300,
       resizeToHeight: 200
     }).subscribe(data => {
-      this.clonedProduct.pictureFile = data.file;
+      //this.clonedProduct.pictureFile = data.file;
+      this.productForm.controls["pictureFile"].setValue(data.file);
     });
   }
 
@@ -89,8 +109,6 @@ export class ProductsComponent implements OnInit {
         console.log(products, "Proizovdi");
       }
     );
-
-
     this.getCategoriesListSubscription = this.productsService.getCategoryList().subscribe(
       (categoriesList: GetCategoryListDto[]) => {
         this.categoriesList = categoriesList;
@@ -101,6 +119,28 @@ export class ProductsComponent implements OnInit {
       { label: 'A-Š', value: 'name' },
       { label: 'Š-A', value: '!name' }
     ];
+
+    this.productForm = new FormGroup({
+      name: new FormControl(null, [
+        Validators.required,
+        noWhitespaceValidator,
+      ]),
+      category: new FormControl(null, [
+        Validators.required,
+        noWhitespaceValidator,
+      ]),
+      description: new FormControl(null, [
+        Validators.required,
+        noWhitespaceValidator,
+      ]),
+      price: new FormControl(null, [
+        Validators.required,
+        noWhitespaceValidator,
+      ]),
+      isAddon: new FormControl(null),
+      isFeatured: new FormControl(null),
+      pictureFile: new FormControl(null),
+    });
   }
 
   ngOnDestroy(): void {
@@ -170,6 +210,7 @@ export class ProductsComponent implements OnInit {
   hideDialog() {
     this.productDialog = false;
     this.suggestedProductsDialog = false;
+    this.productForm.reset();
     this.submitted = false;
   }
 
@@ -177,7 +218,16 @@ export class ProductsComponent implements OnInit {
     this.editMode = true;
     this.index = this.products.indexOf(product);
     this.clonedProduct = { ...product };
-    this.selectedCategory = this.clonedProduct.category;
+    this.productForm.patchValue(
+      {
+        "name" : product.name,
+        "category": product.category,
+        "description": product.description,
+        "price": product.price,
+        "isAddon": product.isAddon,
+        "isFeatured": product.isFeatured
+      }
+    );
     this.submitted = false;
     this.productDialog = true;
   }
@@ -222,8 +272,8 @@ export class ProductsComponent implements OnInit {
 
     this.submitted = true;
     this.productDialog = false;
-    this.clonedProduct.category = this.selectedCategory;
-    let productFormData: FormData = getFormData(this.clonedProduct);
+    let productFormData: FormData = getFormData(this.productForm.getRawValue());
+    this.productForm.reset();
     this.productsService.createProduct(productFormData).subscribe({
       next: (createdProduct) => {
         this.products = [...this.products, createdProduct];
@@ -240,9 +290,8 @@ export class ProductsComponent implements OnInit {
     this.submitted = true;
     this.productDialog = false;
     this.editMode = false;
-    this.clonedProduct.category = this.selectedCategory;
-    let productFormData: FormData = getFormData(this.clonedProduct);
-
+    let productFormData: FormData = getFormData(this.productForm.getRawValue());
+    this.productForm.reset();
     this.productsService.updateProduct(this.clonedProduct._id, productFormData).subscribe({
       next: (updatedProduct) => {
 
@@ -258,6 +307,9 @@ export class ProductsComponent implements OnInit {
     });
   }
 
+  modalHide() {
+    this.productForm.reset();
+  }
   updateSuggestedProducts() {
     let updateSuggestedProductsDto = new UpdateSuggestedProductsDto(
       this.selectedSuggestedProducts?.map(item => item._id),

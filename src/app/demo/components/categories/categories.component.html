@@ -18,12 +18,11 @@
         pTemplate="gridItem">
 
         <div class="col-12 md:col-4">
-            <div class="category-grid-item card border-solid border-3 p-3" style="border-radius: 20px;"
-                [ngStyle]="{'border-color': category.color}">
+            <div class="category-grid-item card border-solid border-1 p-3" style="border-radius: 20px;">
 
                 <div class="category-grid-item-content">
+                    <div class="categoryImageLabel" [ngStyle]="{'background-color': category.color}">{{category.name}}</div>
                     <img src="{{category.image}}">
-
                 </div>
                 <div class="category-grid-item-bottom flex justify-content-between">
                     <div class="category-name">{{category.name}}</div>
