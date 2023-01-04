@@ -123,6 +123,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
 
   hideDialog() {
     this.facilityDialog = false;
+    this.facilityForm.reset();
     this.submitted = false;
   }
 
