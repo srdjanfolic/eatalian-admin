@@ -38,7 +38,7 @@
     </ng-template>
 </p-dataView>
 <form [formGroup]="categoryForm">
-<p-dialog [(visible)]="categoryDialog" [style]="{width: '30vw'}" header="Detalji kategorije" [modal]="true"
+<p-dialog [(visible)]="categoryDialog" [style]="{width: '30vw'}" header="Detalji kategorije" [modal]="true" (onHide)="modalHide()"
     styleClass="p-fluid">
   
         <ng-template pTemplate="content">

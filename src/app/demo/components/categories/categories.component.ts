@@ -136,6 +136,7 @@ export class CategoriesComponent implements OnInit {
   hideDialog() {
     this.categoryDialog = false;
     this.submitted = false;
+    this.categoryForm.reset();
   }
 
   editCategory(category: GetCategoryDto) {
@@ -196,6 +197,10 @@ export class CategoriesComponent implements OnInit {
     });
   }
 
+  modalHide() {
+    this.categoryForm.reset();
+  }
+
   updateCategory() {
 
     this.submitted = true;
@@ -203,7 +208,7 @@ export class CategoriesComponent implements OnInit {
     this.editMode = false;
     console.log(this.clonedCategory, 'cloned prije snimanja');
     let categoryFormData: FormData = getFormData(this.categoryForm.getRawValue());
-
+    this.categoryForm.reset();
     this.categoriesService.updateCategory(this.clonedCategory._id, categoryFormData).subscribe({
       next: (updatedCategory) => {
         console.log(updatedCategory, 'posle update-a');

@@ -2,8 +2,10 @@
 <div class="card">
     <p-toolbar styleClass="p-mb-4">
         <ng-template pTemplate="left">
-            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
-            <button pButton pRipple  icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedFacilities()" [disabled]="!selectedFacilities || !selectedFacilities.length"></button>
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
+                (click)="openNew()"></button>
+            <button pButton pRipple icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedFacilities()"
+                [disabled]="!selectedFacilities || !selectedFacilities.length"></button>
         </ng-template>
     </p-toolbar>
 
@@ -15,7 +17,8 @@
                 <h5 class="m-0">Manage Facilities</h5>
                 <span class="p-input-icon-left">
                     <i class="pi pi-search"></i>
-                    <input pInputText type="text" (input)="dt.filterGlobal(applyFilterGlobal($event), 'contains')" placeholder="Search..." />
+                    <input pInputText type="text" (input)="dt.filterGlobal(applyFilterGlobal($event), 'contains')"
+                        placeholder="Search..." />
                 </span>
             </div>
         </ng-template>
@@ -42,8 +45,8 @@
                 </td>
 
                 <td>{{facility.name}}</td>
-                <td><p-avatar [image]="facility.image" styleclass="mr-2" size="large" shape="circle" class="p-element"></p-avatar></td>
-                
+                <td><p-avatar [image]="facility.image" styleclass="mr-2" size="large" shape="circle"
+                        class="p-element"></p-avatar></td>
                 <td>{{facility.title}}</td>
                 <td>{{facility.description}}</td>
                 <td>{{facility.city}}</td>
@@ -51,8 +54,10 @@
                 <td>{{facility.phone}}</td>
                 <td>{{facility.username}}</td>
                 <td>
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editFacility(facility)"></button>
-                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteFacility(facility)"></button>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
+                        (click)="editFacility(facility)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                        (click)="deleteFacility(facility)"></button>
                 </td>
             </tr>
         </ng-template>
@@ -64,55 +69,70 @@
     </p-table>
 </div>
 
-<p-dialog [(visible)]="facilityDialog" [style]="{width: '60vw'}" header="Detalji Objekta" [modal]="true" styleClass="p-fluid">
-    <ng-template pTemplate="content">
-        <div class="field">
-            <label for="name">Naziv</label>
-            <input type="text" pInputText id="name" [(ngModel)]="facility.name" required autofocus />
-            <small class="p-invalid" *ngIf="submitted && !facility.name">Naziv is required.</small>
-        </div>
-        <div class="field mt-2">
-            <label for="title">Naslov</label>
-            <input id="title" pInputTextarea [(ngModel)]="facility.title" required />
-        </div>
-        <div class="field mt-2">
-            <label for="description">Opis</label>
-            <textarea id="description" pInputTextarea [(ngModel)]="facility.description" required rows="3" cols="20"></textarea>
-        </div>
-        <div class="formgrid grid">
-            <div class="field mt-2 col">
-                <label for="phone">Telefon</label>
-                <input id="phone" pInputText [(ngModel)]="facility.phone" [pKeyFilter]="'num'" id="phone"  required/>
-            </div>
-            <div class="field mt-2 col">
-                <label for="address">Adresa</label>
-                <input type="text" pInputText id="address" [(ngModel)]="facility.address"/>
-            </div>
-            <div class="field mt-2 col">
-                <label for="city">Grad</label>
-                <input type="text" pInputText id="city" [(ngModel)]="facility.city"/>
-            </div>
-        </div>
-        <div class="formgrid grid">
-            <div class="field mt-2 col">
-                <label for="username">Username</label>
-                <input type="text" pInputText id="username" [(ngModel)]="facility.username"/>
-            </div>
-            <div class="field mt-2 col">
-                <label for="password">Password</label>
-                <input type="password" pInputText id="password" [(ngModel)]="facility.password"/>
-            </div>
-        </div>
-        <div class="field mt-2">
-            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Slika" chooseLabel="Slika"  (onSelect)="uploadFile($event)" class="p-mr-2 p-d-inline-block"></p-fileUpload>
-        </div>
-    </ng-template>
-    
-    <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-        <button pButton *ngIf="!editMode" pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveFacility()"></button>
-        <button pButton *ngIf="editMode" pRipple label="Update" icon="pi pi-check" class="p-button-text" (click)="updateFacility()"></button>
-    </ng-template>
-</p-dialog>
 
+<form [formGroup]="facilityForm">
+<p-dialog [(visible)]="facilityDialog" [style]="{width: '60vw'}" header="Detalji Objekta" [modal]="true" (onHide)="modalHide()"
+    styleClass="p-fluid">
+    
+        <ng-template pTemplate="content">
+            <div class="field">
+                <label for="name">Naziv</label>
+                <input type="text" pInputText id="name" formControlName="name" required autofocus />
+                <small class="p-error"*ngIf="!facilityForm.get('name')!.valid && facilityForm.get('name')!.touched">Unesite naziv objekta</small>
+            </div>
+            <div class="field mt-2">
+                <label for="title">Naslov</label>
+                <input id="title" pInputTextarea formControlName="title" required />
+                <small class="p-error"*ngIf="!facilityForm.get('title')!.valid && facilityForm.get('title')!.touched">Unesite naslov objekta</small>
+            </div>
+            <div class="field mt-2">
+                <label for="description">Opis</label>
+                <textarea id="description" pInputTextarea formControlName="description" required rows="3" cols="20"></textarea>
+                <small class="p-error"*ngIf="!facilityForm.get('description')!.valid && facilityForm.get('description')!.touched">Unesite opis objekta</small>
+            </div>
+            <div class="formgrid grid">
+                <div class="field mt-2 col">
+                    <label for="phone">Telefon</label>
+                    <input id="phone" pInputText formControlName="phone" [pKeyFilter]="'num'" id="phone" required />
+                    <small class="p-error"*ngIf="!facilityForm.get('phone')!.valid && facilityForm.get('phone')!.touched">Unesite broj telefona</small>
+                </div>
+                <div class="field mt-2 col">
+                    <label for="address">Adresa</label>
+                    <input type="text" pInputText id="address" formControlName="address" />
+                    <small class="p-error"*ngIf="!facilityForm.get('address')!.valid && facilityForm.get('address')!.touched">Unesite adresu objekta</small>
+                </div>
+                <div class="field mt-2 col">
+                    <label for="city">Grad</label>
+                    <input type="text" pInputText id="city" formControlName="city" />
+                    <small class="p-error"*ngIf="!facilityForm.get('city')!.valid && facilityForm.get('city')!.touched">Unesite grad</small>
+                </div>
+            </div>
+            <div class="formgrid grid">
+                <div class="field mt-2 col">
+                    <label for="username">Username</label>
+                    <input type="text" pInputText id="username" formControlName="username" />
+                    <small class="p-error"*ngIf="!facilityForm.get('username')!.valid && facilityForm.get('username')!.touched">Unesite username</small>
+                </div>
+                <div class="field mt-2 col">
+                    <label for="password">Password</label>
+                    <input type="password" pInputText id="password" formControlName="password" />
+                    <small class="p-error"*ngIf="!facilityForm.get('password')!.valid && facilityForm.get('password')!.touched">Unesite password</small>
+                </div>
+            </div>
+            <div class="field mt-2">
+                <p-fileUpload mode="basic" #fileUpload accept="image/*" [maxFileSize]="1000000" label="Slika" chooseLabel="Slika"
+                    (onSelect)="fileChangeHandler($event, fileUpload)" class="p-mr-2 p-d-inline-block"></p-fileUpload>
+            </div>
+        </ng-template>
+ 
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text"
+                (click)="hideDialog()"></button>
+            <button pButton *ngIf="!editMode" [disabled]="!facilityForm.valid" pRipple label="Save" icon="pi pi-check" class="p-button-text"
+                (click)="saveFacility()"></button>
+            <button pButton *ngIf="editMode" [disabled]="!facilityForm.valid" pRipple label="Update" icon="pi pi-check" class="p-button-text"
+                (click)="updateFacility()"></button>
+        </ng-template>   
+</p-dialog>
+</form>
 <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

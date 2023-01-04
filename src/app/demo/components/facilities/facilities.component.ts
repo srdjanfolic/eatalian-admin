@@ -6,7 +6,9 @@ import { FacilitiesService } from './facilities.service';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { DeleteManyFacilitiesDto } from './dto/delete-many-facilities.dto';
-import { getFormData } from '../../shared/sharedFunctions';
+import { getFormData, noWhitespaceValidator } from '../../shared/sharedFunctions';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NgxPhotoEditorService } from 'ngx-photo-editor';
 
 
 @Component({
@@ -24,13 +26,15 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
   facilityDialog!: boolean;
   submitted!: boolean;
   editMode: boolean = false;
+  facilityForm!: FormGroup;
 
   private getFacilitiesSubscription!: Subscription;
 
   constructor(
     private facilityService: FacilitiesService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private ngxPhotoEditorService: NgxPhotoEditorService
   ) { }
 
 
@@ -41,10 +45,49 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
         this.facilities = facilities;
       }
     );
+    this.facilityForm = new FormGroup({
+      name: new FormControl(null, [
+        Validators.required,
+        noWhitespaceValidator,
+      ]),
+      title: new FormControl(null, [
+        Validators.required,
+        noWhitespaceValidator,
+      ]),
+      description: new FormControl(null, [
+        Validators.required,
+        noWhitespaceValidator,
+      ]),
+      city: new FormControl(null, [
+        Validators.required,
+        noWhitespaceValidator,
+      ]),
+      address: new FormControl(null, [
+        Validators.required,
+        noWhitespaceValidator,
+      ]),
+      phone: new FormControl(null, [
+        Validators.required,
+        noWhitespaceValidator,
+      ]),
+      username: new FormControl(null, [
+        Validators.required,
+        noWhitespaceValidator,
+      ]),
+      password: new FormControl(null, [
+          Validators.required,
+          noWhitespaceValidator,
+        ]),
+      pictureFile: new FormControl(null),
+    });
   }
 
   ngOnDestroy(): void {
     this.getFacilitiesSubscription.unsubscribe();
+  }
+
+  modalHide() {
+    this.facilityForm.reset();
   }
 
   deleteSelectedFacilities() {
@@ -75,6 +118,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
     this.facility = {};
     this.submitted = false;
     this.facilityDialog = true;
+    this.facilityForm.get('password')?.addValidators([Validators.required, noWhitespaceValidator]);
   }
 
   hideDialog() {
@@ -82,11 +126,23 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
     this.submitted = false;
   }
 
-  editFacility(facility: GetFacilityDto) { 
+  editFacility(facility: GetFacilityDto) {
     this.editMode = true;
     this.facility = facility;
     this.submitted = false;
     this.facilityDialog = true;
+    this.facilityForm.patchValue(
+      {
+        "name" : facility.name,
+        "title" : facility.title,
+        "description" : facility.description,
+        "phone" : facility.phone,
+        "address" : facility.address,
+        "city" : facility.city,
+        "username" : facility.username
+      }
+    );
+    this.facilityForm.get('password')?.clearValidators();
   }
 
 
@@ -113,10 +169,11 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
   }
 
   saveFacility() {
+    
     this.submitted = true;
     this.facilityDialog = false;
-    let facilityFormData: FormData = getFormData(this.facility);
-
+    let facilityFormData: FormData = getFormData(this.facilityForm.getRawValue());
+    this.facilityForm.reset();
     this.facilityService.createFacility(facilityFormData).subscribe({
       next: (createdFacility) => {
         this.facility = {};
@@ -129,21 +186,21 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
       }
     });
   }
-  
+
   updateFacility() {
-    
+
     this.submitted = true;
     this.facilityDialog = false;
     this.editMode = false;
-    let facilityFormData: FormData = getFormData(this.facility);
+    let facilityFormData: FormData = getFormData(this.facilityForm.getRawValue());
 
     this.facilityService.updateFacility(this.facility._id, facilityFormData).subscribe({
       next: (updatedFacility) => {
-          const index = this.facilities.indexOf(this.facility);
-          this.facilities[index] = updatedFacility;
-          this.facility = {};
+        const index = this.facilities.indexOf(this.facility);
+        this.facilities[index] = updatedFacility;
+        this.facility = {};
       },
-      error : () => {
+      error: () => {
         this.facility = {};
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error updating facility', life: 5000 });
       }
@@ -154,8 +211,33 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
     return event.target.value;
   }
 
-  uploadFile(event: { files: any; }) {
-    this.facility.pictureFile = event.files[0];
+  fileChangeHandler($event: any, fileUpload: any) {
+    const file = $event.currentFiles[0];
+    let extensionAllowed = ["png", "jpeg", "jpg"];
+    if (file!.size / 1024 / 1024 > 20) {
+      alert("File size should be less than 20MB")
+      fileUpload.clear()
+      return;
+    }
+    if (extensionAllowed) {
+      var nam = file!.name.split('.').pop() || "xxx";
+
+      if (!extensionAllowed.includes(nam)) {
+        alert("Please upload " + extensionAllowed.toString() + " file.")
+        fileUpload.clear()
+        return;
+      }
+    }
+    this.ngxPhotoEditorService.open($event.currentFiles[0], {
+      aspectRatio: 3 / 2,
+      autoCropArea: 1,
+      resizeToWidth: 300,
+      resizeToHeight: 200
+    }).subscribe(data => {
+
+      //this.clonedCategory.pictureFile = data.file;
+      this.facilityForm.controls["pictureFile"].setValue(data.file);
+    });
   }
 
 }
