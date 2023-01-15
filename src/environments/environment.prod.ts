@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiURL: 'http://localhost',
-  apiPort: 3000
+  apiURL: 'https://api.dostavica.me',
+  apiPort: 443
 };
