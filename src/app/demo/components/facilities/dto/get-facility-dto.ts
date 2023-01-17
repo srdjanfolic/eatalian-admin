@@ -10,6 +10,8 @@ export class GetFacilityDto {
         phone?: string;
         title?: string;
         description?: string;
+        frameURL?: string;
+        locationURL?: string;
         username?: string;
         image?: string;
         pictureFile?: File;

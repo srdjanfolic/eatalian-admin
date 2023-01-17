@@ -92,10 +92,10 @@ export class ProductsComponent implements OnInit {
       }
     }
     this.ngxPhotoEditorService.open($event.currentFiles[0], {
-      aspectRatio: 3 / 2,
+      aspectRatio: 3 / 3,
       autoCropArea: 1,
       resizeToWidth: 300,
-      resizeToHeight: 200
+      resizeToHeight: 300
     }).subscribe(data => {
       //this.clonedProduct.pictureFile = data.file;
       this.productForm.controls["pictureFile"].setValue(data.file);

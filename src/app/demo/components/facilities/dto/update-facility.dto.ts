@@ -6,6 +6,8 @@ export class UpdateFacilityDto {
   title?: string;
   phone?: string;
   description?: string;
+  locationURL?: string;
+  frameURL?: string;
   username?: string;
   password?: string;
   image?: string;

@@ -90,6 +90,14 @@
                 <textarea id="description" pInputTextarea formControlName="description" required rows="3" cols="20"></textarea>
                 <small class="p-error"*ngIf="!facilityForm.get('description')!.valid && facilityForm.get('description')!.touched">Unesite opis objekta</small>
             </div>
+            <div class="field mt-2">
+                <label for="locationURL">Lokacija URL</label>
+                <textarea id="locationURL" pInputTextarea formControlName="locationURL" required rows="1" cols="20"></textarea>
+            </div>
+            <div class="field mt-2">
+                <label for="frameURL">Mapa URL</label>
+                <textarea id="frameURL" pInputTextarea formControlName="frameURL" required rows="1" cols="20"></textarea>
+            </div>
             <div class="formgrid grid">
                 <div class="field mt-2 col">
                     <label for="phone">Telefon</label>

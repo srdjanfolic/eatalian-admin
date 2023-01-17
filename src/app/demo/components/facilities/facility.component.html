@@ -121,6 +121,10 @@
                 <label for="description">Opis</label>
                 <textarea id="description" pInputTextarea formControlName="description" required rows="3"></textarea>
                 <small class="p-error" *ngIf="!facilityForm.get('description')!.valid && facilityForm.get('description')!.touched">Unesite opis objekta<br></small>
+                <label for="locationURL">Lokacija URL</label>
+                <textarea id="locationURL" pInputTextarea formControlName="locationURL" rows="1"></textarea>
+                <label for="frameURL">Mapa</label>
+                <textarea id="frameURL" pInputTextarea formControlName="frameURL" rows="1"></textarea>
                 <label for="phone">Telefon</label>
                 <input class="mb-2" id="phone" pInputText formControlName="phone" [pKeyFilter]="'num'" id="phone"  required/>
                 <small class="p-error" *ngIf="!facilityForm.get('phone')!.valid && facilityForm.get('phone')!.touched">Unesite telefon<br></small>

@@ -120,6 +120,8 @@ export class FacilityComponent implements OnInit, OnDestroy {
         Validators.required,
         noWhitespaceValidator,
       ]),
+      locationURL: new FormControl(null, []),
+      frameURL: new FormControl(null, []),
       city: new FormControl(null, [
         Validators.required,
         noWhitespaceValidator,
@@ -227,6 +229,8 @@ export class FacilityComponent implements OnInit, OnDestroy {
         "name": this.facility.name,
         "title": this.facility.title,
         "description": this.facility.description,
+        "locationURL": this.facility.locationURL,
+        "frameURL": this.facility.frameURL,
         "phone": this.facility.phone,
         "address": this.facility.address,
         "city": this.facility.city,
@@ -260,6 +264,8 @@ export class FacilityComponent implements OnInit, OnDestroy {
     this.clonedFacility.name = formValues.name;
     this.clonedFacility.title = formValues.title;
     this.clonedFacility.description = formValues.description;
+    this.clonedFacility.locationURL = formValues.locationURL;
+    this.clonedFacility.frameURL = formValues.frameURL;
     this.clonedFacility.address = formValues.address;
     this.clonedFacility.phone = formValues.phone;
     this.clonedFacility.city = formValues.city;
@@ -326,10 +332,10 @@ export class FacilityComponent implements OnInit, OnDestroy {
       }
     }
     this.ngxPhotoEditorService.open($event.currentFiles[0], {
-      aspectRatio: 3 / 2,
+      aspectRatio: 10 / 3,
       autoCropArea: 1,
-      resizeToWidth: 300,
-      resizeToHeight: 200
+      resizeToWidth: 1000,
+      resizeToHeight: 300
     }).subscribe(data => {
 
       this.facilityForm.controls["pictureFile"].setValue(data.file);

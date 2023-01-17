@@ -6,6 +6,8 @@ export class CreateFacilityDto {
     title: string,
     phone: string,
     description: string,
+    frameURL: string,
+    locationURL: string,
     username: string,
     password: string,
   ) { }

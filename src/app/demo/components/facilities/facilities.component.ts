@@ -58,6 +58,8 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
         Validators.required,
         noWhitespaceValidator,
       ]),
+      locationURL: new FormControl(null, []),
+      frameURL: new FormControl(null, []),
       city: new FormControl(null, [
         Validators.required,
         noWhitespaceValidator,
@@ -137,6 +139,8 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
         "name" : facility.name,
         "title" : facility.title,
         "description" : facility.description,
+        "locationURL" : facility.locationURL,
+        "frameURL" : facility.frameURL,
         "phone" : facility.phone,
         "address" : facility.address,
         "city" : facility.city,
@@ -230,10 +234,10 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
       }
     }
     this.ngxPhotoEditorService.open($event.currentFiles[0], {
-      aspectRatio: 3 / 2,
+      aspectRatio: 10 / 3,
       autoCropArea: 1,
-      resizeToWidth: 300,
-      resizeToHeight: 200
+      resizeToWidth: 1000,
+      resizeToHeight: 300
     }).subscribe(data => {
 
       //this.clonedCategory.pictureFile = data.file;
