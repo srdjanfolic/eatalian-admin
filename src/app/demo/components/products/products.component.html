@@ -44,7 +44,7 @@
         </div>
     </ng-template>
     <ng-template let-product pTemplate="gridItem">
-        <div class="col-12 md:col-4">
+        <div class="col-12 md:col-3">
             <div class="product-grid-item card">
                 <div class="product-grid-item-top">
                     <div>
@@ -119,6 +119,9 @@
             </div>
             <div class="field flex align-items-center mt-2">
                 <p-inputSwitch formControlName="isFeatured" inputId="isFeatured"></p-inputSwitch>&nbsp;Promovisan?
+            </div>
+            <div class="field flex align-items-center mt-2">
+                <p-inputSwitch formControlName="disabled" inputId="disabled"></p-inputSwitch>&nbsp;Nedostupan?
             </div>
 
         </ng-template>

@@ -139,6 +139,7 @@ export class ProductsComponent implements OnInit {
       ]),
       isAddon: new FormControl(null),
       isFeatured: new FormControl(null),
+      disabled: new FormControl(null),
       pictureFile: new FormControl(null),
     });
   }
@@ -201,6 +202,7 @@ export class ProductsComponent implements OnInit {
     this.clonedProduct = {
       isFeatured: false,
       isAddon: false,
+      disabled: false,
     };
     this.selectedCategory = {};
     this.submitted = false;
@@ -225,7 +227,8 @@ export class ProductsComponent implements OnInit {
         "description": product.description,
         "price": product.price,
         "isAddon": product.isAddon,
-        "isFeatured": product.isFeatured
+        "isFeatured": product.isFeatured,
+        "disabled": product.disabled,
       }
     );
     this.submitted = false;

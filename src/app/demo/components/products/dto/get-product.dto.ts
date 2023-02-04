@@ -13,4 +13,5 @@ export class GetProductDto {
     public suggestedProducts?: GetProductDto[];
     public suggestedAddons?: GetProductDto[];
     public isFeatured?: boolean;
+    public disabled?: boolean;
 }
