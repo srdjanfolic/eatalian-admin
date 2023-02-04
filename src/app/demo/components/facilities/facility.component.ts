@@ -140,6 +140,7 @@ export class FacilityComponent implements OnInit, OnDestroy {
       ]),
       password: new FormControl(null),
       pictureFile: new FormControl(null),
+      closed: new FormControl(null),
       mondayOpeningTime: new FormControl(null, [
         Validators.required,
         noWhitespaceValidator,
@@ -205,7 +206,7 @@ export class FacilityComponent implements OnInit, OnDestroy {
         noWhitespaceValidator,
       ]),
     },
-    {validators: [this.validDeliveryTime]}
+      { validators: [this.validDeliveryTime] }
     );
   }
 
@@ -235,6 +236,7 @@ export class FacilityComponent implements OnInit, OnDestroy {
         "address": this.facility.address,
         "city": this.facility.city,
         "username": this.facility.username,
+        "closed": this.facility.closed,
         "mondayOpeningTime": this.mondayOpeningTime,
         "mondayClosingTime": this.mondayClosingTime,
         "tuesdayOpeningTime": this.tuesdayOpeningTime,
@@ -270,6 +272,7 @@ export class FacilityComponent implements OnInit, OnDestroy {
     this.clonedFacility.phone = formValues.phone;
     this.clonedFacility.city = formValues.city;
     this.clonedFacility.username = formValues.username;
+    this.clonedFacility.closed = formValues.closed;
     this.clonedFacility.password = formValues?.password;
     this.clonedFacility.pictureFile = formValues?.pictureFile;
     this.clonedFacility.name = formValues.name;

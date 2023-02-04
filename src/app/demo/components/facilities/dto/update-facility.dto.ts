@@ -11,4 +11,5 @@ export class UpdateFacilityDto {
   username?: string;
   password?: string;
   image?: string;
+  closed?: boolean;
 }

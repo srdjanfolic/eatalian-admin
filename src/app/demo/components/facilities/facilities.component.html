@@ -131,6 +131,12 @@
                 <p-fileUpload mode="basic" #fileUpload accept="image/*" [maxFileSize]="1000000" label="Slika" chooseLabel="Slika"
                     (onSelect)="fileChangeHandler($event, fileUpload)" class="p-mr-2 p-d-inline-block"></p-fileUpload>
             </div>
+            <div class="field flex align-items-center mt-2">
+                <p-inputSwitch formControlName="closed" inputId="closed"></p-inputSwitch>&nbsp;Zatvoren?
+            </div>
+            <div class="field flex align-items-center mt-2">
+                <p-inputSwitch formControlName="deleted" inputId="deleted"></p-inputSwitch>&nbsp;Izbrisan?
+            </div>
         </ng-template>
  
         <ng-template pTemplate="footer">

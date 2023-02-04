@@ -81,6 +81,8 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
           noWhitespaceValidator,
         ]),
       pictureFile: new FormControl(null),
+      closed: new FormControl(null),
+      deleted: new FormControl(null),
     });
   }
 
@@ -144,7 +146,9 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
         "phone" : facility.phone,
         "address" : facility.address,
         "city" : facility.city,
-        "username" : facility.username
+        "username" : facility.username,
+        "closed" : facility.closed,
+        "deleted" : facility.deleted
       }
     );
     this.facilityForm.get('password')?.clearValidators();
@@ -203,6 +207,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
       next: (updatedFacility) => {
         const index = this.facilities.indexOf(this.facility);
         this.facilities[index] = updatedFacility;
+        console.log(updatedFacility, "RESPONSE")
         this.facility = {};
       },
       error: () => {

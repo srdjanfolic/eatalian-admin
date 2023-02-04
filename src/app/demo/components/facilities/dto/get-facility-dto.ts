@@ -17,4 +17,6 @@ export class GetFacilityDto {
         pictureFile?: File;
         workingHours?: WorkingWeek;
         deliveryTime?: DeliveryTime;
+        closed?: boolean;
+        deleted?: boolean;
 }

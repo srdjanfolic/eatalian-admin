@@ -2,34 +2,41 @@
 <p-card *ngIf="facility">
     <div class="edit">
         <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
-            (click)="editFacility()"
-            style="position: absolute; right: 50px;"
-        >
+            (click)="editFacility()" style="position: absolute; right: 50px;">
         </button>
     </div>
     <div class="grid">
+        <!-- /*Ovdje info ako je zatvoren */ -->
         <div class="col-12 md:col-4">
             <img style="max-width: 100%;height: auto;" src="{{ facility.image}}">
         </div>
         <div class="col-12 md:col-8">
             <div class="grid">
-                <div class="col"><h2>{{facility.name}}</h2></div>
+                <div class="col">
+                    <h2>{{facility.name}}</h2>
+                </div>
             </div>
             <div class="grid">
-                <div class="col"><h3>{{facility.title}}</h3></div>
+                <div class="col">
+                    <h3>{{facility.title}}</h3>
+                </div>
             </div>
             <div class="grid">
-                <div class="col"><h5>{{facility.description}}</h5></div>
+                <div class="col">
+                    <h5>{{facility.description}}</h5>
+                </div>
             </div>
         </div>
     </div>
     <div class="grid">
         <div class="col-12 md:col-3">
-           
+
             <div class="radnoVrijeme border-solid border-1 border-round p-3 border-200">
                 <div class="grid">
-                    <div class="col"> <h5>RADNO VRIJEME:</h5></div>
-                    
+                    <div class="col">
+                        <h5>RADNO VRIJEME:</h5>
+                    </div>
+
                 </div>
                 <div class="grid">
                     <div class="col">{{facility.workingHours?.monday?.shorthand}}</div>
@@ -100,7 +107,9 @@
             <div class="info border-solid border-1 border-round p-3 border-200">
                 <div class="grid">
                     <div class="col-2"><i class="pi pi-clock"></i></div>
-                    <div class="col-10">Vrijeme dostave <br><b>{{facility.deliveryTime?.from}}-{{facility.deliveryTime?.to}} min</b></div>
+                    <div class="col-10">Vrijeme dostave
+                        <br><b>{{facility.deliveryTime?.from}}-{{facility.deliveryTime?.to}} min</b>
+                    </div>
                 </div>
             </div>
         </div>
@@ -108,160 +117,240 @@
 </p-card>
 
 <form [formGroup]="facilityForm">
-<p-dialog [(visible)]="facilityDialog" [style]="{width: '60vw'}" header="Detalji Objekta" [modal]="true" (onHide)="modalHide()" styleClass="p-fluid">
-    <ng-template pTemplate="content">
-        <div class="formgrid grid">
-            <div class="field col-7">
-                <label for="name">Naziv</label>
-                <input class="mb-2" type="text" pInputText id="name" formControlName="name" required autofocus />
-                <small class="p-error" *ngIf="!facilityForm.get('name')!.valid && facilityForm.get('name')!.touched">Unesite naziv objekta<br></small>
-                <label for="title">Naslov</label>
-                <input class="mb-2" id="title" pInputTextarea formControlName="title" required />
-                <small class="p-error" *ngIf="!facilityForm.get('title')!.valid && facilityForm.get('title')!.touched">Unesite naslov objekta<br></small>
-                <label for="description">Opis</label>
-                <textarea id="description" pInputTextarea formControlName="description" required rows="3"></textarea>
-                <small class="p-error" *ngIf="!facilityForm.get('description')!.valid && facilityForm.get('description')!.touched">Unesite opis objekta<br></small>
-                <label for="locationURL">Lokacija URL</label>
-                <textarea id="locationURL" pInputTextarea formControlName="locationURL" rows="1"></textarea>
-                <label for="frameURL">Mapa</label>
-                <textarea id="frameURL" pInputTextarea formControlName="frameURL" rows="1"></textarea>
-                <label for="phone">Telefon</label>
-                <input class="mb-2" id="phone" pInputText formControlName="phone" [pKeyFilter]="'num'" id="phone"  required/>
-                <small class="p-error" *ngIf="!facilityForm.get('phone')!.valid && facilityForm.get('phone')!.touched">Unesite telefon<br></small>
-                <label for="address">Adresa</label>
-                <input class="mb-2" type="text" pInputText id="address" formControlName="address"/>
-                <small class="p-error" *ngIf="!facilityForm.get('address')!.valid && facilityForm.get('address')!.touched">Unesite adresu objekta<br></small>
-                <label for="city">Grad</label>
-                <input class="mb-2" type="text" pInputText id="city" formControlName="city"/>
-                <small class="p-error" *ngIf="!facilityForm.get('city')!.valid && facilityForm.get('city')!.touched">Unesite grad<br></small>
-                <label for="username">Username</label>
-                <input class="mb-2" type="text" pInputText id="username" formControlName="username"/>
-                <small class="p-error" *ngIf="!facilityForm.get('username')!.valid && facilityForm.get('username')!.touched">Unesite username<br></small>
-                <label for="password">Password</label>
-                <input class="mb-2" type="password" pInputText id="password" formControlName="password"/>
-                <p-fileUpload class="mb-2" mode="basic" accept="image/*" [maxFileSize]="1000000" label="Slika" chooseLabel="Slika" #fileUpload (onSelect)="fileChangeHandler($event, fileUpload)" class="p-mr-2 p-d-inline-block"></p-fileUpload>
-            </div>
-            <div class="field col-5">
-                <div class="radnoVrijeme border-solid border-1 border-round p-3 border-200">
-                    <div class="formgrid grid">
-                        <div class="col"> <h5>RADNO VRIJEME:</h5></div>
-                    </div>
-                    <div class="formgrid grid align-items-center">
-                        <div class="field col-2">
-                            {{clonedFacility.workingHours?.monday?.shorthand}}
-                        </div>
-                        <div class="field col-5">
-                            <p-calendar formControlName="mondayOpeningTime" [timeOnly]="true" [hourFormat]="'24'" inputId="mondayOpeningTime"></p-calendar>
-                            <small class="p-error" *ngIf="!facilityForm.get('mondayOpeningTime')!.valid && facilityForm.get('mondayOpeningTime')!.touched">Unesite vrijeme</small>
-                        </div>
-                        <div class="field col-5">
-                            <p-calendar formControlName="mondayClosingTime" [timeOnly]="true" [hourFormat]="'24'" inputId="mondayClosingTime"></p-calendar>
-                            <small class="p-error" *ngIf="!facilityForm.get('mondayClosingTime')!.valid && facilityForm.get('mondayClosingTime')!.touched">Unesite vrijeme</small>
-                        </div>
-                    </div>
-                    <div class="formgrid grid align-items-center">
-                        <div class="field col-2">
-                            {{clonedFacility.workingHours?.tuesday?.shorthand}}
-                        </div>
-                        <div class="field col-5">
-                            <p-calendar formControlName="tuesdayOpeningTime" [timeOnly]="true" [hourFormat]="'24'" inputId="tuesdayOpeningTime"></p-calendar>
-                            <small class="p-error" *ngIf="!facilityForm.get('tuesdayOpeningTime')!.valid && facilityForm.get('tuesdayOpeningTime')!.touched">Unesite vrijeme</small>
-                        </div>
-                        <div class="field col-5">
-                            <p-calendar formControlName="tuesdayClosingTime" [timeOnly]="true" [hourFormat]="'24'" inputId="tuesdayClosingTime"></p-calendar>
-                            <small class="p-error" *ngIf="!facilityForm.get('tuesdayClosingTime')!.valid && facilityForm.get('tuesdayClosingTime')!.touched">Unesite vrijeme</small>
-                        </div>
-                    </div>
-                    <div class="formgrid grid align-items-center">
-                        <div class="field col-2">
-                            {{clonedFacility.workingHours?.wednesday?.shorthand}}
-                        </div>
-                        <div class="field col-5">
-                            <p-calendar formControlName="wednesdayOpeningTime" [timeOnly]="true" [hourFormat]="'24'" inputId="wednesdayOpeningTime"></p-calendar>
-                            <small class="p-error" *ngIf="!facilityForm.get('wednesdayOpeningTime')!.valid && facilityForm.get('wednesdayOpeningTime')!.touched">Unesite vrijeme</small>
-                        </div>
-                        <div class="field col-5">
-                            <p-calendar formControlName="wednesdayClosingTime" [timeOnly]="true" [hourFormat]="'24'" inputId="wednesdayClosingTime"></p-calendar>
-                            <small class="p-error" *ngIf="!facilityForm.get('wednesdayClosingTime')!.valid && facilityForm.get('wednesdayClosingTime')!.touched">Unesite vrijeme</small>
-                        </div>
-                    </div>
-                    <div class="formgrid grid align-items-center">
-                        <div class="field col-2">
-                            {{clonedFacility.workingHours?.thursday?.shorthand}}
-                        </div>
-                        <div class="field col-5">
-                            <p-calendar formControlName="thursdayOpeningTime" [timeOnly]="true" [hourFormat]="'24'" inputId="thursdayOpeningTime"></p-calendar>
-                            <small class="p-error" *ngIf="!facilityForm.get('thursdayOpeningTime')!.valid && facilityForm.get('thursdayOpeningTime')!.touched">Unesite vrijeme</small>
-                        </div>
-                        <div class="field col-5">
-                            <p-calendar formControlName="thursdayClosingTime" [timeOnly]="true" [hourFormat]="'24'" inputId="thursdayClosingTime"></p-calendar>
-                            <small class="p-error" *ngIf="!facilityForm.get('thursdayClosingTime')!.valid && facilityForm.get('thursdayClosingTime')!.touched">Unesite vrijeme</small>
-                        </div>
-                    </div>
-                    <div class="formgrid grid align-items-center">
-                        <div class="field col-2">
-                            {{clonedFacility.workingHours?.friday?.shorthand}}
-                        </div>
-                        <div class="field col-5">
-                            <p-calendar formControlName="fridayOpeningTime" [timeOnly]="true" [hourFormat]="'24'" inputId="fridayOpeningTime"></p-calendar>
-                            <small class="p-error" *ngIf="!facilityForm.get('fridayOpeningTime')!.valid && facilityForm.get('fridayOpeningTime')!.touched">Unesite vrijeme</small>
-                        </div>
-                        <div class="field col-5">
-                            <p-calendar formControlName="fridayClosingTime" [timeOnly]="true" [hourFormat]="'24'" inputId="fridayClosingTime"></p-calendar>
-                            <small class="p-error" *ngIf="!facilityForm.get('fridayClosingTime')!.valid && facilityForm.get('fridayClosingTime')!.touched">Unesite vrijeme</small>
-                        </div>
-                    </div>
-                    <div class="formgrid grid align-items-center">
-                        <div class="field col-2">
-                            {{clonedFacility.workingHours?.saturday?.shorthand}}
-                        </div>
-                        <div class="field col-5">
-                            <p-calendar formControlName="saturdayOpeningTime" [timeOnly]="true" [hourFormat]="'24'" inputId="saturdayOpeningTime"></p-calendar>
-                            <small class="p-error" *ngIf="!facilityForm.get('saturdayOpeningTime')!.valid && facilityForm.get('saturdayOpeningTime')!.touched">Unesite vrijeme</small>
-                        </div>
-                        <div class="field col-5">
-                            <p-calendar formControlName="saturdayClosingTime" [timeOnly]="true" [hourFormat]="'24'" inputId="saturdayClosingTime"></p-calendar>
-                            <small class="p-error" *ngIf="!facilityForm.get('saturdayClosingTime')!.valid && facilityForm.get('saturdayClosingTime')!.touched">Unesite vrijeme</small>
-                        </div>
-                    </div>
-                    <div class="formgrid grid align-items-center">
-                        <div class="field col-2">
-                            {{clonedFacility.workingHours?.sunday?.shorthand}}
-                        </div>
-                        <div class="field col-5">
-                            <p-calendar formControlName="sundayOpeningTime" [timeOnly]="true" [hourFormat]="'24'" inputId="sundayOpeningTime"></p-calendar>
-                            <small class="p-error" *ngIf="!facilityForm.get('sundayOpeningTime')!.valid && facilityForm.get('sundayOpeningTime')!.touched">Unesite vrijeme</small>
-                        </div>
-                        <div class="field col-5">
-                            <p-calendar formControlName="sundayClosingTime" [timeOnly]="true" [hourFormat]="'24'" inputId="sundayClosingTime"></p-calendar>
-                            <small class="p-error" *ngIf="!facilityForm.get('sundayClosingTime')!.valid && facilityForm.get('sundayClosingTime')!.touched">Unesite vrijeme</small>
-                        </div>
-                    </div>
-                    
+    <p-dialog [(visible)]="facilityDialog" [style]="{width: '60vw'}" header="Detalji Objekta" [modal]="true"
+        (onHide)="modalHide()" styleClass="p-fluid">
+        <ng-template pTemplate="content">
+            <div class="formgrid grid">
+                <div class="field col-7">
+                    <label for="name">Naziv</label>
+                    <input class="mb-2" type="text" pInputText id="name" formControlName="name" required autofocus />
+                    <small class="p-error"
+                        *ngIf="!facilityForm.get('name')!.valid && facilityForm.get('name')!.touched">Unesite naziv
+                        objekta<br></small>
+                    <label for="title">Naslov</label>
+                    <input class="mb-2" id="title" pInputTextarea formControlName="title" required />
+                    <small class="p-error"
+                        *ngIf="!facilityForm.get('title')!.valid && facilityForm.get('title')!.touched">Unesite naslov
+                        objekta<br></small>
+                    <label for="description">Opis</label>
+                    <textarea id="description" pInputTextarea formControlName="description" required
+                        rows="3"></textarea>
+                    <small class="p-error"
+                        *ngIf="!facilityForm.get('description')!.valid && facilityForm.get('description')!.touched">Unesite
+                        opis objekta<br></small>
+                    <label for="locationURL">Lokacija URL</label>
+                    <textarea id="locationURL" pInputTextarea formControlName="locationURL" rows="1"></textarea>
+                    <label for="frameURL">Mapa</label>
+                    <textarea id="frameURL" pInputTextarea formControlName="frameURL" rows="1"></textarea>
+                    <label for="phone">Telefon</label>
+                    <input class="mb-2" id="phone" pInputText formControlName="phone" [pKeyFilter]="'num'" id="phone"
+                        required />
+                    <small class="p-error"
+                        *ngIf="!facilityForm.get('phone')!.valid && facilityForm.get('phone')!.touched">Unesite
+                        telefon<br></small>
+                    <label for="address">Adresa</label>
+                    <input class="mb-2" type="text" pInputText id="address" formControlName="address" />
+                    <small class="p-error"
+                        *ngIf="!facilityForm.get('address')!.valid && facilityForm.get('address')!.touched">Unesite
+                        adresu objekta<br></small>
+                    <label for="city">Grad</label>
+                    <input class="mb-2" type="text" pInputText id="city" formControlName="city" />
+                    <small class="p-error"
+                        *ngIf="!facilityForm.get('city')!.valid && facilityForm.get('city')!.touched">Unesite
+                        grad<br></small>
+                    <label for="username">Username</label>
+                    <input class="mb-2" type="text" pInputText id="username" formControlName="username" />
+                    <small class="p-error"
+                        *ngIf="!facilityForm.get('username')!.valid && facilityForm.get('username')!.touched">Unesite
+                        username<br></small>
+                    <label for="password">Password</label>
+                    <input class="mb-2" type="password" pInputText id="password" formControlName="password" />
+                    <p-fileUpload class="mb-2" mode="basic" accept="image/*" [maxFileSize]="1000000" label="Slika"
+                        chooseLabel="Slika" #fileUpload (onSelect)="fileChangeHandler($event, fileUpload)"
+                        class="p-mr-2 p-d-inline-block"></p-fileUpload>
                 </div>
-                <div class="info border-solid border-1 border-round p-3 border-200 mt-3">
-                    <div class="formgrid grid align-items-center">
-                        <div class="field col-6">Vrijeme dostave(min)</div>
-                        <div class="field col">
-                            <input id="deliveryTimeFrom" formControlName="deliveryTimeFrom" pInputText [pKeyFilter]="'num'"/>
-                            <small class="p-error" *ngIf="!facilityForm.get('deliveryTimeFrom')!.valid && facilityForm.get('deliveryTimeFrom')!.touched">Unesite minute</small>
-                            <small class="p-error" *ngIf="facilityForm.errors?.['invalidInterval']">Opseg nije dobar</small>
+                <div class="field col-5">
+                    <div class="radnoVrijeme border-solid border-1 border-round p-3 border-200">
+                        <div class="formgrid grid">
+                            <div class="col">
+                                <h5>RADNO VRIJEME:</h5>
+                            </div>
                         </div>
-                        <div class="field col">
-                            <input id="deliveryTimeTo" formControlName="deliveryTimeTo" pInputText [pKeyFilter]="'num'"/>
-                            <small class="p-error" *ngIf="!facilityForm.get('deliveryTimeTo')!.valid && facilityForm.get('deliveryTimeTo')!.touched">Unesite minute</small>
-                            <small class="p-error" *ngIf="facilityForm.errors?.['invalidInterval']">Opseg nije dobar</small>
+                        <div class="formgrid grid align-items-center">
+                            <div class="field col-2">
+                                {{clonedFacility.workingHours?.monday?.shorthand}}
+                            </div>
+                            <div class="field col-5">
+                                <p-calendar formControlName="mondayOpeningTime" [timeOnly]="true" [hourFormat]="'24'"
+                                    inputId="mondayOpeningTime"></p-calendar>
+                                <small class="p-error"
+                                    *ngIf="!facilityForm.get('mondayOpeningTime')!.valid && facilityForm.get('mondayOpeningTime')!.touched">Unesite
+                                    vrijeme</small>
+                            </div>
+                            <div class="field col-5">
+                                <p-calendar formControlName="mondayClosingTime" [timeOnly]="true" [hourFormat]="'24'"
+                                    inputId="mondayClosingTime"></p-calendar>
+                                <small class="p-error"
+                                    *ngIf="!facilityForm.get('mondayClosingTime')!.valid && facilityForm.get('mondayClosingTime')!.touched">Unesite
+                                    vrijeme</small>
+                            </div>
+                        </div>
+                        <div class="formgrid grid align-items-center">
+                            <div class="field col-2">
+                                {{clonedFacility.workingHours?.tuesday?.shorthand}}
+                            </div>
+                            <div class="field col-5">
+                                <p-calendar formControlName="tuesdayOpeningTime" [timeOnly]="true" [hourFormat]="'24'"
+                                    inputId="tuesdayOpeningTime"></p-calendar>
+                                <small class="p-error"
+                                    *ngIf="!facilityForm.get('tuesdayOpeningTime')!.valid && facilityForm.get('tuesdayOpeningTime')!.touched">Unesite
+                                    vrijeme</small>
+                            </div>
+                            <div class="field col-5">
+                                <p-calendar formControlName="tuesdayClosingTime" [timeOnly]="true" [hourFormat]="'24'"
+                                    inputId="tuesdayClosingTime"></p-calendar>
+                                <small class="p-error"
+                                    *ngIf="!facilityForm.get('tuesdayClosingTime')!.valid && facilityForm.get('tuesdayClosingTime')!.touched">Unesite
+                                    vrijeme</small>
+                            </div>
+                        </div>
+                        <div class="formgrid grid align-items-center">
+                            <div class="field col-2">
+                                {{clonedFacility.workingHours?.wednesday?.shorthand}}
+                            </div>
+                            <div class="field col-5">
+                                <p-calendar formControlName="wednesdayOpeningTime" [timeOnly]="true" [hourFormat]="'24'"
+                                    inputId="wednesdayOpeningTime"></p-calendar>
+                                <small class="p-error"
+                                    *ngIf="!facilityForm.get('wednesdayOpeningTime')!.valid && facilityForm.get('wednesdayOpeningTime')!.touched">Unesite
+                                    vrijeme</small>
+                            </div>
+                            <div class="field col-5">
+                                <p-calendar formControlName="wednesdayClosingTime" [timeOnly]="true" [hourFormat]="'24'"
+                                    inputId="wednesdayClosingTime"></p-calendar>
+                                <small class="p-error"
+                                    *ngIf="!facilityForm.get('wednesdayClosingTime')!.valid && facilityForm.get('wednesdayClosingTime')!.touched">Unesite
+                                    vrijeme</small>
+                            </div>
+                        </div>
+                        <div class="formgrid grid align-items-center">
+                            <div class="field col-2">
+                                {{clonedFacility.workingHours?.thursday?.shorthand}}
+                            </div>
+                            <div class="field col-5">
+                                <p-calendar formControlName="thursdayOpeningTime" [timeOnly]="true" [hourFormat]="'24'"
+                                    inputId="thursdayOpeningTime"></p-calendar>
+                                <small class="p-error"
+                                    *ngIf="!facilityForm.get('thursdayOpeningTime')!.valid && facilityForm.get('thursdayOpeningTime')!.touched">Unesite
+                                    vrijeme</small>
+                            </div>
+                            <div class="field col-5">
+                                <p-calendar formControlName="thursdayClosingTime" [timeOnly]="true" [hourFormat]="'24'"
+                                    inputId="thursdayClosingTime"></p-calendar>
+                                <small class="p-error"
+                                    *ngIf="!facilityForm.get('thursdayClosingTime')!.valid && facilityForm.get('thursdayClosingTime')!.touched">Unesite
+                                    vrijeme</small>
+                            </div>
+                        </div>
+                        <div class="formgrid grid align-items-center">
+                            <div class="field col-2">
+                                {{clonedFacility.workingHours?.friday?.shorthand}}
+                            </div>
+                            <div class="field col-5">
+                                <p-calendar formControlName="fridayOpeningTime" [timeOnly]="true" [hourFormat]="'24'"
+                                    inputId="fridayOpeningTime"></p-calendar>
+                                <small class="p-error"
+                                    *ngIf="!facilityForm.get('fridayOpeningTime')!.valid && facilityForm.get('fridayOpeningTime')!.touched">Unesite
+                                    vrijeme</small>
+                            </div>
+                            <div class="field col-5">
+                                <p-calendar formControlName="fridayClosingTime" [timeOnly]="true" [hourFormat]="'24'"
+                                    inputId="fridayClosingTime"></p-calendar>
+                                <small class="p-error"
+                                    *ngIf="!facilityForm.get('fridayClosingTime')!.valid && facilityForm.get('fridayClosingTime')!.touched">Unesite
+                                    vrijeme</small>
+                            </div>
+                        </div>
+                        <div class="formgrid grid align-items-center">
+                            <div class="field col-2">
+                                {{clonedFacility.workingHours?.saturday?.shorthand}}
+                            </div>
+                            <div class="field col-5">
+                                <p-calendar formControlName="saturdayOpeningTime" [timeOnly]="true" [hourFormat]="'24'"
+                                    inputId="saturdayOpeningTime"></p-calendar>
+                                <small class="p-error"
+                                    *ngIf="!facilityForm.get('saturdayOpeningTime')!.valid && facilityForm.get('saturdayOpeningTime')!.touched">Unesite
+                                    vrijeme</small>
+                            </div>
+                            <div class="field col-5">
+                                <p-calendar formControlName="saturdayClosingTime" [timeOnly]="true" [hourFormat]="'24'"
+                                    inputId="saturdayClosingTime"></p-calendar>
+                                <small class="p-error"
+                                    *ngIf="!facilityForm.get('saturdayClosingTime')!.valid && facilityForm.get('saturdayClosingTime')!.touched">Unesite
+                                    vrijeme</small>
+                            </div>
+                        </div>
+                        <div class="formgrid grid align-items-center">
+                            <div class="field col-2">
+                                {{clonedFacility.workingHours?.sunday?.shorthand}}
+                            </div>
+                            <div class="field col-5">
+                                <p-calendar formControlName="sundayOpeningTime" [timeOnly]="true" [hourFormat]="'24'"
+                                    inputId="sundayOpeningTime"></p-calendar>
+                                <small class="p-error"
+                                    *ngIf="!facilityForm.get('sundayOpeningTime')!.valid && facilityForm.get('sundayOpeningTime')!.touched">Unesite
+                                    vrijeme</small>
+                            </div>
+                            <div class="field col-5">
+                                <p-calendar formControlName="sundayClosingTime" [timeOnly]="true" [hourFormat]="'24'"
+                                    inputId="sundayClosingTime"></p-calendar>
+                                <small class="p-error"
+                                    *ngIf="!facilityForm.get('sundayClosingTime')!.valid && facilityForm.get('sundayClosingTime')!.touched">Unesite
+                                    vrijeme</small>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="info border-solid border-1 border-round p-3 border-200 mt-3">
+                        <div class="formgrid grid align-items-center">
+                            <div class="field col-6">Vrijeme dostave(min)</div>
+                            <div class="field col">
+                                <input id="deliveryTimeFrom" formControlName="deliveryTimeFrom" pInputText
+                                    [pKeyFilter]="'num'" />
+                                <small class="p-error"
+                                    *ngIf="!facilityForm.get('deliveryTimeFrom')!.valid && facilityForm.get('deliveryTimeFrom')!.touched">Unesite
+                                    minute</small>
+                                <small class="p-error" *ngIf="facilityForm.errors?.['invalidInterval']">Opseg nije
+                                    dobar</small>
+                            </div>
+                            <div class="field col">
+                                <input id="deliveryTimeTo" formControlName="deliveryTimeTo" pInputText
+                                    [pKeyFilter]="'num'" />
+                                <small class="p-error"
+                                    *ngIf="!facilityForm.get('deliveryTimeTo')!.valid && facilityForm.get('deliveryTimeTo')!.touched">Unesite
+                                    minute</small>
+                                <small class="p-error" *ngIf="facilityForm.errors?.['invalidInterval']">Opseg nije
+                                    dobar</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info border-solid border-1 border-round p-3 border-200 mt-3">
+                        <div class="formgrid grid align-items-center">
+                            <div class="field col flex align-items-center mt-2">
+                                <p-inputSwitch formControlName="closed" inputId="closed"></p-inputSwitch>&nbsp;Zatvoren
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </ng-template>
-    
-    <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Update" [disabled]="!facilityForm.valid" icon="pi pi-check" class="p-button-text" (click)="updateFacility()"></button>
-    </ng-template>
-</p-dialog>
+        </ng-template>
+
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text"
+                (click)="hideDialog()"></button>
+            <button pButton pRipple label="Update" [disabled]="!facilityForm.valid" icon="pi pi-check"
+                class="p-button-text" (click)="updateFacility()"></button>
+        </ng-template>
+    </p-dialog>
 </form>
 <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
