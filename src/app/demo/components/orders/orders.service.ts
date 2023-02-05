@@ -1,7 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { GetOwnOrderListDto } from './dto/get-own-order.dto';
+import { GetOwnOrderFilterDto } from './dto/get-own-order-filter.dto';
+import { GetOwnOrderListDto } from './dto/get-own-order-list.dto';
+
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -20,9 +22,10 @@ export class OrdersService {
     private http: HttpClient
   ) {}
 
-  getOwnOrders() {
-    return this.http.get<GetOwnOrderListDto[]>(
-      `${this.facilitiesURl}/own/orders`
+  getOwnOrders(getOwnOrderFilterDto: GetOwnOrderFilterDto) {
+    return this.http.post<GetOwnOrderListDto>(
+      `${this.facilitiesURl}/own/orders`,
+      getOwnOrderFilterDto, httpOptions
     );
   }
 }

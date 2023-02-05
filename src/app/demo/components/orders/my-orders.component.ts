@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FilterMatchMode, FilterMetadata, LazyLoadEvent, PrimeNGConfig, SelectItem, TranslationKeys } from 'primeng/api';
-import { Subscription } from 'rxjs';
-import { GetOwnOrderListDto, OrderStatus } from './dto/get-own-order.dto';
+import { filter, Subscription } from 'rxjs';
+import { GetOwnOrderFilterDto } from './dto/get-own-order-filter.dto';
+import { GetOwnOrderListDto } from './dto/get-own-order-list.dto';
+import { GetOwnOrderDto, OrderStatus } from './dto/get-own-order.dto';
 import { OrdersService } from './orders.service';
 
 @Component({
@@ -13,7 +15,7 @@ export class MyOrdersComponent implements OnInit {
 
   ordersSubscription: Subscription = new Subscription();
 
-  orders: GetOwnOrderListDto[] = [];
+  orders: GetOwnOrderDto[] = [];
 
   matchModeOptions!: SelectItem[];
 
@@ -51,12 +53,13 @@ export class MyOrdersComponent implements OnInit {
 
     this.loading = true;
 
-    this.ordersSubscription = this.ordersService.getOwnOrders().subscribe(
+    let getOwnOrderFilterDto = new GetOwnOrderFilterDto(event.first, event.rows, filters);
+
+    this.ordersSubscription = this.ordersService.getOwnOrders(getOwnOrderFilterDto).subscribe(
       {
-        next: (orders) => {
-          this.orders = orders;
-          this.totalRecords = orders.length;
-          console.log(this.totalRecords);
+        next: (ordersList: GetOwnOrderListDto) => {
+          this.orders = ordersList.orders;
+          this.totalRecords = ordersList.ordersCount;
           this.loading = false;
         },
         error: (error) => {

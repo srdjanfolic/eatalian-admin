@@ -11,7 +11,7 @@ export enum OrderStatus {
     COMPLETED = "COMPLETED"
 }
 
-export class GetOwnOrderListDto {
+export class GetOwnOrderDto {
     _id?: string;
     address?: string;
     totalPrice?: number;
