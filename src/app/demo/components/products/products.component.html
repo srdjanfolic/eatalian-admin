@@ -1,6 +1,6 @@
 <p-toast></p-toast>
 
-<p-dataView #dv [value]="products" [paginator]="true" [rows]="9" filterBy="name" [sortField]="sortField"
+<p-dataView #dv [value]="products" [paginator]="true" [rows]="20" filterBy="name" [sortField]="sortField"
     [sortOrder]="sortOrder" layout="grid">
     <ng-template pTemplate="header">
         <div class="flex flex-column md:flex-row md:justify-content-between">
@@ -45,7 +45,7 @@
     </ng-template>
     <ng-template let-product pTemplate="gridItem">
         <div class="col-12 md:col-3">
-            <div class="product-grid-item card">
+            <div class="product-grid-item card" [class.invisible]="product.invisible" [class.is-disabled]="product.disabled">
                 <div class="product-grid-item-top">
                     <div>
                         <i class="pi pi-tag product-category-icon"></i>
@@ -122,6 +122,9 @@
             </div>
             <div class="field flex align-items-center mt-2">
                 <p-inputSwitch formControlName="disabled" inputId="disabled"></p-inputSwitch>&nbsp;Nedostupan?
+            </div>
+            <div class="field flex align-items-center mt-2">
+                <p-inputSwitch formControlName="invisible" inputId="invisible"></p-inputSwitch>&nbsp;Sakriven?
             </div>
 
         </ng-template>

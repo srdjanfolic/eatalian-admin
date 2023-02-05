@@ -98,6 +98,15 @@
     margin-bottom: 2rem;
 }
 
+.invisible {
+    background-color: rgba(255, 130, 130, 0.415);
+}
+
+.is-disabled {
+    background-color: rgba($color: gray, $alpha: 0.5);
+}
+
+
 @media screen and (max-width: 576px) {
 	:host ::ng-deep .product-list-item {
 		flex-direction: column;
