@@ -17,6 +17,7 @@ import { AppTopBarComponent } from './app.topbar.component';
 import { AppFooterComponent } from './app.footer.component';
 import { AppSidebarComponent } from "./app.sidebar.component";
 import { AppLayoutComponent } from "./app.layout.component";
+import { TableModule } from 'primeng/table';
 
 @NgModule({
     declarations: [
@@ -40,6 +41,7 @@ import { AppLayoutComponent } from "./app.layout.component";
         RippleModule,
         RouterModule,
         SplitButtonModule,
+        TableModule
     ],
     exports: [AppLayoutComponent]
 })

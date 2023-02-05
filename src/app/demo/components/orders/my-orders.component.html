@@ -1,0 +1,43 @@
+<!-- <p-table [value]="orders" [lazy]="true" (onLazyLoad)="loadCustomers($event)" 
+    [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading"> -->
+    <p-table #dt1 [value]="orders" (onLazyLoad)="loadOrders($event, $any(dt1).filters)" [lazy]="true" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
+	[rowsPerPageOptions]="[10,25,50]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines"
+    [totalRecords]="totalRecords"
+	[paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Ime</th>
+            <th>Adresa</th>
+            <th><div class="p-d-flex p-jc-between p-ai-center">
+                Total
+                <p-columnFilter type="numeric"  field="order.totalPrice" display="menu"  currency="EUR"></p-columnFilter>
+            </div></th>
+            <th><div class="p-d-flex p-jc-between p-ai-center">
+                Datum kreiranja
+                <p-columnFilter type="date" field="order.dateCreated" display="menu"></p-columnFilter>
+            </div></th>
+            <th><div class="p-d-flex p-jc-between p-ai-center">
+                Status
+                <p-columnFilter field="order.status">
+                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                        <p-dropdown [ngModel]="value" [options]="statuses" (onChange)="filter($event.value)"
+                            placeholder="Izaberi">
+                            <ng-template let-option pTemplate="item">
+                                <span [class]="'customer-badge status-' + option.value">{{option.label}}</span>
+                            </ng-template>
+                        </p-dropdown>
+                    </ng-template>
+                </p-columnFilter>
+            </div></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-order>
+        <tr>
+            <td>{{order.user.name}}</td>
+            <td>{{order.address}}</td>
+            <td>{{order.totalPrice.toFixed(2)}} Eur</td>
+            <td>{{order.dateCreated | date:'dd.MM.YY HH:mm'}}h</td>
+            <td>{{order.status}}</td>
+        </tr>
+    </ng-template>
+</p-table>

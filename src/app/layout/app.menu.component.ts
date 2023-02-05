@@ -31,6 +31,16 @@ export class AppMenuComponent implements OnInit {
                                     routerLink: ['/facilities/all']
                                 },
                             ]
+                        },
+                        {
+                            label: 'Orders',
+                            items: [
+                                { 
+                                    label: 'View orders',
+                                    icon: 'pi pi-fw pi-list',
+                                    routerLink: ['/orders/all']
+                                },
+                            ]
                         }
                     ];
                 } else {
@@ -52,6 +62,15 @@ export class AppMenuComponent implements OnInit {
                                     label: 'Products',
                                     icon: 'pi pi-fw pi-shopping-cart',
                                     routerLink: ['/products']
+                                },
+                            ]
+                        }, {
+                            label: 'Orders',
+                            items: [
+                                { 
+                                    label: 'View orders',
+                                    icon: 'pi pi-fw pi-list',
+                                    routerLink: ['/orders/my']
                                 },
                             ]
                         }

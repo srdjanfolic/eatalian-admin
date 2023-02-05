@@ -19,6 +19,14 @@ import { UserRole } from './demo/components/auth/login/user.model';
                         loadChildren: () => import('./demo/components/facilities/facilities.module').then(m => m.FacilitiesModule)
                     },
                     {
+                        path: 'orders',
+                        canActivate: [AuthGuard],
+                        data: {
+                            allowedRoles: [UserRole.ADMIN, UserRole.FACILITY],
+                        },
+                        loadChildren: () => import('./demo/components/orders/orders.module').then(m => m.OrdersModule)
+                    },
+                    {
                         path: 'categories',
                         canActivate: [AuthGuard],
                         data: {

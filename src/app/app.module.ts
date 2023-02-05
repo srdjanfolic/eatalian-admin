@@ -33,6 +33,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './demo/components/auth/login/auth-interceptor.service';
 import { FacilityComponent } from './demo/components/facilities/facility.component';
 import { ProductsComponent } from './demo/components/products/products.component';
+import { OrdersComponent } from './demo/components/orders/orders.component';
+import { MyOrdersComponent } from './demo/components/orders/my-orders.component';
 
 const NG_MODULES=  [
     ToastModule,
@@ -65,7 +67,9 @@ const NG_MODULES=  [
         CategoriesComponent,
         FacilitiesComponent,
         ProductsComponent,
-        FacilityComponent
+        FacilityComponent,
+        OrdersComponent,
+        MyOrdersComponent
     ],
     imports: [
         AppRoutingModule,
