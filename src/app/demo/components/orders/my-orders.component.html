@@ -1,4 +1,4 @@
-<p-table #dt1 [value]="orders" (onLazyLoad)="loadOrders($event, $any(dt1).filters)" [lazy]="true" dataKey="id"
+<p-table #dt1 responsiveLayout="scroll" [value]="orders" (onLazyLoad)="loadOrders($event, $any(dt1).filters)" [lazy]="true" dataKey="id"
     [rows]="25" [showCurrentPageReport]="true" [rowsPerPageOptions]="[25, 50, 100]" [loading]="loading"
     styleClass="p-datatable-customers p-datatable-gridlines" [totalRecords]="totalRecords" [paginator]="true"
     currentPageReportTemplate="{first}-{last} od {totalRecords} narudžbi">
