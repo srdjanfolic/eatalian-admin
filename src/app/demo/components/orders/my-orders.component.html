@@ -10,15 +10,15 @@
             <th>Adresa</th>
             <th><div class="p-d-flex p-jc-between p-ai-center">
                 Total
-                <p-columnFilter type="numeric"  field="totalPrice" display="menu"  currency="EUR"></p-columnFilter>
+                <p-columnFilter type="numeric"  field="totalPrice" [hideOnClear]="true" [matchModeOptions]="totalPriceMatchModeOptions" display="menu"  currency="EUR"></p-columnFilter>
             </div></th>
             <th><div class="p-d-flex p-jc-between p-ai-center">
                 Datum kreiranja
-                <p-columnFilter type="date" field="dateCreated"  [matchModeOptions]="dateMatchModeOptions" display="menu"></p-columnFilter>
+                <p-columnFilter type="date" field="dateCreated" [hideOnClear]="true" [matchModeOptions]="dateMatchModeOptions" display="menu"></p-columnFilter>
             </div></th>
             <th><div class="p-d-flex p-jc-between p-ai-center">
                 Status
-                <p-columnFilter field="status" matchMode="equals">
+                <p-columnFilter field="status" matchMode="equals" [hideOnClear]="true" [matchModeOptions]="statusMatchModeOptions" display="row">
                     <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                         <p-dropdown [ngModel]="value" [options]="statuses" (onChange)="filter($event.value)"
                             placeholder="Izaberi">

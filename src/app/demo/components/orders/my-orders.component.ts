@@ -18,6 +18,8 @@ export class MyOrdersComponent implements OnInit {
   orders: GetOwnOrderDto[] = [];
 
   dateMatchModeOptions!: SelectItem[];
+  totalPriceMatchModeOptions!: SelectItem[];
+  statusMatchModeOptions!: SelectItem[];
 
 
   totalRecords!: number;
@@ -52,6 +54,17 @@ export class MyOrdersComponent implements OnInit {
       { label: "Nakon", value: FilterMatchMode.DATE_AFTER },
       { label: "Prije", value: FilterMatchMode.DATE_BEFORE },
   
+    ];
+
+    this.totalPriceMatchModeOptions = [
+      { label: "Jednako", value: FilterMatchMode.EQUALS },
+      { label: "Veće od", value: FilterMatchMode.GREATER_THAN },
+      { label: "Manje od", value: FilterMatchMode.LESS_THAN },
+  
+    ];
+
+    this.statusMatchModeOptions = [
+      { label: "Jednako", value: FilterMatchMode.EQUALS },
     ];
   }
 
