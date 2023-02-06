@@ -17,7 +17,7 @@ export class MyOrdersComponent implements OnInit {
 
   orders: GetOwnOrderDto[] = [];
 
-  matchModeOptions!: SelectItem[];
+  dateMatchModeOptions!: SelectItem[];
 
 
   totalRecords!: number;
@@ -43,8 +43,16 @@ export class MyOrdersComponent implements OnInit {
     this.loading = true;
     
 
-    //this.primengConfig.setTranslation({addRule: "Dodaj uslov", clear: "Ocisti "});
-
+    this.dateMatchModeOptions = [
+      { label: "Danas", value: "today" },
+      { label: "Juče", value: "yesterday" },
+      { label: "Zadnjih 7 dana", value: "7days" },
+      { label: "Zadnjih 15 dana", value: "15days" },
+      { label: "Zadnjih 30 dana", value: "30days" },
+      { label: "Nakon", value: FilterMatchMode.DATE_AFTER },
+      { label: "Prije", value: FilterMatchMode.DATE_BEFORE },
+  
+    ];
   }
 
   loadOrders(event: LazyLoadEvent, filters: FilterMetadata) {
