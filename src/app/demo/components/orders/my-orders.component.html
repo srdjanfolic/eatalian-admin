@@ -1,34 +1,47 @@
-<!-- <p-table [value]="orders" [lazy]="true" (onLazyLoad)="loadCustomers($event)" 
-    [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading"> -->
-    <p-table #dt1 [value]="orders" (onLazyLoad)="loadOrders($event, $any(dt1).filters)" [lazy]="true" dataKey="id" [rows]="25" [showCurrentPageReport]="true"
-	[rowsPerPageOptions]="[25, 50, 100]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines"
-    [totalRecords]="totalRecords"
-	[paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+<p-table #dt1 [value]="orders" (onLazyLoad)="loadOrders($event, $any(dt1).filters)" [lazy]="true" dataKey="id"
+    [rows]="25" [showCurrentPageReport]="true" [rowsPerPageOptions]="[25, 50, 100]" [loading]="loading"
+    styleClass="p-datatable-customers p-datatable-gridlines" [totalRecords]="totalRecords" [paginator]="true"
+    currentPageReportTemplate="{first}-{last} od {totalRecords} narudžbi">
+    <ng-template pTemplate="caption">
+        <div class="d-flex text-right">
+            <h3>Ukupno: {{ordersTotal.toFixed(2)}} Eur </h3>
+        </div>
+       
+    </ng-template>
     <ng-template pTemplate="header">
         <tr>
             <th>Ime</th>
             <th>Adresa</th>
-            <th><div class="p-d-flex p-jc-between p-ai-center">
-                Total
-                <p-columnFilter type="numeric"  field="totalPrice" [hideOnClear]="true" [matchModeOptions]="totalPriceMatchModeOptions" display="menu"  currency="EUR"></p-columnFilter>
-            </div></th>
-            <th><div class="p-d-flex p-jc-between p-ai-center">
-                Datum kreiranja
-                <p-columnFilter type="date" field="dateCreated" [hideOnClear]="true" [matchModeOptions]="dateMatchModeOptions" display="menu"></p-columnFilter>
-            </div></th>
-            <th><div class="p-d-flex p-jc-between p-ai-center">
-                Status
-                <p-columnFilter field="status" matchMode="equals" [hideOnClear]="true" [matchModeOptions]="statusMatchModeOptions" display="row">
-                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                        <p-dropdown [ngModel]="value" [options]="statuses" (onChange)="filter($event.value)"
-                            placeholder="Izaberi">
-                            <ng-template let-option pTemplate="item">
-                                <span [class]="'customer-badge status-' + option.value">{{option.label}}</span>
-                            </ng-template>
-                        </p-dropdown>
-                    </ng-template>
-                </p-columnFilter>
-            </div></th>
+            <th>
+                <div class="p-d-flex p-jc-between p-ai-center">
+                    Total
+                    <p-columnFilter type="numeric" field="totalPrice" [hideOnClear]="true"
+                        [matchModeOptions]="totalPriceMatchModeOptions" display="menu" currency="EUR"></p-columnFilter>
+                </div>
+            </th>
+            <th>
+                <div class="p-d-flex p-jc-between p-ai-center">
+                    Datum kreiranja
+                    <p-columnFilter type="date" field="dateCreated" [hideOnClear]="true"
+                        [matchModeOptions]="dateMatchModeOptions" display="menu"></p-columnFilter>
+                </div>
+            </th>
+            <th>
+                <div class="p-d-flex p-jc-between p-ai-center">
+                    Status
+                    <p-columnFilter field="status" matchMode="equals" [hideOnClear]="true"
+                        [matchModeOptions]="statusMatchModeOptions" display="row">
+                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                            <p-dropdown [ngModel]="value" [options]="statuses" (onChange)="filter($event.value)"
+                                placeholder="Izaberi">
+                                <ng-template let-option pTemplate="item">
+                                    <span [class]="'customer-badge status-' + option.value">{{option.label}}</span>
+                                </ng-template>
+                            </p-dropdown>
+                        </ng-template>
+                    </p-columnFilter>
+                </div>
+            </th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-order>

@@ -23,6 +23,7 @@ export class MyOrdersComponent implements OnInit {
 
 
   totalRecords!: number;
+  ordersTotal!: number;
 
   cols?: any[];
 
@@ -81,6 +82,7 @@ export class MyOrdersComponent implements OnInit {
         next: (ordersList: GetOwnOrderListDto) => {
           this.orders = ordersList.orders;
           this.totalRecords = ordersList.ordersCount;
+          this.ordersTotal = ordersList.ordersTotal
           this.loading = false;
         },
         error: (error) => {
