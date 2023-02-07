@@ -1,4 +1,4 @@
-<p-table #dt1 responsiveLayout="scroll" [value]="orders" (onLazyLoad)="loadOrders($event, $any(dt1).filters)" [lazy]="true" dataKey="id"
+<p-table selectionMode="single" [(selection)]="selectedOrder" #dt1 responsiveLayout="scroll" [value]="orders" (onLazyLoad)="loadOrders($event, $any(dt1).filters)" [lazy]="true" dataKey="_id"
     [rows]="25" [showCurrentPageReport]="true" [rowsPerPageOptions]="[25, 50, 100]" [loading]="loading"
     styleClass="p-datatable-customers p-datatable-gridlines" [totalRecords]="totalRecords" [paginator]="true"
     currentPageReportTemplate="{first}-{last} od {totalRecords} narudžbi">
@@ -62,7 +62,7 @@
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-order>
-        <tr>
+        <tr style="cursor: pointer;" (click)="selectOrder(order)" [pSelectableRow]="order">
             <td>{{order.facility.name}}</td>
             <td>{{order.user.name}}</td>
             <td>{{order.address}}</td>

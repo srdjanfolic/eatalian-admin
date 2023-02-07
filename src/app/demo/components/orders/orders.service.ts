@@ -34,4 +34,16 @@ export class OrdersService {
       getOwnOrderFilterDto, httpOptions
     );
   }
+  getOwnOrderById(id?: string) {
+    return this.http.get<any>(
+      `${this.facilitiesURl}/own/order/${id}`,
+      httpOptions
+    );
+  }
+  getOrderById(id?:string) {
+    return this.http.get<any>(
+      `${this.facilitiesURl}/order/${id}`,
+      httpOptions
+    );
+  }
 }

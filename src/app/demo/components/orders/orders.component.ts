@@ -7,11 +7,14 @@ import { GetOwnOrderFilterDto } from './dto/get-own-order-filter.dto';
 import { GetOwnOrderListDto } from './dto/get-own-order-list.dto';
 import { GetOwnOrderDto, OrderStatus } from './dto/get-own-order.dto';
 import { OrdersService } from './orders.service';
+import { DialogService, } from 'primeng/dynamicdialog';
+import { OrderInfoComponent } from './order-info/order-info.component';
 
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.component.html',
-  styleUrls: ['./orders.component.scss']
+  styleUrls: ['./orders.component.scss'],
+  providers: [DialogService]
 })
 export class OrdersComponent implements OnInit {
 
@@ -19,6 +22,8 @@ export class OrdersComponent implements OnInit {
   faciltiesSubscription: Subscription = new Subscription();
 
   orders: GetOwnOrderDto[] = [];
+  selectedOrder?: GetOwnOrderDto;
+
   facilities: GetFacilityListDto[] = [];
 
   dateMatchModeOptions!: SelectItem[];
@@ -43,7 +48,8 @@ export class OrdersComponent implements OnInit {
 
   constructor(
     private ordersService: OrdersService,
-    private facilitiesService: FacilitiesService
+    private facilitiesService: FacilitiesService,
+    public dialogService: DialogService,
   ) { }
 
   ngOnInit(): void {
@@ -110,6 +116,17 @@ export class OrdersComponent implements OnInit {
   }
   applyFilterGlobal(event: any) {
     return event.target.value;
+  }
+
+  selectOrder(order: GetOwnOrderDto) {
+    console.log(order._id);
+    const ref = this.dialogService.open(OrderInfoComponent, {
+      header: order.facility?.name,
+      data: order._id,
+      contentStyle: { "max-height": 'calc(100vh - 32px)', "overflow": "auto", "width": 'calc(100vw - 16px)', "max-width": '800px' },
+      baseZIndex: 10000
+    });
+
   }
 
   ngOnDestroy(): void {
