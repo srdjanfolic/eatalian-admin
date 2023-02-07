@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { CreateFacilityDto } from './dto/create-facility.dto';
 import { DeleteManyFacilitiesDto } from './dto/delete-many-facilities.dto';
 import { GetFacilityDto } from './dto/get-facility-dto';
+import { GetFacilityListDto } from './dto/get-facility-list.dto';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -27,6 +28,11 @@ export class FacilitiesService {
   getFacilities() {
     return this.http.get<GetFacilityDto[]>(
       `${this.facilitiesURl}`
+    );
+  }
+  getFacilitiesList() {
+    return this.http.get<GetFacilityListDto[]>(
+      `${this.facilitiesURl}/list`
     );
   }
 

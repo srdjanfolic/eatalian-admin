@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FilterMatchMode, FilterMetadata, LazyLoadEvent, PrimeNGConfig, SelectItem, TranslationKeys } from 'primeng/api';
 import { filter, Subscription } from 'rxjs';
 import { GetOwnOrderFilterDto } from './dto/get-own-order-filter.dto';
@@ -11,7 +11,7 @@ import { OrdersService } from './orders.service';
   templateUrl: './my-orders.component.html',
   styleUrls: ['./my-orders.component.scss']
 })
-export class MyOrdersComponent implements OnInit {
+export class MyOrdersComponent implements OnInit, OnDestroy {
 
   ordersSubscription: Subscription = new Subscription();
 
@@ -96,4 +96,8 @@ export class MyOrdersComponent implements OnInit {
     return event.target.value;
   }
 
+  ngOnDestroy(): void {
+    if(this.ordersSubscription)
+      this.ordersSubscription.unsubscribe();
+  }
 }

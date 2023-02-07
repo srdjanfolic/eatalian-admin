@@ -28,4 +28,10 @@ export class OrdersService {
       getOwnOrderFilterDto, httpOptions
     );
   }
+  getOrders(getOwnOrderFilterDto: GetOwnOrderFilterDto) {
+    return this.http.post<GetOwnOrderListDto>(
+      `${this.facilitiesURl}/orders`,
+      getOwnOrderFilterDto, httpOptions
+    );
+  }
 }

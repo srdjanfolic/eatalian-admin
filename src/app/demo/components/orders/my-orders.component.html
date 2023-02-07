@@ -4,7 +4,7 @@
     currentPageReportTemplate="{first}-{last} od {totalRecords} narudžbi">
     <ng-template pTemplate="caption">
         <div class="d-flex text-right">
-            <h3>Ukupno: {{ordersTotal.toFixed(2)}} Eur </h3>
+            <h3 *ngIf="ordersTotal">Ukupno: {{ordersTotal.toFixed(2)}} Eur </h3>
         </div>
        
     </ng-template>
