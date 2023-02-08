@@ -36,6 +36,10 @@ import { FacilityComponent } from './demo/components/facilities/facility.compone
 import { ProductsComponent } from './demo/components/products/products.component';
 import { OrdersComponent } from './demo/components/orders/orders.component';
 import { MyOrdersComponent } from './demo/components/orders/my-orders.component';
+import { StatsComponent } from './demo/components/stats/stats.component';
+import { MyStatsComponent } from './demo/components/stats/my-stats.component';
+import { ChartModule } from 'primeng/chart';
+
 
 const NG_MODULES=  [
     ToastModule,
@@ -60,6 +64,7 @@ const NG_MODULES=  [
     AutoCompleteModule,
     NgxPhotoEditorModule,
     CalendarModule,
+    ChartModule
 ];
 
 @NgModule({
@@ -70,7 +75,9 @@ const NG_MODULES=  [
         ProductsComponent,
         FacilityComponent,
         OrdersComponent,
-        MyOrdersComponent
+        MyOrdersComponent,
+        StatsComponent,
+        MyStatsComponent
     ],
     imports: [
         AppRoutingModule,

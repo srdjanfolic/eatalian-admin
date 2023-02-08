@@ -41,7 +41,18 @@ export class AppMenuComponent implements OnInit {
                                     routerLink: ['/orders/all']
                                 },
                             ]
+                        },
+                        {
+                            label: 'Stats',
+                            items: [
+                                { 
+                                    label: 'Statistike',
+                                    icon: 'pi pi-fw pi-chart-line',
+                                    routerLink: ['/stats/all']
+                                },
+                            ]
                         }
+
                     ];
                 } else {
                     this.model = [
@@ -64,13 +75,24 @@ export class AppMenuComponent implements OnInit {
                                     routerLink: ['/products']
                                 },
                             ]
-                        }, {
+                        },
+                        {
                             label: 'Orders',
                             items: [
                                 { 
                                     label: 'View orders',
                                     icon: 'pi pi-fw pi-list',
                                     routerLink: ['/orders/my']
+                                },
+                            ]
+                        },
+                        {
+                            label: 'Stats',
+                            items: [
+                                { 
+                                    label: 'View stats',
+                                    icon: 'pi pi-fw pi-chart-line',
+                                    routerLink: ['/stats/my']
                                 },
                             ]
                         }

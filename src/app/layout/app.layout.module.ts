@@ -10,6 +10,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import {SplitButtonModule} from 'primeng/splitbutton';
 import { RippleModule } from 'primeng/ripple';
+import {ChartModule} from 'primeng/chart';
+
 import { AppMenuComponent } from './app.menu.component';
 import { AppMenuitemComponent } from './app.menuitem.component';
 import { RouterModule } from '@angular/router';
@@ -40,6 +42,8 @@ import { AppLayoutComponent } from "./app.layout.component";
         RippleModule,
         RouterModule,
         SplitButtonModule,
+        ChartModule
+        
     ],
     exports: [AppLayoutComponent]
 })
