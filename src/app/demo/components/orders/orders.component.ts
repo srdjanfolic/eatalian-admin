@@ -9,6 +9,7 @@ import { GetOwnOrderDto, OrderStatus } from './dto/get-own-order.dto';
 import { OrdersService } from './orders.service';
 import { DialogService, } from 'primeng/dynamicdialog';
 import { OrderInfoComponent } from './order-info/order-info.component';
+import { PredefinedInterval } from '../stats/dto/predefined-interval.enum';
 
 @Component({
   selector: 'app-orders',
@@ -69,11 +70,11 @@ export class OrdersComponent implements OnInit {
     
 
     this.dateMatchModeOptions = [
-      { label: "Danas", value: "today" },
-      { label: "Juče", value: "yesterday" },
-      { label: "Zadnjih 7 dana", value: "7days" },
-      { label: "Zadnjih 15 dana", value: "15days" },
-      { label: "Zadnjih 30 dana", value: "30days" },
+      { label: "Danas", value: PredefinedInterval.TODAY },
+      { label: "Juče", value: PredefinedInterval.YESTERDAY },
+      { label: "Zadnjih 7 dana", value: PredefinedInterval.DAYS7 },
+      { label: "Zadnjih 15 dana", value: PredefinedInterval.DAYS15 },
+      { label: "Zadnjih 30 dana", value: PredefinedInterval.DAYS30 },
       { label: "Nakon", value: FilterMatchMode.DATE_AFTER },
       { label: "Prije", value: FilterMatchMode.DATE_BEFORE },
   

@@ -1,4 +1,25 @@
-
 <div class="card">
-    <p-chart type="bar" [data]="data" [options]="horizontalOptions"></p-chart>
+    <div class="grid p-fluid">
+        <div class="p-field col-12 md:col-4">
+            <label for="range">Od - Do</label>
+            <p-calendar dateFormat="dd/mm/yy" (onClear)="onFilter($event)" [showClear]="true" (onClose)="onFilter($event)" [(ngModel)]="rangeDates" selectionMode="range" placeholder="Izaberi..." [readonlyInput]="true" inputId="range"></p-calendar>
+        </div>
+        
+        <div class="p-field col-12 md:col-4">
+            <label for="range">Zadnjih</label>
+            <p-dropdown (onChange)="onFilter($event)" [showClear]="true" [options]="predefinedDates" [(ngModel)]="predefinedDate" optionLabel="label"  placeholder="Izaberi..." optionValue="value"></p-dropdown>
+        </div>
+        
+        <div class="p-field col-12 md:col-4">
+            <label for="range">Prikaz po:</label>
+            <p-dropdown [options]="scales" (onChange)="onFilter($event)" [showClear]="true" [(ngModel)]="scale" optionLabel="label" placeholder="Izaberi..." optionValue="value"></p-dropdown>
+        </div>
+    </div>
 </div>
+<div class="card">
+    <p-chart type="bar" [data]="ordersSumData" [options]="horizontalOptions"></p-chart>
+</div>
+<div class="card">
+    <p-chart type="bar" [data]="ordersCountData" [options]="horizontalOptions"></p-chart>
+</div>
+

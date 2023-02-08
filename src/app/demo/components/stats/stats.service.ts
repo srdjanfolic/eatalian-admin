@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { StatsFilterDto } from './dto/stats-fliter-dto';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -13,15 +14,15 @@ const httpOptions = {
 })
 export class StatsService {
 
-  private  statsURl = `${environment.apiURL}:${environment.apiPort}/stats`;
+  private statsURl = `${environment.apiURL}:${environment.apiPort}/stats`;
 
   constructor(
     private http: HttpClient
-  ) {}
+  ) { }
 
-  getOwnStats() {
-    return this.http.get<any>(
-      `${this.statsURl}/own`,httpOptions
+  getOwnStats(statsFilterDto: StatsFilterDto) {
+    return this.http.post<any>(
+      `${this.statsURl}/own`, statsFilterDto, httpOptions
     );
   }
 
