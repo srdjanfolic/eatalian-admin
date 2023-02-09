@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FilterMatchMode, FilterMetadata, LazyLoadEvent, SelectItem } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { PredefinedInterval } from './dto/predefined-interval.enum';
@@ -11,7 +11,7 @@ import { StatsService } from './stats.service';
   templateUrl: './my-stats.component.html',
   styleUrls: ['./my-stats.component.scss']
 })
-export class MyStatsComponent implements OnInit {
+export class MyStatsComponent implements OnInit, OnDestroy {
 
   statsServiceSubscription = new Subscription();
 

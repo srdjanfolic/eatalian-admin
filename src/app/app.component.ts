@@ -59,8 +59,8 @@ export class AppComponent implements OnInit {
             medium: "Srednji",
             strong: "Jak",
             passwordPrompt: "Unesi pass",
-            emptyMessage: "Isprazni poruku",
-            emptyFilterMessage: "Isprazni filter",
+            emptyMessage: "Očisti",
+            emptyFilterMessage: "Očisti",
         });
         this.authService.autoSignIn();
     }

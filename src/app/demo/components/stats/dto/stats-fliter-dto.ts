@@ -7,6 +7,7 @@ export class StatsFilterDto {
         public endDate?: Date,
         public predefinedInterval?: PredefinedInterval,
         public scale?: TimeScale,
+        public facility_id?: string
     ) {}
 
 }

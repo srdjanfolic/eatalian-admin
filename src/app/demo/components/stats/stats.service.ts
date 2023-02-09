@@ -26,4 +26,10 @@ export class StatsService {
     );
   }
 
+  getStats(statsFilterDto: StatsFilterDto) {
+    return this.http.post<any>(
+      `${this.statsURl}`, statsFilterDto, httpOptions
+    );
+  }
+
 }
