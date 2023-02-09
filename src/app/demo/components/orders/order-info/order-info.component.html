@@ -25,9 +25,9 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-item>
                     <tr>
-                        <td>{{item.product.name}}</td>
+                        <td>{{item.name}}</td>
                         <td>x{{item.quantity}}</td>
-                        <td>{{ (item.product.price * item.quantity).toFixed(2)}} Eur</td>
+                        <td>{{ (item.price * item.quantity).toFixed(2)}} Eur</td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="footer">
