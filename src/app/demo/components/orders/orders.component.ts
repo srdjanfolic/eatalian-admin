@@ -10,6 +10,7 @@ import { OrdersService } from './orders.service';
 import { DialogService, } from 'primeng/dynamicdialog';
 import { OrderInfoComponent } from './order-info/order-info.component';
 import { PredefinedInterval } from '../stats/dto/predefined-interval.enum';
+import * as FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-orders',
@@ -115,6 +116,40 @@ export class OrdersComponent implements OnInit {
       }
     );
   }
+
+  exportExcel(filters: FilterMetadata) {
+
+    let getOwnOrderFilterDto = new GetOwnOrderFilterDto(undefined, undefined, filters);
+
+    this.ordersSubscription = this.ordersService.getOrdersExcel(getOwnOrderFilterDto).subscribe(
+      {
+        next: (data: any) => {
+          console.log(data);
+          import("xlsx").then(xlsx => {
+            const worksheet = xlsx.utils.json_to_sheet(data);
+            const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+            const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+            this.saveAsExcelFile(excelBuffer, "data");
+          });
+
+        },
+        error: (error) => {
+          console.log(error);
+          this.loading = false;
+        }
+      }
+    );
+  }
+
+  saveAsExcelFile(buffer: any, fileName: string): void {
+    let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    let EXCEL_EXTENSION = '.xlsx';
+    const data: Blob = new Blob([buffer], {
+      type: EXCEL_TYPE
+    });
+    FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+  }
+
   applyFilterGlobal(event: any) {
     return event.target.value;
   }

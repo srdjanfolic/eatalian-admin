@@ -28,9 +28,22 @@ export class OrdersService {
       getOwnOrderFilterDto, httpOptions
     );
   }
+  getOwnOrdersExcel(getOwnOrderFilterDto: GetOwnOrderFilterDto) {
+    return this.http.post<any>(
+      `${this.facilitiesURl}/own/excel`,
+      getOwnOrderFilterDto, httpOptions
+    );
+  }
+
   getOrders(getOwnOrderFilterDto: GetOwnOrderFilterDto) {
     return this.http.post<GetOwnOrderListDto>(
       `${this.facilitiesURl}/orders`,
+      getOwnOrderFilterDto, httpOptions
+    );
+  }
+  getOrdersExcel(getOwnOrderFilterDto: GetOwnOrderFilterDto) {
+    return this.http.post<any>(
+      `${this.facilitiesURl}/excel`,
       getOwnOrderFilterDto, httpOptions
     );
   }

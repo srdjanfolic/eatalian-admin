@@ -3,10 +3,13 @@
     styleClass="p-datatable-customers p-datatable-gridlines" [totalRecords]="totalRecords" [paginator]="true"
     currentPageReportTemplate="{first}-{last} od {totalRecords} narudžbi">
     <ng-template pTemplate="caption">
-        <div class="d-flex text-right">
-            <h3 *ngIf="ordersTotal">Ukupno: {{ordersTotal.toFixed(2)}} Eur </h3>
+        <div class="flex justify-content-between">
+            <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel($any(dt1).filters)"
+                class="p-button-success mr-2" pTooltip="XLS" tooltipPosition="bottom"></button>
+            <div  *ngIf="ordersTotal" class="totalLabel">
+                <h3>Ukupno: {{ordersTotal.toFixed(2)}} Eur</h3>
+            </div>
         </div>
-       
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
@@ -61,7 +64,7 @@
             </th>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-order>
+    <ng-template *ngIf="orders" pTemplate="body" let-order>
         <tr style="cursor: pointer;" (click)="selectOrder(order)" [pSelectableRow]="order">
             <td>{{order.facility.name}}</td>
             <td>{{order.user.name}}</td>

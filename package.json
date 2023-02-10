@@ -23,6 +23,7 @@
     "@auth0/angular-jwt": "^5.1.1",
     "chart.js": "^3.9.1",
     "depcheck": "^1.4.3",
+    "file-saver": "^2.0.5",
     "jwt-decode": "^3.1.2",
     "ngx-photo-editor": "^0.4.4",
     "primeflex": "^3.2.0",
@@ -31,6 +32,7 @@
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "web-animations-js": "^2.3.2",
+    "xlsx": "^0.18.5",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
@@ -42,6 +44,7 @@
     "@angular-eslint/template-parser": "14.1.2",
     "@angular/cli": "~14.0.3",
     "@angular/compiler-cli": "~14.0.0",
+    "@types/file-saver": "^2.0.5",
     "@types/jasmine": "~3.10.0",
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "5.37.0",
