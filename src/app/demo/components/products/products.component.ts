@@ -11,6 +11,8 @@ import { ProductsService } from './products.service';
 import { GetCategoryListDto } from '../categories/dto/get-category-list.dto';
 import { UpdateSuggestedProductsDto } from './dto/update-suggested-products.dto';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DisabledDateInfoDto } from './dto/disabled-date-info.dto';
+import { DisabledUntilDate } from './dto/disabled-until-date.enum';
 
 
 interface City {
@@ -27,6 +29,12 @@ interface City {
 export class ProductsComponent implements OnInit {
 
   sortOptions!: SelectItem[];
+  
+  disabledDateOptions!: SelectItem[];
+  disabledDateInfo?: DisabledUntilDate;
+  customDate = false;
+  disabledDate?: Date;
+
   sortOrder!: number;
   sortField!: string;
   sortKey?: any;
@@ -47,6 +55,7 @@ export class ProductsComponent implements OnInit {
 
   productDialog!: boolean;
   suggestedProductsDialog!: boolean;
+  disableProductDialog!: boolean;
   submitted!: boolean;
   editMode: boolean = false;
   index: number = -1;
@@ -118,6 +127,14 @@ export class ProductsComponent implements OnInit {
     this.sortOptions = [
       { label: 'A-Š', value: 'name' },
       { label: 'Š-A', value: '!name' }
+    ];
+
+    this.disabledDateOptions = [
+      { label: DisabledUntilDate.FOR_1_HOUR, value: DisabledUntilDate.FOR_1_HOUR },
+      { label: DisabledUntilDate.END_OF_DAY, value: DisabledUntilDate.END_OF_DAY },
+      { label: DisabledUntilDate.ALWAYS, value: DisabledUntilDate.ALWAYS },
+      { label: DisabledUntilDate.ENABLED, value: DisabledUntilDate.ENABLED },
+      { label: DisabledUntilDate.CUSTOM, value: DisabledUntilDate.CUSTOM },
     ];
 
     this.productForm = new FormGroup({
@@ -215,8 +232,12 @@ export class ProductsComponent implements OnInit {
   hideDialog() {
     this.productDialog = false;
     this.suggestedProductsDialog = false;
+    this.disableProductDialog = false;
     this.productForm.reset();
     this.submitted = false;
+    this. disabledDateInfo = undefined;
+    this.customDate = false;
+    this.disabledDate=undefined;
   }
 
   editProduct(product: GetProductDto) {
@@ -250,6 +271,13 @@ export class ProductsComponent implements OnInit {
     this.selectedCategory = this.clonedProduct.category;
     this.submitted = false;
     this.suggestedProductsDialog = true;
+  }
+
+  editDisableProduct(product: GetProductDto) {
+    this.disableProductDialog = true;
+    this.index = this.products.indexOf(product);
+    this.clonedProduct = { ...product };
+    console.log(this.clonedProduct, "KLON");
   }
 
 
@@ -318,6 +346,7 @@ export class ProductsComponent implements OnInit {
     this.productForm.reset();
     this.editMode = false;
   }
+
   updateSuggestedProducts() {
     let updateSuggestedProductsDto = new UpdateSuggestedProductsDto(
       this.selectedSuggestedProducts?.map(item => item._id),
@@ -339,6 +368,36 @@ export class ProductsComponent implements OnInit {
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product updated!', life: 3000 });
       },
       error: () => {
+        this.clonedProduct = {};
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error updating product', life: 5000 });
+      }
+    });
+  }
+
+  onDisabledChange() {
+    console.log(this.disabledDateInfo, "OPCIJA");
+    this.customDate = this.disabledDateInfo === DisabledUntilDate.CUSTOM;
+
+
+
+  }
+
+  updateDisabledDate() {
+    let disabledDateInfoDto = new DisabledDateInfoDto(
+      this.disabledDateInfo,
+      this.disabledDateInfo === DisabledUntilDate.CUSTOM ? this.disabledDate : undefined
+    );
+    this.productsService.disableProducts(this.clonedProduct._id, disabledDateInfoDto).subscribe({
+      next: (updatedProduct) => {
+
+        this.products[this.index] = { ...updatedProduct };
+        this.products = [...this.products];
+        this.clonedProduct = {};
+        this.hideDialog();
+        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product updated!', life: 3000 });
+      },
+      error: () => {
+        this.hideDialog();
         this.clonedProduct = {};
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error updating product', life: 5000 });
       }
