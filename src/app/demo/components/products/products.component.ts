@@ -140,7 +140,7 @@ export class ProductsComponent implements OnInit {
       isAddon: new FormControl(null),
       isFeatured: new FormControl(null),
       disabled: new FormControl(null),
-      invisible: new FormControl(true),
+      invisible: new FormControl(null),
       pictureFile: new FormControl(null),
     });
   }
@@ -209,6 +209,7 @@ export class ProductsComponent implements OnInit {
     this.selectedCategory = {};
     this.submitted = false;
     this.productDialog = true;
+    this.editMode = false;
   }
 
   hideDialog() {
@@ -315,6 +316,7 @@ export class ProductsComponent implements OnInit {
 
   modalHide() {
     this.productForm.reset();
+    this.editMode = false;
   }
   updateSuggestedProducts() {
     let updateSuggestedProductsDto = new UpdateSuggestedProductsDto(
