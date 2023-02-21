@@ -143,8 +143,11 @@
                     <label for="frameURL">Mapa</label>
                     <textarea id="frameURL" pInputTextarea formControlName="frameURL" rows="1"></textarea>
                     <label for="phone">Telefon</label>
-                    <input class="mb-2" id="phone" pInputText formControlName="phone" [pKeyFilter]="'num'" id="phone"
-                        required />
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon"><span class="me-1"></span> +382 </span>
+                        <input formControlName="phone" id="phone" type="number" placeholder="Unesite telefon..." required  pInputText>   
+                      </div>
+                
                     <small class="p-error"
                         *ngIf="!facilityForm.get('phone')!.valid && facilityForm.get('phone')!.touched">Unesite
                         telefon<br></small>

@@ -132,6 +132,7 @@ export class FacilityComponent implements OnInit, OnDestroy {
       ]),
       phone: new FormControl(null, [
         Validators.required,
+        Validators.pattern("^6(0|3|6|7|8|9)[0-9]{6}$"),
         noWhitespaceValidator,
       ]),
       username: new FormControl(null, [
