@@ -12,6 +12,7 @@ export class GetProductDto {
     public isAddon?: boolean;
     public suggestedProducts?: GetProductDto[];
     public suggestedAddons?: GetProductDto[];
+    public searchTags?: string[];
     public isFeatured?: boolean;
     public disabled?: boolean;
     public invisible?: boolean;

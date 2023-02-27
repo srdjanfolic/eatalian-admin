@@ -10,7 +10,7 @@ import { NgxCroppedEvent, NgxPhotoEditorService } from "ngx-photo-editor";
 import { ProductsService } from './products.service';
 import { GetCategoryListDto } from '../categories/dto/get-category-list.dto';
 import { UpdateSuggestedProductsDto } from './dto/update-suggested-products.dto';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DisabledDateInfoDto } from './dto/disabled-date-info.dto';
 import { DisabledUntilDate } from './dto/disabled-until-date.enum';
 
@@ -38,6 +38,7 @@ export class ProductsComponent implements OnInit {
   sortOrder!: number;
   sortField!: string;
   sortKey?: any;
+
 
   products: GetProductDto[] = [];
   selectedProducts: GetProductDto[] = [];
@@ -154,6 +155,7 @@ export class ProductsComponent implements OnInit {
         Validators.required,
         noWhitespaceValidator,
       ]),
+      searchTags: new FormControl(null),
       isAddon: new FormControl(null),
       isFeatured: new FormControl(null),
       disabled: new FormControl(null),
@@ -254,6 +256,7 @@ export class ProductsComponent implements OnInit {
         "isFeatured": product.isFeatured,
         "disabled": product.disabled,
         "invisible": product.invisible,
+        "searchTags": product.searchTags
       }
     );
     this.submitted = false;
@@ -305,6 +308,7 @@ export class ProductsComponent implements OnInit {
 
   saveProduct() {
 
+
     this.submitted = true;
     this.productDialog = false;
     let productFormData: FormData = getFormData(this.productForm.getRawValue());
@@ -325,6 +329,7 @@ export class ProductsComponent implements OnInit {
     this.submitted = true;
     this.productDialog = false;
     this.editMode = false;
+    console.log(this.productForm.getRawValue(), "UPDATE");
     let productFormData: FormData = getFormData(this.productForm.getRawValue());
     this.productForm.reset();
     this.productsService.updateProduct(this.clonedProduct._id, productFormData).subscribe({

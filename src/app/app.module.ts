@@ -28,6 +28,7 @@ import {DropdownModule} from 'primeng/dropdown';
 import {InputSwitchModule} from 'primeng/inputswitch';
 import {RatingModule} from 'primeng/rating';
 import {AutoCompleteModule} from 'primeng/autocomplete';
+import {ChipsModule} from 'primeng/chips';
 
 import {NgxPhotoEditorModule} from "ngx-photo-editor";
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -64,7 +65,9 @@ const NG_MODULES=  [
     AutoCompleteModule,
     NgxPhotoEditorModule,
     CalendarModule,
-    ChartModule
+    ChartModule,
+    ChipsModule
+    
 ];
 
 @NgModule({

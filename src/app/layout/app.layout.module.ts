@@ -11,6 +11,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import {SplitButtonModule} from 'primeng/splitbutton';
 import { RippleModule } from 'primeng/ripple';
 import {ChartModule} from 'primeng/chart';
+import {ChipsModule} from 'primeng/chips';
 
 import { AppMenuComponent } from './app.menu.component';
 import { AppMenuitemComponent } from './app.menuitem.component';
@@ -42,7 +43,8 @@ import { AppLayoutComponent } from "./app.layout.component";
         RippleModule,
         RouterModule,
         SplitButtonModule,
-        ChartModule
+        ChartModule,
+        ChipsModule
         
     ],
     exports: [AppLayoutComponent]
