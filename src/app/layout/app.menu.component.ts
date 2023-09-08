@@ -30,6 +30,11 @@ export class AppMenuComponent implements OnInit {
                                     icon: 'pi pi-fw pi-home',
                                     routerLink: ['/facilities/all']
                                 },
+                                { 
+                                    label: 'Facility Types',
+                                    icon: 'pi pi-fw pi-tag',
+                                    routerLink: ['/facility-types']
+                                },
                             ]
                         },
                         {

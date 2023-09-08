@@ -10,7 +10,7 @@ import { NgxCroppedEvent, NgxPhotoEditorService } from "ngx-photo-editor";
 import { ProductsService } from './products.service';
 import { GetCategoryListDto } from '../categories/dto/get-category-list.dto';
 import { UpdateSuggestedProductsDto } from './dto/update-suggested-products.dto';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { DisabledDateInfoDto } from './dto/disabled-date-info.dto';
 import { DisabledUntilDate } from './dto/disabled-until-date.enum';
 
@@ -140,20 +140,20 @@ export class ProductsComponent implements OnInit {
 
     this.productForm = new FormGroup({
       name: new FormControl(null, [
-        Validators.required,
-        noWhitespaceValidator,
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
       ]),
       category: new FormControl(null, [
-        Validators.required,
-        noWhitespaceValidator,
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
       ]),
       description: new FormControl(null, [
-        Validators.required,
-        noWhitespaceValidator,
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
       ]),
       price: new FormControl(null, [
-        Validators.required,
-        noWhitespaceValidator,
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
       ]),
       searchTags: new FormControl(null),
       isAddon: new FormControl(null),

@@ -40,6 +40,7 @@ import { MyOrdersComponent } from './demo/components/orders/my-orders.component'
 import { StatsComponent } from './demo/components/stats/stats.component';
 import { MyStatsComponent } from './demo/components/stats/my-stats.component';
 import { ChartModule } from 'primeng/chart';
+import { FacilityTypesComponent } from './demo/components/facility-types/facility-types.component';
 
 
 const NG_MODULES=  [
@@ -80,7 +81,8 @@ const NG_MODULES=  [
         OrdersComponent,
         MyOrdersComponent,
         StatsComponent,
-        MyStatsComponent
+        MyStatsComponent,
+        FacilityTypesComponent
     ],
     imports: [
         AppRoutingModule,

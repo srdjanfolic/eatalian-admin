@@ -8,7 +8,7 @@ import { DeleteManyCategoriesDto } from './dto/delete-many-categories.dto';
 import { GetCategoryDto } from './dto/get-category.dto';
 
 import { NgxCroppedEvent, NgxPhotoEditorService } from "ngx-photo-editor";
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-categories',
@@ -91,8 +91,8 @@ export class CategoriesComponent implements OnInit {
 
     this.categoryForm = new FormGroup({
       name: new FormControl(null, [
-        Validators.required,
-        noWhitespaceValidator,
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
       ]),
       color: new FormControl(null),
       pictureFile: new FormControl(null),

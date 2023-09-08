@@ -7,8 +7,9 @@ import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { DeleteManyFacilitiesDto } from './dto/delete-many-facilities.dto';
 import { getFormData, noWhitespaceValidator } from '../../shared/sharedFunctions';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { NgxPhotoEditorService } from 'ngx-photo-editor';
+import { ValidateFn } from 'mongoose';
 
 
 @Component({
@@ -47,38 +48,38 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
     );
     this.facilityForm = new FormGroup({
       name: new FormControl(null, [
-        Validators.required,
-        noWhitespaceValidator,
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
       ]),
       title: new FormControl(null, [
-        Validators.required,
-        noWhitespaceValidator,
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
       ]),
       description: new FormControl(null, [
-        Validators.required,
-        noWhitespaceValidator,
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
       ]),
       locationURL: new FormControl(null, []),
       frameURL: new FormControl(null, []),
       city: new FormControl(null, [
-        Validators.required,
-        noWhitespaceValidator,
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
       ]),
       address: new FormControl(null, [
-        Validators.required,
-        noWhitespaceValidator,
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
       ]),
       phone: new FormControl(null, [
-        Validators.required,
-        noWhitespaceValidator,
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
       ]),
       username: new FormControl(null, [
-        Validators.required,
-        noWhitespaceValidator,
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
       ]),
       password: new FormControl(null, [
-          Validators.required,
-          noWhitespaceValidator,
+          Validators.required as ValidatorFn,
+          noWhitespaceValidator as ValidatorFn,
         ]),
       pictureFile: new FormControl(null),
       closed: new FormControl(null),
@@ -122,7 +123,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
     this.facility = {};
     this.submitted = false;
     this.facilityDialog = true;
-    this.facilityForm.get('password')?.addValidators([Validators.required, noWhitespaceValidator]);
+    this.facilityForm.get('password')?.addValidators([Validators.required as ValidatorFn, noWhitespaceValidator as ValidatorFn]);
   }
 
   hideDialog() {
