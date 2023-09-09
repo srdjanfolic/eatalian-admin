@@ -10,6 +10,8 @@ import { getFormData, noWhitespaceValidator } from '../../shared/sharedFunctions
 import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { NgxPhotoEditorService } from 'ngx-photo-editor';
 import { ValidateFn } from 'mongoose';
+import { FacilityTypesService } from '../facility-types/facility-types.service';
+import { GetFacilityTypeDto } from '../facility-types/dto/get-facility-type.dto';
 
 
 @Component({
@@ -21,6 +23,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
 
 
   facilities: GetFacilityDto[] = [];
+  facilityTypes: GetFacilityTypeDto[] = [];
   selectedFacilities: GetFacilityDto[] = [];
   facility!: GetFacilityDto;
 
@@ -30,9 +33,11 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
   facilityForm!: FormGroup;
 
   private getFacilitiesSubscription!: Subscription;
+  private getFacilityTypesSubscription!: Subscription;
 
   constructor(
     private facilityService: FacilitiesService,
+    private facilityTypesService: FacilityTypesService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private ngxPhotoEditorService: NgxPhotoEditorService
@@ -44,6 +49,11 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
     this.getFacilitiesSubscription = this.facilityService.getFacilities().subscribe(
       (facilities: GetFacilityDto[]) => {
         this.facilities = facilities;
+      }
+    );
+    this.getFacilityTypesSubscription = this.facilityTypesService.getFacilityTypes().subscribe(
+      (facilityTypes: GetFacilityTypeDto[]) => {
+        this.facilityTypes = facilityTypes;
       }
     );
     this.facilityForm = new FormGroup({
@@ -59,6 +69,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
         Validators.required as ValidatorFn,
         noWhitespaceValidator as ValidatorFn,
       ]),
+      facilityType: new FormControl(null, []),
       locationURL: new FormControl(null, []),
       frameURL: new FormControl(null, []),
       city: new FormControl(null, [
@@ -89,6 +100,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.getFacilitiesSubscription.unsubscribe();
+    this.getFacilityTypesSubscription.unsubscribe();
   }
 
   modalHide() {
@@ -142,6 +154,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
         "name" : facility.name,
         "title" : facility.title,
         "description" : facility.description,
+        "facilityType" : facility.facilityType,
         "locationURL" : facility.locationURL,
         "frameURL" : facility.frameURL,
         "phone" : facility.phone,
@@ -208,7 +221,6 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
       next: (updatedFacility) => {
         const index = this.facilities.indexOf(this.facility);
         this.facilities[index] = updatedFacility;
-        console.log(updatedFacility, "RESPONSE")
         this.facility = {};
       },
       error: () => {

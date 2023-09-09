@@ -142,7 +142,6 @@ export class CategoriesComponent implements OnInit {
   editCategory(category: GetCategoryDto) {
     this.editMode = true;
     this.index = this.categories.indexOf(category);
-    console.log(this.index);
     this.clonedCategory = {...category};
     this.categoryForm.patchValue(
       {
@@ -152,8 +151,6 @@ export class CategoriesComponent implements OnInit {
     );
     this.submitted = false;
     this.categoryDialog = true;
-    console.log(category, "kategorija na edit klik");
-    console.log(this.clonedCategory, "clon kategorija na edit klik");
   }
 
 
@@ -206,17 +203,13 @@ export class CategoriesComponent implements OnInit {
     this.submitted = true;
     this.categoryDialog = false;
     this.editMode = false;
-    console.log(this.clonedCategory, 'cloned prije snimanja');
     let categoryFormData: FormData = getFormData(this.categoryForm.getRawValue());
     this.categoryForm.reset();
     this.categoriesService.updateCategory(this.clonedCategory._id, categoryFormData).subscribe({
       next: (updatedCategory) => {
-        console.log(updatedCategory, 'posle update-a');
-        //const index = this.categories.indexOf(this.clonedCategory);
-        console.log(this.index, "index");
         this.categories[this.index] = { ...updatedCategory };
         this.categories = [...this.categories];
-        console.log(this.categories, 'posle update-a kategorije');
+
         this.clonedCategory = {};
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Category updated!', life: 3000 });
       },

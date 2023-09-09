@@ -116,7 +116,6 @@ export class ProductsComponent implements OnInit {
     this.getProductsSubscription = this.productsService.getProducts().subscribe(
       (products: GetProductDto[]) => {
         this.products = products;
-        console.log(products, "Proizovdi");
       }
     );
     this.getCategoriesListSubscription = this.productsService.getCategoryList().subscribe(
@@ -280,7 +279,6 @@ export class ProductsComponent implements OnInit {
     this.disableProductDialog = true;
     this.index = this.products.indexOf(product);
     this.clonedProduct = { ...product };
-    console.log(this.clonedProduct, "KLON");
   }
 
 
@@ -329,7 +327,6 @@ export class ProductsComponent implements OnInit {
     this.submitted = true;
     this.productDialog = false;
     this.editMode = false;
-    console.log(this.productForm.getRawValue(), "UPDATE");
     let productFormData: FormData = getFormData(this.productForm.getRawValue());
     this.productForm.reset();
     this.productsService.updateProduct(this.clonedProduct._id, productFormData).subscribe({
@@ -380,7 +377,7 @@ export class ProductsComponent implements OnInit {
   }
 
   onDisabledChange() {
-    console.log(this.disabledDateInfo, "OPCIJA");
+
     this.customDate = this.disabledDateInfo === DisabledUntilDate.CUSTOM;
 
 

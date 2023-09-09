@@ -10,6 +10,7 @@ export class GetFacilityDto {
         phone?: string;
         title?: string;
         description?: string;
+        facilityType?: string;
         frameURL?: string;
         locationURL?: string;
         username?: string;

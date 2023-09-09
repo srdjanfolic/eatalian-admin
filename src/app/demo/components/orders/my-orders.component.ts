@@ -77,8 +77,6 @@ export class MyOrdersComponent implements OnInit, OnDestroy {
   }
 
   loadOrders(event: LazyLoadEvent, filters: FilterMetadata) {
-    console.log(filters, "Filteri");
-    console.log(event.first, event.rows);
 
     this.loading = true;
 
@@ -93,7 +91,6 @@ export class MyOrdersComponent implements OnInit, OnDestroy {
           this.loading = false;
         },
         error: (error) => {
-          console.log(error);
           this.loading = false;
         }
       }
@@ -107,7 +104,6 @@ export class MyOrdersComponent implements OnInit, OnDestroy {
     this.ordersSubscription = this.ordersService.getOwnOrdersExcel(getOwnOrderFilterDto).subscribe(
       {
         next: (data: any) => {
-          console.log(data);
           import("xlsx").then(xlsx => {
             const worksheet = xlsx.utils.json_to_sheet(data);
             const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
@@ -117,7 +113,6 @@ export class MyOrdersComponent implements OnInit, OnDestroy {
 
         },
         error: (error) => {
-          console.log(error);
           this.loading = false;
         }
       }
@@ -139,7 +134,6 @@ export class MyOrdersComponent implements OnInit, OnDestroy {
   }
 
   selectOrder(order: GetOwnOrderDto) {
-    console.log(order._id);
     const ref = this.dialogService.open(OwnOrderInfoComponent, {
       header: order.facility?.name,
       data: order._id,

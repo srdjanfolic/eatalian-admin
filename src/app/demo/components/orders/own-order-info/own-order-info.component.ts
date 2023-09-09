@@ -19,15 +19,13 @@ export class OwnOrderInfoComponent implements OnInit {
 
   ngOnInit(): void {
     let id = this.config.data;
-    console.log(id);
     this.ordersService.getOwnOrderById(id).subscribe(
       {
         next: (order) => {
-          console.log(order);
           this.order = order;
         },
         error: (error) => {
-          console.log(error);
+
         }
       }
     );

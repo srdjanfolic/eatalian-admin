@@ -40,10 +40,8 @@ export class AuthService {
         localStorage.setItem('token', res.accessToken);
         const tokenPayload = jwtHelper.decodeToken(res.accessToken);
         // tslint:disable-next-line: max-line-length
-        console.log(tokenPayload, "PAYLOAD", Math.floor(Date.now() / 1000));
         const user = new User(tokenPayload.username, tokenPayload.name, res.accessToken, tokenPayload.exp, tokenPayload.role);
         this.user.next(user);
-        console.log(tokenPayload.exp - tokenPayload.iat, user)
         this.autoSignOut(tokenPayload.exp - tokenPayload.iat);
       }),
       catchError(this.handleError<any>('signIn'))
@@ -77,7 +75,6 @@ export class AuthService {
 
     } else {
       const tokenPayload = jwtHelper.decodeToken(token);
-      console.log("TOKEN PAYLOAD AUTOSIGN IN", tokenPayload);
       // tslint:disable-next-line: max-line-length
       const loadedUser = new User(tokenPayload.username, tokenPayload.name, token, tokenPayload.exp, tokenPayload.role);
 
@@ -93,7 +90,6 @@ export class AuthService {
   }
 
   autoSignOut(expirationDuration: number) {
-    console.log("EXPIRATION TIMEOUT", expirationDuration);
     this.tokenExpirationTimer = setTimeout(() => {
       this.signOut();
     }, expirationDuration * 1000);

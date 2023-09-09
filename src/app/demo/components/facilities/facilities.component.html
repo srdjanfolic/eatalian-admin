@@ -34,7 +34,7 @@
                 <th pSortableColumn="city">Grad <p-sortIcon field="city"></p-sortIcon></th>
                 <th pSortableColumn="address">Adresa <p-sortIcon field="address"></p-sortIcon></th>
                 <th pSortableColumn="phone">Telefon <p-sortIcon field="phone"></p-sortIcon></th>
-                <th pSortableColumn="username">Username <p-sortIcon field="username"></p-sortIcon></th>
+                <th pSortableColumn="facilityType">Tip <p-sortIcon field="facilityType"></p-sortIcon></th>
                 <th></th>
             </tr>
         </ng-template>
@@ -52,7 +52,7 @@
                 <td>{{facility.city}}</td>
                 <td>{{facility.address}}</td>
                 <td>{{facility.phone}}</td>
-                <td>{{facility.username}}</td>
+                <td>{{facility.facilityType ? facility.facilityType.name : ''}}</td>
                 <td>
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
                         (click)="editFacility(facility)"></button>
@@ -89,6 +89,11 @@
                 <label for="description">Opis</label>
                 <textarea id="description" pInputTextarea formControlName="description" required rows="3" cols="20"></textarea>
                 <small class="p-error"*ngIf="!facilityForm.get('description')!.valid && facilityForm.get('description')!.touched">Unesite opis objekta</small>
+            </div>
+            <div class="field mt-2">
+                <p-dropdown [options]="facilityTypes" optionLabel="name" id="facilityType" formControlName="facilityType"
+                    filterBy="facilityType" [showClear]="true" placeholder="Tip objekta">
+                </p-dropdown>
             </div>
             <div class="field mt-2">
                 <label for="locationURL">Lokacija URL</label>

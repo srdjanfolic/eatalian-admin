@@ -97,10 +97,10 @@ export class StatsComponent implements OnInit, OnDestroy {
       {
         next: (facilities) => {
           this.facilities = facilities;
-          console.log(facilities);
+
         },
         error: (error) => {
-          console.log(error)
+
         }
       }
     );
@@ -110,7 +110,6 @@ export class StatsComponent implements OnInit, OnDestroy {
 
     this.statsServiceSubscription = this.statsService.getStats(this.statsFilterDto).subscribe({
       next: (stats) => {
-        console.log(stats);
         this.ordersSumData = {
           labels: stats.orderLabels,
           datasets: [
@@ -133,14 +132,13 @@ export class StatsComponent implements OnInit, OnDestroy {
         };
       },
       error: (error) => {
-        console.log(error);
+
       }
     });
   }
 
   onFilter(x: any) {
-    console.log(x, "FILTER ")
-    console.log(this.predefinedDate, this.rangeDates, this.scale)
+
     this.statsFilterDto.startDate = this.rangeDates == null ? undefined : this.rangeDates[0];
     this.statsFilterDto.endDate = this.rangeDates == null ? undefined : this.rangeDates[1];
     if(this.statsFilterDto.startDate == null || this.statsFilterDto.endDate == null) {

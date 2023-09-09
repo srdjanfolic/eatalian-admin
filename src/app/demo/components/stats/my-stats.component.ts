@@ -89,7 +89,6 @@ export class MyStatsComponent implements OnInit, OnDestroy {
 
     this.statsServiceSubscription = this.statsService.getOwnStats(this.statsFilterDto).subscribe({
       next: (stats) => {
-        console.log(stats);
         this.ordersSumData = {
           labels: stats.orderLabels,
           datasets: [
@@ -112,14 +111,12 @@ export class MyStatsComponent implements OnInit, OnDestroy {
         };
       },
       error: (error) => {
-        console.log(error);
       }
     });
   }
 
   onFilter(x: any) {
-    console.log(x, "FILTER ")
-    console.log(this.predefinedDate, this.rangeDates, this.scale)
+
     this.statsFilterDto.startDate = this.rangeDates == null ? undefined : this.rangeDates[0];
     this.statsFilterDto.endDate = this.rangeDates == null ? undefined : this.rangeDates[1];
     if(this.statsFilterDto.startDate == null || this.statsFilterDto.endDate == null) {

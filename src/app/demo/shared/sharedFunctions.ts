@@ -5,7 +5,7 @@ export function getFormData(object: any): FormData {
     Object.keys(object).forEach(key => {
 
       if (typeof object[key] === 'object' && !(object[key] instanceof Blob)) {
-        console.log(key);
+
         formData.append(key, JSON.stringify(object[key]));
 
       }

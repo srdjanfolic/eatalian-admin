@@ -35,7 +35,6 @@ export class FacilityTypesComponent implements OnInit, OnDestroy {
     this.getFacilityTypesSubscription = this.facilityTypesService.getFacilityTypes().subscribe(
       (facilityTypes: GetFacilityTypeDto[]) => {
         this.facilityTypes = facilityTypes;
-        console.log(facilityTypes);
       }
     );
    
@@ -58,6 +57,7 @@ export class FacilityTypesComponent implements OnInit, OnDestroy {
   }
 
   openNew() {
+    this.editMode = false;
     this.facilityType = {};
     this.submitted = false;
     this.facilityTypeDialog = true;
@@ -67,7 +67,6 @@ export class FacilityTypesComponent implements OnInit, OnDestroy {
   editFacilityType(facilityType: GetFacilityTypeDto) {
     this.editMode = true;
     this.index = this.facilityTypes.indexOf(facilityType);
-    console.log(this.index);
     this.facilityType = {...facilityType};
     this.facilityTypeForm.patchValue(
       {
@@ -140,7 +139,6 @@ export class FacilityTypesComponent implements OnInit, OnDestroy {
        
         this.facilityTypes[this.index] = { ...updatedFacilityType };
         this.facilityTypes = [...this.facilityTypes];
-        console.log(this.facilityTypes, 'posle update-a kategorije');
         this.facilityType = {};
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facility Type updated!', life: 3000 });
       },

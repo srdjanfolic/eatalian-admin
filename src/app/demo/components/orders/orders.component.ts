@@ -60,10 +60,8 @@ export class OrdersComponent implements OnInit {
       {
         next: (facilities) => {
           this.facilities = facilities;
-          console.log(facilities);
         },
         error: (error) => {
-          console.log(error)
         }
       }
     );
@@ -94,8 +92,6 @@ export class OrdersComponent implements OnInit {
   }
 
   loadOrders(event: LazyLoadEvent, filters: FilterMetadata) {
-    console.log(filters, "Filteri");
-    console.log(event.first, event.rows);
 
     this.loading = true;
 
@@ -110,7 +106,6 @@ export class OrdersComponent implements OnInit {
           this.loading = false;
         },
         error: (error) => {
-          console.log(error);
           this.loading = false;
         }
       }
@@ -124,7 +119,6 @@ export class OrdersComponent implements OnInit {
     this.ordersSubscription = this.ordersService.getOrdersExcel(getOwnOrderFilterDto).subscribe(
       {
         next: (data: any) => {
-          console.log(data);
           import("xlsx").then(xlsx => {
             const worksheet = xlsx.utils.json_to_sheet(data);
             const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
@@ -134,7 +128,6 @@ export class OrdersComponent implements OnInit {
 
         },
         error: (error) => {
-          console.log(error);
           this.loading = false;
         }
       }
@@ -155,7 +148,6 @@ export class OrdersComponent implements OnInit {
   }
 
   selectOrder(order: GetOwnOrderDto) {
-    console.log(order._id);
     const ref = this.dialogService.open(OrderInfoComponent, {
       header: order.facility?.name,
       data: order._id,

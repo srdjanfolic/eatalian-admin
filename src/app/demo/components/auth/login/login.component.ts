@@ -49,7 +49,6 @@ export class LoginComponent implements OnInit {
 
             this.userSubscription = this.authService.user.subscribe(
               user => {
-                console.log(user);
                 if (user) {
                   if (user._role === UserRole.ADMIN) {
                     this.router.navigate([`/facilities/all`]);
@@ -61,7 +60,7 @@ export class LoginComponent implements OnInit {
             );
           },
           error => {
-            console.log("Invalid credentials")
+            
           });
 
     }

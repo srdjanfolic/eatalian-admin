@@ -310,7 +310,6 @@ export class FacilityComponent implements OnInit, OnDestroy {
 
 
   uploadFile(event: { files: any; }) {
-    console.log(event.files[0]);
     this.clonedFacility.pictureFile = event.files[0];
   }
 
