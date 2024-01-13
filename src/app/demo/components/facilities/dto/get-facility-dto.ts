@@ -11,6 +11,7 @@ export class GetFacilityDto {
         title?: string;
         description?: string;
         facilityType?: string;
+        fee?: number;
         frameURL?: string;
         locationURL?: string;
         username?: string;

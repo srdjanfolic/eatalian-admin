@@ -10,6 +10,7 @@ export class CreateFacilityDto {
     locationURL: string,
     username: string,
     password: string,
+    fee: number,
     closed: boolean
   ) { }
 }

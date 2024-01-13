@@ -90,10 +90,18 @@
                 <textarea id="description" pInputTextarea formControlName="description" required rows="3" cols="20"></textarea>
                 <small class="p-error"*ngIf="!facilityForm.get('description')!.valid && facilityForm.get('description')!.touched">Unesite opis objekta</small>
             </div>
-            <div class="field mt-2">
-                <p-dropdown [options]="facilityTypes" optionLabel="name" id="facilityType" formControlName="facilityType"
-                    filterBy="facilityType" [showClear]="true" placeholder="Tip objekta">
-                </p-dropdown>
+            <div class="formgrid grid">
+                <div class="field mt-2 col-8">
+                    <label for="facilityType">Tip objekta</label>
+                    <p-dropdown [options]="facilityTypes" optionLabel="name" id="facilityType" formControlName="facilityType"
+                        filterBy="facilityType" [showClear]="true" placeholder="Izaberite...">
+                    </p-dropdown>
+                </div>
+                <div class="field mt-2 col-4">
+                    <label for="fee">Cijena dostave</label>
+                    <input id="fee" pInputText formControlName="fee" [pKeyFilter]="'num'" id="gee" required />
+                    <small class="p-error"*ngIf="!facilityForm.get('fee')!.valid && facilityForm.get('fee')!.touched">Unesite cijenu dostave</small>
+                </div>
             </div>
             <div class="field mt-2">
                 <label for="locationURL">Lokacija URL</label>

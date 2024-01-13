@@ -112,6 +112,14 @@
                     </div>
                 </div>
             </div>
+            <div class="info border-solid border-1 border-round p-3 border-200">
+                <div class="grid">
+                    <div class="col-2"><i class="pi pi-euro"></i></div>
+                    <div class="col-10">Cijena dostave
+                        <br><b>{{facility.fee?.toFixed(2)}} &euro;</b>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </p-card>
@@ -334,6 +342,18 @@
                                     minute</small>
                                 <small class="p-error" *ngIf="facilityForm.errors?.['invalidInterval']">Opseg nije
                                     dobar</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info border-solid border-1 border-round p-3 border-200 mt-3">
+                        <div class="formgrid grid align-items-center">
+                            <div class="field col-6">Cijena dostave</div>
+                            <div class="field col">
+                                <input id="fee" formControlName="fee" pInputText
+                                    [pKeyFilter]="'num'" />
+                                <small class="p-error"
+                                    *ngIf="!facilityForm.get('fee')!.valid && facilityForm.get('fee')!.touched">Unesite
+                                    cijenu dostave</small>
                             </div>
                         </div>
                     </div>

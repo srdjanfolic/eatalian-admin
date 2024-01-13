@@ -70,6 +70,10 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
         noWhitespaceValidator as ValidatorFn,
       ]),
       facilityType: new FormControl(null, []),
+      fee: new FormControl(0, [
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
+      ]),
       locationURL: new FormControl(null, []),
       frameURL: new FormControl(null, []),
       city: new FormControl(null, [
@@ -155,6 +159,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
         "title" : facility.title,
         "description" : facility.description,
         "facilityType" : facility.facilityType,
+        "fee" : facility.fee,
         "locationURL" : facility.locationURL,
         "frameURL" : facility.frameURL,
         "phone" : facility.phone,
