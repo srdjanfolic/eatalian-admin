@@ -13,6 +13,7 @@ import { UpdateSuggestedProductsDto } from './dto/update-suggested-products.dto'
 import { FormArray, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { DisabledDateInfoDto } from './dto/disabled-date-info.dto';
 import { DisabledUntilDate } from './dto/disabled-until-date.enum';
+import { Unit } from './dto/unit.enum';
 
 
 interface City {
@@ -45,6 +46,7 @@ export class ProductsComponent implements OnInit {
   clonedProduct!: GetProductDto;
   categoriesList: GetCategoryListDto[] = [];
   selectedCategory?: GetCategoryListDto;
+  unitList: Unit[] = [Unit.PIECE, Unit.KG]
 
   realProducts: GetProductDto[] = [];
   addonProducts: GetProductDto[] = [];
@@ -154,6 +156,10 @@ export class ProductsComponent implements OnInit {
         Validators.required as ValidatorFn,
         noWhitespaceValidator as ValidatorFn,
       ]),
+      unit: new FormControl(Unit.KG, [
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
+      ]),
       searchTags: new FormControl(null),
       isAddon: new FormControl(null),
       isFeatured: new FormControl(null),
@@ -251,6 +257,7 @@ export class ProductsComponent implements OnInit {
         "category": product.category,
         "description": product.description,
         "price": product.price,
+        "unt": product.unit,
         "isAddon": product.isAddon,
         "isFeatured": product.isFeatured,
         "disabled": product.disabled,

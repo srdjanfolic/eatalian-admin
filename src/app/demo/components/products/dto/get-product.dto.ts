@@ -1,4 +1,5 @@
 import { GetCategoryListDto } from "../../categories/dto/get-category-list.dto";
+import { Unit } from "./unit.enum";
 
 export class GetProductDto {
     public _id?: string;
@@ -7,8 +8,9 @@ export class GetProductDto {
     public description?: string;
     public image?: string;
     public pictureFile?: File;
-    public price?: number;
     public rating?: number;
+    public price?: number;
+    public unit?: Unit;
     public isAddon?: boolean;
     public suggestedProducts?: GetProductDto[];
     public suggestedAddons?: GetProductDto[];

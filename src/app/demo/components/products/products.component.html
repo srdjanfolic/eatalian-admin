@@ -125,6 +125,11 @@
                 <p-chips name="searchTags" formControlName="searchTags"></p-chips>
             </div>
             <div class="field mt-2">
+                <label for="unit">Jedinica mjere</label>
+                <p-dropdown [options]="unitList" formControlName="unit">
+                </p-dropdown>
+            </div>
+            <div class="field mt-2">
                 <p-fileUpload #fileUpload mode="basic" accept="image/*" [maxFileSize]="10000000" label="Slika"
                     chooseLabel="Slika" (onSelect)="fileChangeHandler($event, fileUpload)"
                     class="p-mr-2 p-d-inline-block"></p-fileUpload>
