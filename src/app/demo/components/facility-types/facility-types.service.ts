@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { GetFacilityTypeDto } from './dto/get-facility-type.dto';
 import { CreateFacilityTypeDto } from './dto/create-facility-type.dto';
+import { GetFacilityTypeListDto } from './dto/get-facility-type-list.dto';
+import { DeleteManyFacilityTypesDto } from './dto/delete-many-facility-types.dto';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -27,6 +29,12 @@ export class FacilityTypesService {
       `${this.facilityTypesURl}`
     );
   }
+
+  getFacilityTypeList() {
+    return this.http.get<GetFacilityTypeListDto[]>(
+      `${this.facilityTypesURl}/list`
+    );
+  }
   
   createFacilityType(facilityType: CreateFacilityTypeDto){
     return this.http.post<GetFacilityTypeDto>(`${this.facilityTypesURl}`, facilityType);
@@ -39,6 +47,10 @@ export class FacilityTypesService {
 
   deleteFacilityType(id: string|undefined){
     return this.http.delete<void>(`${this.facilityTypesURl}/${id}`,httpOptions);
+  }
+
+  deleteManyFacilityTypes(deleteManyFacilityTypes: DeleteManyFacilityTypesDto){
+    return this.http.post<GetFacilityTypeDto>(`${this.facilityTypesURl}/many`, deleteManyFacilityTypes, httpOptions);
   }
 
 }

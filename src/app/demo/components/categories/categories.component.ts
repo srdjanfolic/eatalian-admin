@@ -129,6 +129,7 @@ export class CategoriesComponent implements OnInit {
   }
 
   openNew() {
+    this.editMode = false;
     this.submitted = false;
     this.categoryDialog = true;
   }

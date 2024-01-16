@@ -48,7 +48,7 @@ export class CategoriesService {
   }
 
   deleteManyCategories(deleteManyCategories: DeleteManyCategoriesDto){
-    return this.http.post<GetFacilityDto>(`${this.categoriesURl}/many`, deleteManyCategories, httpOptions);
+    return this.http.post<GetCategoryDto>(`${this.categoriesURl}/many`, deleteManyCategories, httpOptions);
   }
 
 

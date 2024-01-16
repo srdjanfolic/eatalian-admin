@@ -1,63 +1,70 @@
 <p-toast></p-toast>
-<div class="card">
-    <p-toolbar styleClass="p-mb-4">
-        <ng-template pTemplate="left">
+<p-dataView #dv [value]="facilityTypes" [paginator]="true" [rows]="9" filterBy="name" [sortField]="sortField"
+    [sortOrder]="sortOrder" layout="grid">
+    <ng-template pTemplate="header">
+        <div class="flex flex-column md:flex-row md:justify-content-between">
+            <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sortiraj po nazivu"
+                (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0"></p-dropdown>
+            <span class="p-input-icon-left mb-2 md:mb-0">
+                <i class="pi pi-search"></i>
+                <input type="search" pInputText placeholder="Naziv.." (input)="dv.filter(applyFilterGlobal($event))">
+            </span>
             <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
                 (click)="openNew()"></button>
-        </ng-template>
-    </p-toolbar>
+        </div>
+    </ng-template>
 
-    <p-table #dt [value]="facilityTypes" [rows]="10" [paginator]="true" [globalFilterFields]="['name']"
-         [rowHover]="true" dataKey="_id"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
-        <ng-template pTemplate="caption">
-            <div class="flex align-items-center justify-content-between">
-                <h5 class="m-0">Manage Facility Types</h5>
-                <span class="p-input-icon-left">
-                    <i class="pi pi-search"></i>
-                    <input pInputText type="text" (input)="dt.filterGlobal(applyFilterGlobal($event), 'contains')"
-                        placeholder="Search..." />
-                </span>
+    <ng-template ngFor let-facilityType [ngForOf]="facilityTypes" let-i="index" [ngForTrackBy]="trackFacilityType"
+        pTemplate="gridItem">
+
+        <div class="col-12 md:col-4">
+            <div class="facilityType-grid-item card border-solid border-1 p-3" style="border-radius: 20px;">
+
+                <div class="facilityType-grid-item-content">
+                    <div class="facilityTypeImageLabel" [ngStyle]="{'background-color': facilityType.color}">{{facilityType.name}}</div>
+                    <img src="{{facilityType.image}}">
+                </div>
+                <div class="facilityType-grid-item-bottom flex justify-content-between">
+                    <div class="facilityType-name">{{facilityType.name}}</div>
+                    <div class="facilityType-list-action">
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
+                            (click)="editFacilityType(facilityType)"></button>
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                            (click)="deleteFacilityType(facilityType)"></button>
+                    </div>
+                </div>
             </div>
-        </ng-template>
-        <ng-template pTemplate="header">
-            <tr>
-                <th pSortableColumn="name">Naziv <p-sortIcon field="name"></p-sortIcon></th>
-                <th></th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-facilityType>
-            <tr>
-                <td>{{facilityType.name}}</td>
-               
-                <td>
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
-                        (click)="editFacilityType(facilityType)"></button>
-                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-                        (click)="deleteFacilityType(facilityType)"></button>
-                </td>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="summary">
-            <div class="p-d-flex p-ai-center p-jc-between">
-                Broj tipova:  {{facilityTypes ? facilityTypes.length : 0 }}
-            </div>
-        </ng-template>
-    </p-table>
-</div>
-
-
+        </div>
+    </ng-template>
+</p-dataView>
 <form [formGroup]="facilityTypeForm">
-<p-dialog [(visible)]="facilityTypeDialog" [style]="{width: '60vw'}" header="Tipovi objekta" [modal]="true" (onHide)="modalHide()"
+<p-dialog [(visible)]="facilityTypeDialog" [style]="{width: '30vw'}" header="Detalji kategorije" [modal]="true" (onHide)="modalHide()"
     styleClass="p-fluid">
+  
         <ng-template pTemplate="content">
             <div class="field">
                 <label for="name">Naziv</label>
                 <input type="text" pInputText id="name" formControlName="name" required autofocus />
-                <small class="p-error"*ngIf="!facilityTypeForm.get('name')!.valid && facilityTypeForm.get('name')!.touched">Unesite tip objekta</small>
+                <small 
+                    class="p-error"
+                    *ngIf="
+          !facilityTypeForm.get('name')!.valid && facilityTypeForm.get('name')!.touched">Unesite naziv kategorije</small>
+            </div>
+            <div class="field mt-2" style="min-height: 160px;">
+                <label for="color">Boja</label> &nbsp;
+                <p-colorPicker
+                    formControlName="color"
+                >
+                </p-colorPicker>
+            </div>
+            <div class="field mt-2">
+                <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="10000000" label="Slika" #fileUpload chooseLabel="Slika"
+                    (onSelect)="fileChangeHandler($event, fileUpload)" class="p-mr-2 p-d-inline-block"></p-fileUpload>
+
+                <!-- <input pButton type="file" (change)="fileChangeHandler($event)"> -->
             </div>
         </ng-template>
- 
+
         <ng-template pTemplate="footer">
             <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text"
                 (click)="hideDialog()"></button>
@@ -65,7 +72,8 @@
                 (click)="saveFacilityType()"></button>
             <button pButton *ngIf="editMode" [disabled]="!facilityTypeForm.valid" pRipple label="Update" icon="pi pi-check" class="p-button-text"
                 (click)="updateFacilityType()"></button>
-        </ng-template>   
+        </ng-template>
+    
 </p-dialog>
 </form>
 <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

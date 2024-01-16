@@ -71,8 +71,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
       ]),
       facilityType: new FormControl(null, []),
       fee: new FormControl(0, [
-        Validators.required as ValidatorFn,
-        noWhitespaceValidator as ValidatorFn,
+        Validators.required as ValidatorFn
       ]),
       locationURL: new FormControl(null, []),
       frameURL: new FormControl(null, []),
@@ -137,6 +136,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
 
   openNew() {
     this.facility = {};
+    this.editMode = false;
     this.submitted = false;
     this.facilityDialog = true;
     this.facilityForm.get('password')?.addValidators([Validators.required as ValidatorFn, noWhitespaceValidator as ValidatorFn]);

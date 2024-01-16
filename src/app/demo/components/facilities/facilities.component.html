@@ -99,7 +99,7 @@
                 </div>
                 <div class="field mt-2 col-4">
                     <label for="fee">Cijena dostave</label>
-                    <input id="fee" pInputText formControlName="fee" [pKeyFilter]="'num'" id="gee" required />
+                    <input id="fee" pInputText formControlName="fee" [pKeyFilter]="'num'" id="fee" required />
                     <small class="p-error"*ngIf="!facilityForm.get('fee')!.valid && facilityForm.get('fee')!.touched">Unesite cijenu dostave</small>
                 </div>
             </div>
