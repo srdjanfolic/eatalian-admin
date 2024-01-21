@@ -3,6 +3,7 @@ export class CreateFacilityDto {
     name: string,
     address: string,
     city: string,
+    polygon: string,
     title: string,
     phone: string,
     description: string,

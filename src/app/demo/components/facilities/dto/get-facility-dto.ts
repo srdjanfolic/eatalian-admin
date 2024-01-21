@@ -7,6 +7,7 @@ export class GetFacilityDto {
         name?: string;
         address?: string;
         city?: string;
+        polygon?: string;
         phone?: string;
         title?: string;
         description?: string;

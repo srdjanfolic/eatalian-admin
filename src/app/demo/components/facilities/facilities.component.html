@@ -111,6 +111,11 @@
                 <label for="frameURL">Mapa URL</label>
                 <textarea id="frameURL" pInputTextarea formControlName="frameURL" required rows="1" cols="20"></textarea>
             </div>
+            <div class="field mt-2">
+                <label for="polygon">Poligon koordinate  <a href="https://www.google.com/maps/d/u/0/?hl=en" target="_blank">LINK</a></label>
+                <textarea id="polygon" pInputTextarea formControlName="polygon" required rows="1" cols="20"></textarea>
+                <small class="p-error"*ngIf="!facilityForm.get('polygon')!.valid && facilityForm.get('polygon')!.touched">Unesite koordinate</small>
+            </div>
             <div class="formgrid grid">
                 <div class="field mt-2 col">
                     <label for="phone">Telefon</label>
