@@ -12,6 +12,7 @@ import { NgxPhotoEditorService } from 'ngx-photo-editor';
 import { ValidateFn } from 'mongoose';
 import { FacilityTypesService } from '../facility-types/facility-types.service';
 import { GetFacilityTypeDto } from '../facility-types/dto/get-facility-type.dto';
+import { PaymentMethodType } from '../../shared/dto/payment-method-type.enum';
 
 
 @Component({
@@ -31,6 +32,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
   submitted!: boolean;
   editMode: boolean = false;
   facilityForm!: FormGroup;
+  paymentMethodType = PaymentMethodType;
 
   private getFacilitiesSubscription!: Subscription;
   private getFacilityTypesSubscription!: Subscription;
@@ -102,6 +104,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
       pictureFile: new FormControl(null),
       closed: new FormControl(null),
       deleted: new FormControl(null),
+      selectedPaymentTypes: new FormControl<PaymentMethodType[]|null>([], [Validators.required])
     });
   }
 
@@ -172,7 +175,8 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
         "polygon" : facility.polygon,
         "username" : facility.username,
         "closed" : facility.closed,
-        "deleted" : facility.deleted
+        "deleted" : facility.deleted,
+        "selectedPaymentTypes": facility.selectedPaymentTypes
       }
     );
     this.facilityForm.get('password')?.clearValidators();
@@ -206,6 +210,8 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
     this.submitted = true;
     this.facilityDialog = false;
     let facilityFormData: FormData = getFormData(this.facilityForm.getRawValue());
+    // console.log(this.facilityForm.getRawValue());
+    // return;
     this.facilityForm.reset();
     this.facilityService.createFacility(facilityFormData).subscribe({
       next: (createdFacility) => {
@@ -222,11 +228,12 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
 
   updateFacility() {
 
+    // console.log(this.facilityForm.getRawValue());
+    // return;
     this.submitted = true;
     this.facilityDialog = false;
     this.editMode = false;
     let facilityFormData: FormData = getFormData(this.facilityForm.getRawValue());
-
     this.facilityService.updateFacility(this.facility._id, facilityFormData).subscribe({
       next: (updatedFacility) => {
         const index = this.facilities.indexOf(this.facility);

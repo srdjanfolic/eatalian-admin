@@ -1,3 +1,4 @@
+import { PaymentMethodType } from "src/app/demo/shared/dto/payment-method-type.enum";
 import { DeliveryTime } from "./delivery-time.dto";
 import { WorkingWeek } from "./working-hours.dto";
 
@@ -22,4 +23,5 @@ export class GetFacilityDto {
         deliveryTime?: DeliveryTime;
         closed?: boolean;
         deleted?: boolean;
+        selectedPaymentTypes?: PaymentMethodType[] ;
 }

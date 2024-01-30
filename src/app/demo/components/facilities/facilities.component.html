@@ -155,6 +155,37 @@
             <div class="field flex align-items-center mt-2">
                 <p-inputSwitch formControlName="deleted" inputId="deleted"></p-inputSwitch>&nbsp;Izbrisan?
             </div>
+            <div class="field mt-2">
+                <label for="group1">Načini plaćanja:</label>
+                <div class="p-field-checkbox mb-2">
+                    <p-checkbox
+                      name="group1"
+                      [value]="paymentMethodType.CASH"
+                      [formControl]="$any(facilityForm).get('selectedPaymentTypes')"
+                      [inputId]="paymentMethodType.CASH"
+                    ></p-checkbox>
+                    <label class="ml-2" [for]="paymentMethodType.CASH">{{paymentMethodType.CASH}}</label>
+                  </div>
+                  <div class="p-field-checkbox mb-2">
+                    <p-checkbox
+                      name="group1"
+                      [value]="paymentMethodType.CC"
+                      [formControl]="$any(facilityForm).get('selectedPaymentTypes')"
+                      [inputId]="paymentMethodType.CC"
+                    ></p-checkbox>
+                    <label class="ml-2" [for]="paymentMethodType.CC">{{paymentMethodType.CC}}</label>
+                  </div>
+                  <div class="p-field-checkbox">
+                    <p-checkbox
+                      name="group1"
+                      [value]="paymentMethodType.FACILITY"
+                      [formControl]="$any(facilityForm).get('selectedPaymentTypes')"
+                      inputId="paymentMethodType.FACILITY"
+                    ></p-checkbox>
+                    <label class="ml-2" [for]="paymentMethodType.FACILITY">{{paymentMethodType.FACILITY}}</label>
+                  </div>
+                  <small class="p-error mt-2" *ngIf="!facilityForm.get('selectedPaymentTypes')!.valid && facilityForm.get('selectedPaymentTypes')!.touched">Izaberite tip plaćanja</small>
+            </div>
         </ng-template>
  
         <ng-template pTemplate="footer">
