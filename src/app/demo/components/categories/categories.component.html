@@ -50,12 +50,15 @@
                     *ngIf="
           !categoryForm.get('name')!.valid && categoryForm.get('name')!.touched">Unesite naziv kategorije</small>
             </div>
-            <div class="field mt-2" style="min-height: 160px;">
+            <div class="field mt-2">
                 <label for="color">Boja</label> &nbsp;
                 <p-colorPicker
                     formControlName="color"
                 >
                 </p-colorPicker>
+            </div>
+            <div class="field mt-2">
+                <img [src]="previewImage">
             </div>
             <div class="field mt-2">
                 <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="10000000" label="Slika" #fileUpload chooseLabel="Slika"

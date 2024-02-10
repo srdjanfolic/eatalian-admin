@@ -14,6 +14,7 @@ import { FormArray, FormControl, FormGroup, ValidatorFn, Validators } from '@ang
 import { DisabledDateInfoDto } from './dto/disabled-date-info.dto';
 import { DisabledUntilDate } from './dto/disabled-until-date.enum';
 import { Unit } from './dto/unit.enum';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 
 interface City {
@@ -35,6 +36,7 @@ export class ProductsComponent implements OnInit {
   disabledDateInfo?: DisabledUntilDate;
   customDate = false;
   disabledDate?: Date;
+  previewImage?: SafeResourceUrl;
 
   sortOrder!: number;
   sortField!: string;
@@ -42,6 +44,7 @@ export class ProductsComponent implements OnInit {
 
 
   products: GetProductDto[] = [];
+  clonedProducts: GetProductDto[] = [];
   selectedProducts: GetProductDto[] = [];
   clonedProduct!: GetProductDto;
   categoriesList: GetCategoryListDto[] = [];
@@ -77,7 +80,8 @@ export class ProductsComponent implements OnInit {
     private productsService: ProductsService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private ngxPhotoEditorService: NgxPhotoEditorService
+    private ngxPhotoEditorService: NgxPhotoEditorService,
+    private dom: DomSanitizer
   ) { }
 
 
@@ -109,15 +113,18 @@ export class ProductsComponent implements OnInit {
       resizeToWidth: 300,
       resizeToHeight: 300
     }).subscribe(data => {
-      //this.clonedProduct.pictureFile = data.file;
+      console.log(data.base64);
+      this.previewImage = data.base64!;
       this.productForm.controls["pictureFile"].setValue(data.file);
     });
   }
+
 
   ngOnInit(): void {
     this.getProductsSubscription = this.productsService.getProducts().subscribe(
       (products: GetProductDto[]) => {
         this.products = products;
+        this.clonedProducts= products;
       }
     );
     this.getCategoriesListSubscription = this.productsService.getCategoryList().subscribe(
@@ -158,7 +165,6 @@ export class ProductsComponent implements OnInit {
       ]),
       unit: new FormControl(Unit.KG, [
         Validators.required as ValidatorFn,
-        noWhitespaceValidator as ValidatorFn,
       ]),
       searchTags: new FormControl(null),
       isAddon: new FormControl(null),
@@ -224,6 +230,7 @@ export class ProductsComponent implements OnInit {
   }
 
   openNew() {
+
     this.clonedProduct = {
       isFeatured: false,
       isAddon: false,
@@ -233,6 +240,7 @@ export class ProductsComponent implements OnInit {
     this.selectedCategory = {};
     this.submitted = false;
     this.productDialog = true;
+    this.previewImage = undefined;
     this.editMode = false;
   }
 
@@ -251,13 +259,14 @@ export class ProductsComponent implements OnInit {
     this.editMode = true;
     this.index = this.products.indexOf(product);
     this.clonedProduct = { ...product };
+    this.previewImage = this.clonedProduct.image;
     this.productForm.patchValue(
       {
         "name" : product.name,
         "category": product.category,
         "description": product.description,
         "price": product.price,
-        "unt": product.unit,
+        "unit": product.unit,
         "isAddon": product.isAddon,
         "isFeatured": product.isFeatured,
         "disabled": product.disabled,
@@ -315,12 +324,13 @@ export class ProductsComponent implements OnInit {
 
 
     this.submitted = true;
-    this.productDialog = false;
+
     let productFormData: FormData = getFormData(this.productForm.getRawValue());
     this.productForm.reset();
     this.productsService.createProduct(productFormData).subscribe({
       next: (createdProduct) => {
         this.products = [...this.products, createdProduct];
+        this.productDialog = false;
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product created!', life: 3000 });
       },
       error: () => {
@@ -332,13 +342,13 @@ export class ProductsComponent implements OnInit {
   updateProduct() {
 
     this.submitted = true;
-    this.productDialog = false;
-    this.editMode = false;
+  
     let productFormData: FormData = getFormData(this.productForm.getRawValue());
     this.productForm.reset();
     this.productsService.updateProduct(this.clonedProduct._id, productFormData).subscribe({
       next: (updatedProduct) => {
-
+        this.productDialog = false;
+        this.editMode = false;
         this.products[this.index] = { ...updatedProduct };
         this.products = [...this.products];
         this.clonedProduct = {};
@@ -422,6 +432,7 @@ export class ProductsComponent implements OnInit {
   }
 
   onSortChange(event: { value: any; }) {
+    
     let value = event.value;
 
     if (value.indexOf('!') === 0) {
@@ -432,5 +443,12 @@ export class ProductsComponent implements OnInit {
       this.sortOrder = 1;
       this.sortField = value;
     }
+  }
+  onCategoryChange(event: { value: any; }) {
+    if(event.value) {
+      this.products = this.clonedProducts.filter(
+        product =>  product.category?._id === event.value._id)
+    } else 
+    this.products = this.clonedProducts;
   }
 }

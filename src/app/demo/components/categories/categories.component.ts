@@ -9,6 +9,7 @@ import { GetCategoryDto } from './dto/get-category.dto';
 
 import { NgxCroppedEvent, NgxPhotoEditorService } from "ngx-photo-editor";
 import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-categories',
@@ -25,6 +26,7 @@ export class CategoriesComponent implements OnInit {
   categories: GetCategoryDto[] = [];
   selectedCategories: GetCategoryDto[] = [];
   clonedCategory!: GetCategoryDto;
+  previewImage?: SafeResourceUrl;
 
   categoryDialog!: boolean;
   submitted!: boolean;
@@ -73,7 +75,7 @@ export class CategoriesComponent implements OnInit {
       resizeToHeight: 200
     }).subscribe(data => {
 
-      //this.clonedCategory.pictureFile = data.file;
+      this.previewImage = data.base64;
       this.categoryForm.controls["pictureFile"].setValue(data.file);
     });
   }
@@ -129,6 +131,7 @@ export class CategoriesComponent implements OnInit {
   }
 
   openNew() {
+    this.previewImage = undefined;
     this.editMode = false;
     this.submitted = false;
     this.categoryDialog = true;
@@ -144,6 +147,7 @@ export class CategoriesComponent implements OnInit {
     this.editMode = true;
     this.index = this.categories.indexOf(category);
     this.clonedCategory = {...category};
+    this.previewImage= this.clonedCategory.image;
     this.categoryForm.patchValue(
       {
         "name": category.name,

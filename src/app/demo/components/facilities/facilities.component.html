@@ -146,6 +146,9 @@
                 </div>
             </div>
             <div class="field mt-2">
+                <img [src]="previewImage" style="width: 500px;">
+            </div>
+            <div class="field mt-2">
                 <p-fileUpload mode="basic" #fileUpload accept="image/*" [maxFileSize]="1000000" label="Slika" chooseLabel="Slika"
                     (onSelect)="fileChangeHandler($event, fileUpload)" class="p-mr-2 p-d-inline-block"></p-fileUpload>
             </div>

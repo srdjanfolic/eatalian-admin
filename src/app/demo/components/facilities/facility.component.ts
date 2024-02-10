@@ -9,6 +9,7 @@ import { getFormData, noWhitespaceValidator } from '../../shared/sharedFunctions
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { NgxPhotoEditorService } from 'ngx-photo-editor';
 import { NumberFormatStyle } from '@angular/common';
+import { SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-facility',
@@ -39,6 +40,8 @@ export class FacilityComponent implements OnInit, OnDestroy {
   sundayClosingTime?: Date;
 
   facilityForm!: FormGroup;
+
+  previewImage?: SafeResourceUrl;
 
   private getFacilitiesSubscription!: Subscription;
 
@@ -210,6 +213,12 @@ export class FacilityComponent implements OnInit, OnDestroy {
         Validators.required as ValidatorFn,
         noWhitespaceValidator as ValidatorFn,
       ]),
+      additionalMinimum: new FormControl(null, [
+        Validators.required as ValidatorFn,
+      ]),
+      additionalFee: new FormControl(null, [
+        Validators.required as ValidatorFn,
+      ]),
     },
       { validators: [this.validDeliveryTime] }
     );
@@ -229,6 +238,7 @@ export class FacilityComponent implements OnInit, OnDestroy {
 
   editFacility() {
     this.clonedFacility = this.facility;
+    this.previewImage = this.clonedFacility.image;
     this.setHours();
     this.facilityForm.patchValue(
       {
@@ -259,6 +269,8 @@ export class FacilityComponent implements OnInit, OnDestroy {
         "sundayClosingTime": this.sundayClosingTime,
         "deliveryTimeFrom": this.facility.deliveryTime?.from,
         "deliveryTimeTo": this.facility.deliveryTime?.to,
+        "additionalMinimum": this.facility.additional?.minimum,
+        "additionalFee": this.facility.additional?.fee,
       }
     );
     this.editMode = true;
@@ -283,6 +295,10 @@ export class FacilityComponent implements OnInit, OnDestroy {
     this.clonedFacility.password = formValues?.password;
     this.clonedFacility.pictureFile = formValues?.pictureFile;
     this.clonedFacility.name = formValues.name;
+    this.clonedFacility.deliveryTime!.from = formValues.deliveryTimeFrom;
+    this.clonedFacility.deliveryTime!.to = formValues.deliveryTimeTo;
+    this.clonedFacility.additional!.minimum = formValues.additionalMinimum;
+    this.clonedFacility.additional!.fee = formValues.additionalFee;
     this.clonedFacility.workingHours!.monday = new WorkingHours("PON", formValues.mondayOpeningTime!.getHours(), formValues.mondayOpeningTime!.getMinutes(), formValues.mondayClosingTime!.getHours(), formValues.mondayClosingTime!.getMinutes());
     this.clonedFacility.workingHours!.tuesday = new WorkingHours("UTO", formValues.tuesdayOpeningTime!.getHours(), formValues.tuesdayOpeningTime!.getMinutes(), formValues.tuesdayClosingTime!.getHours(), formValues.tuesdayClosingTime!.getMinutes());
     this.clonedFacility.workingHours!.wednesday = new WorkingHours("SRI", formValues.wednesdayOpeningTime!.getHours(), formValues.wednesdayOpeningTime!.getMinutes(), formValues.wednesdayClosingTime!.getHours(), formValues.wednesdayClosingTime!.getMinutes());
@@ -346,7 +362,7 @@ export class FacilityComponent implements OnInit, OnDestroy {
       resizeToWidth: 1000,
       resizeToHeight: 300
     }).subscribe(data => {
-
+      this.previewImage = data.base64;
       this.facilityForm.controls["pictureFile"].setValue(data.file);
     });
   }

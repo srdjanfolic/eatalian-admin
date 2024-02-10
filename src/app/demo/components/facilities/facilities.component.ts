@@ -13,6 +13,7 @@ import { ValidateFn } from 'mongoose';
 import { FacilityTypesService } from '../facility-types/facility-types.service';
 import { GetFacilityTypeDto } from '../facility-types/dto/get-facility-type.dto';
 import { PaymentMethodType } from '../../shared/dto/payment-method-type.enum';
+import { SafeResourceUrl } from '@angular/platform-browser';
 
 
 @Component({
@@ -33,6 +34,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
   editMode: boolean = false;
   facilityForm!: FormGroup;
   paymentMethodType = PaymentMethodType;
+  previewImage?: SafeResourceUrl;
 
   private getFacilitiesSubscription!: Subscription;
   private getFacilityTypesSubscription!: Subscription;
@@ -142,6 +144,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
   }
 
   openNew() {
+    this.previewImage = undefined;
     this.facility = {};
     this.editMode = false;
     this.submitted = false;
@@ -158,6 +161,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
   editFacility(facility: GetFacilityDto) {
     this.editMode = true;
     this.facility = facility;
+    this.previewImage = facility.image;
     this.submitted = false;
     this.facilityDialog = true;
     this.facilityForm.patchValue(
@@ -274,8 +278,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
       resizeToWidth: 1000,
       resizeToHeight: 300
     }).subscribe(data => {
-
-      //this.clonedCategory.pictureFile = data.file;
+      this.previewImage = data.base64!;
       this.facilityForm.controls["pictureFile"].setValue(data.file);
     });
   }

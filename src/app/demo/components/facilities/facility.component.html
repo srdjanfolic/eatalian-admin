@@ -104,7 +104,7 @@
                     <div class="col-10">{{facility.address}}</div>
                 </div>
             </div>
-            <div class="info border-solid border-1 border-round p-3 border-200">
+            <div class="info border-solid border-1 border-round p-3 mb-3 border-200">
                 <div class="grid">
                     <div class="col-2"><i class="pi pi-clock"></i></div>
                     <div class="col-10">Vrijeme dostave
@@ -117,6 +117,15 @@
                     <div class="col-2"><i class="pi pi-euro"></i></div>
                     <div class="col-10">Cijena dostave
                         <br><b>{{facility.fee?.toFixed(2)}} &euro;</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 md:col-3">
+            <div class="info border-solid border-1 border-round p-3 mb-3 border-200" *ngIf=" facility.additional!.minimum && facility.additional!.minimum > 0">
+                <div class="grid">
+                    <div class="col-12">Minimalni iznos porudžbine
+                        <br>Ispod <b>{{facility.additional?.minimum}} &euro; </b>- cijena dostave je <b>{{facility.additional?.fee}} &euro;</b>
                     </div>
                 </div>
             </div>
@@ -176,6 +185,8 @@
                         username<br></small>
                     <label for="password">Password</label>
                     <input class="mb-2" type="password" pInputText id="password" formControlName="password" />
+                
+                    <img [src]="previewImage" style="width: 400px;">
                     <p-fileUpload class="mb-2" mode="basic" accept="image/*" [maxFileSize]="1000000" label="Slika"
                         chooseLabel="Slika" #fileUpload (onSelect)="fileChangeHandler($event, fileUpload)"
                         class="p-mr-2 p-d-inline-block"></p-fileUpload>
@@ -354,6 +365,26 @@
                                 <small class="p-error"
                                     *ngIf="!facilityForm.get('fee')!.valid && facilityForm.get('fee')!.touched">Unesite
                                     cijenu dostave</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info border-solid border-1 border-round p-3 border-200 mt-3">
+                        <div class="formgrid grid align-items-center">
+                            <div class="field col-9">Minimalni iznos porudžbine</div>
+                            <div class="field col-3">
+                                <input id="additionalMinimum" formControlName="additionalMinimum" pInputText
+                                    [pKeyFilter]="'num'" />
+                                <small class="p-error"
+                                    *ngIf="!facilityForm.get('additionalMinimum')!.valid && facilityForm.get('additionalMinimum')!.touched">Unesite
+                                    iznos</small>
+                            </div>
+                            <div class="field col-9">Naknada za ispod limita</div>
+                            <div class="field col-3">
+                                <input id="additionalFee" formControlName="additionalFee" pInputText
+                                    [pKeyFilter]="'num'" />
+                                <small class="p-error"
+                                    *ngIf="!facilityForm.get('additionalFee')!.valid && facilityForm.get('additionalFee')!.touched">Unesite
+                                    iznos</small>
                             </div>
                         </div>
                     </div>
