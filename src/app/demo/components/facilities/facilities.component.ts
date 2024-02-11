@@ -106,7 +106,8 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
       pictureFile: new FormControl(null),
       closed: new FormControl(null),
       deleted: new FormControl(null),
-      selectedPaymentTypes: new FormControl<PaymentMethodType[]|null>([], [Validators.required])
+      selectedPaymentTypes: new FormControl<PaymentMethodType[]|null>([], [Validators.required]),
+      sortIndex: new FormControl(1000),
     });
   }
 
@@ -180,7 +181,8 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
         "username" : facility.username,
         "closed" : facility.closed,
         "deleted" : facility.deleted,
-        "selectedPaymentTypes": facility.selectedPaymentTypes
+        "selectedPaymentTypes": facility.selectedPaymentTypes,
+        "sortIndex": facility.sortIndex
       }
     );
     this.facilityForm.get('password')?.clearValidators();
@@ -243,6 +245,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
         const index = this.facilities.indexOf(this.facility);
         this.facilities[index] = updatedFacility;
         this.facility = {};
+        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facility updated!', life: 3000 });
       },
       error: () => {
         this.facility = {};

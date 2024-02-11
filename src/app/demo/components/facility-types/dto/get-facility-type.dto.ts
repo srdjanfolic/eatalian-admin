@@ -4,4 +4,5 @@ export class GetFacilityTypeDto {
     public color?: string;
     public image?: string;
     public pictureFile?: File;
+    public sortIndex?: number;
 }

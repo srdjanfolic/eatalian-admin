@@ -146,7 +146,7 @@
                 </div>
             </div>
             <div class="field mt-2">
-                <img [src]="previewImage" style="width: 500px;">
+                <img [src]="previewImage" style="width: 400px;">
             </div>
             <div class="field mt-2">
                 <p-fileUpload mode="basic" #fileUpload accept="image/*" [maxFileSize]="1000000" label="Slika" chooseLabel="Slika"
@@ -189,6 +189,11 @@
                   </div>
                   <small class="p-error mt-2" *ngIf="!facilityForm.get('selectedPaymentTypes')!.valid && facilityForm.get('selectedPaymentTypes')!.touched">Izaberite tip plaćanja</small>
             </div>
+            <div class="field mt-2">
+                <label for="sortIndex">Sortiranje</label>
+                <input type="number" pInputText id="sortIndex" formControlName="sortIndex" required autofocus [pKeyFilter]="'num'" />
+            </div>
+
         </ng-template>
  
         <ng-template pTemplate="footer">

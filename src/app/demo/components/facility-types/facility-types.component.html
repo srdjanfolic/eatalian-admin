@@ -58,10 +58,17 @@
                 </p-colorPicker>
             </div>
             <div class="field mt-2">
+                <img [src]="previewImage" style="width: 200px;">
+            </div>
+            <div class="field mt-2">
                 <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="10000000" label="Slika" #fileUpload chooseLabel="Slika"
                     (onSelect)="fileChangeHandler($event, fileUpload)" class="p-mr-2 p-d-inline-block"></p-fileUpload>
 
                 <!-- <input pButton type="file" (change)="fileChangeHandler($event)"> -->
+            </div>
+            <div class="field mt-2">
+                <label for="sortIndex">Sortiranje</label>
+                <input type="number" pInputText id="sortIndex" formControlName="sortIndex" required autofocus [pKeyFilter]="'num'" />
             </div>
         </ng-template>
 

@@ -98,6 +98,7 @@ export class CategoriesComponent implements OnInit {
       ]),
       color: new FormControl(null),
       pictureFile: new FormControl(null),
+      sortIndex: new FormControl(1000),
     });
 
   }
@@ -151,7 +152,8 @@ export class CategoriesComponent implements OnInit {
     this.categoryForm.patchValue(
       {
         "name": category.name,
-        "color": category.color
+        "color": category.color,
+        "sortIndex": category.sortIndex
       }
     );
     this.submitted = false;

@@ -150,6 +150,10 @@
             <div class="field flex align-items-center mt-2">
                 <p-inputSwitch formControlName="invisible" inputId="invisible"></p-inputSwitch>&nbsp;Sakriven?
             </div>
+            <div class="field mt-2">
+                <label for="sortIndex">Sortiranje</label>
+                <input type="number" pInputText id="sortIndex" formControlName="sortIndex" required autofocus [pKeyFilter]="'num'" />
+            </div>
 
         </ng-template>
 

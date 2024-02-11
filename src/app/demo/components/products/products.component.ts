@@ -172,6 +172,7 @@ export class ProductsComponent implements OnInit {
       disabled: new FormControl(null),
       invisible: new FormControl(null),
       pictureFile: new FormControl(null),
+      sortIndex: new FormControl(1000),
     });
   }
 
@@ -271,7 +272,8 @@ export class ProductsComponent implements OnInit {
         "isFeatured": product.isFeatured,
         "disabled": product.disabled,
         "invisible": product.invisible,
-        "searchTags": product.searchTags
+        "searchTags": product.searchTags,
+        "sortIndex": product.sortIndex
       }
     );
     this.submitted = false;

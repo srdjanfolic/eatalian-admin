@@ -66,6 +66,11 @@
 
                 <!-- <input pButton type="file" (change)="fileChangeHandler($event)"> -->
             </div>
+            <div class="field mt-2">
+                <label for="sortIndex">Sortiranje</label>
+                <input type="number" pInputText id="sortIndex" formControlName="sortIndex" required autofocus [pKeyFilter]="'num'" />
+            </div>
+
         </ng-template>
 
         <ng-template pTemplate="footer">

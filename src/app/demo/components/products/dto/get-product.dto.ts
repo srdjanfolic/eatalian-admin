@@ -18,4 +18,5 @@ export class GetProductDto {
     public isFeatured?: boolean;
     public disabled?: boolean;
     public invisible?: boolean;
+    public sortIndex?: number;
 }

@@ -7,6 +7,7 @@ import { ConfirmationService, MessageService, SelectItem } from 'primeng/api';
 import { getFormData, noWhitespaceValidator } from '../../shared/sharedFunctions';
 import { NgxCroppedEvent, NgxPhotoEditorService } from 'ngx-photo-editor';
 import { DeleteManyFacilityTypesDto } from './dto/delete-many-facility-types.dto';
+import { SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-facility-types',
@@ -30,6 +31,8 @@ export class FacilityTypesComponent implements OnInit, OnDestroy {
   index: number = -1;
 
   output?: NgxCroppedEvent;
+
+  previewImage?: SafeResourceUrl;
 
   private getFacilityTypesSubscription!: Subscription;
   facilityTypeForm!: FormGroup;
@@ -57,7 +60,6 @@ export class FacilityTypesComponent implements OnInit, OnDestroy {
     }
     if (extensionAllowed) {
       var nam = file!.name.split('.').pop() || "xxx";
-
       if (!extensionAllowed.includes(nam)) {
         alert("Please upload " + extensionAllowed.toString() + " file.")
         fileUpload.clear()
@@ -70,8 +72,7 @@ export class FacilityTypesComponent implements OnInit, OnDestroy {
       resizeToWidth: 300,
       resizeToHeight: 200
     }).subscribe(data => {
-
-      //this.clonedFacilityType.pictureFile = data.file;
+      this.previewImage = data.base64!;
       this.facilityTypeForm.controls["pictureFile"].setValue(data.file);
     });
   }
@@ -94,6 +95,7 @@ export class FacilityTypesComponent implements OnInit, OnDestroy {
       ]),
       color: new FormControl(null),
       pictureFile: new FormControl(null),
+      sortIndex: new FormControl(1000),
     });
 
   }
@@ -127,6 +129,7 @@ export class FacilityTypesComponent implements OnInit, OnDestroy {
   }
 
   openNew() {
+    this.previewImage = undefined;
     this.editMode = false;
     this.submitted = false;
     this.facilityTypeDialog = true;
@@ -142,10 +145,13 @@ export class FacilityTypesComponent implements OnInit, OnDestroy {
     this.editMode = true;
     this.index = this.facilityTypes.indexOf(facilityType);
     this.clonedFacilityType = {...facilityType};
+    this.previewImage = this.clonedFacilityType.image;
     this.facilityTypeForm.patchValue(
       {
         "name": facilityType.name,
-        "color": facilityType.color
+        "color": facilityType.color,
+
+        "sortIndex": facilityType.sortIndex
       }
     );
     this.submitted = false;

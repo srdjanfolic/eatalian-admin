@@ -25,5 +25,6 @@ export class GetFacilityDto {
         additional?: Additional;
         closed?: boolean;
         deleted?: boolean;
-        selectedPaymentTypes?: PaymentMethodType[] ;
+        selectedPaymentTypes?: PaymentMethodType[];
+        sortIndex?: number;
 }
