@@ -24,6 +24,7 @@ export class CategoriesComponent implements OnInit {
   sortKey?: any;
 
   categories: GetCategoryDto[] = [];
+  clonedCategories: GetCategoryDto[] = [];
   selectedCategories: GetCategoryDto[] = [];
   clonedCategory!: GetCategoryDto;
   previewImage?: SafeResourceUrl;
@@ -84,6 +85,7 @@ export class CategoriesComponent implements OnInit {
     this.getCategoriesSubscription = this.categoriesService.getCategories().subscribe(
       (categories: GetCategoryDto[]) => {
         this.categories = categories;
+        this.clonedCategories = categories;
       }
     );
     this.sortOptions = [
@@ -228,7 +230,20 @@ export class CategoriesComponent implements OnInit {
   }
 
   applyFilterGlobal(event: any) {
-    return event.target.value;
+
+    const chars = {
+      'Š': 'S',
+      'Đ': 'DJ',
+      'Č': 'C',
+      'Ć': 'C',
+      'Ž': 'Z'
+    };
+    //return event.target.value;
+    if (event.target.value.trim() !== "") {
+      this.categories = this.clonedCategories.filter(
+        category => category.name?.toUpperCase().replace(/[ŠĐČĆŽ]/g, (m: string | number) => (chars as any)[m]).includes(event.target.value.trim().toLocaleUpperCase().replace(/[ŠĐČĆŽ]/g, (m: string | number) => (chars as any)[m]).trim()))
+    } else
+      this.categories = this.clonedCategories;
   }
 
   uploadFile(event: { files: any; }) {

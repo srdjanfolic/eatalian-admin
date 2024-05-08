@@ -333,6 +333,18 @@
                         </div>
 
                     </div>
+                    <div class="neradniDani border-200 mt-3">
+                        Neradni dani
+                        <p-calendar formControlName="nonWorkingDates"
+                            [showIcon]="true"
+                            selectionMode="multiple"
+                            [showButtonBar]="true"
+                            dateFormat="dd.mm.yy"
+                            [minDate]="minDate"
+                            
+                        >
+                        </p-calendar>
+                    </div>
                     <div class="info border-solid border-1 border-round p-3 border-200 mt-3">
                         <div class="formgrid grid align-items-center">
                             <div class="field col-6">Vrijeme dostave(min)</div>

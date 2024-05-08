@@ -5,7 +5,7 @@ import { AuthResponseDto } from './dto/auth-response.dto';
 import { Subject, BehaviorSubject, Subscription, Observable, of } from 'rxjs';
 import { User } from './user.model';
 import { catchError, tap } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import decode from 'jwt-decode';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -31,8 +31,9 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
+    private route: ActivatedRoute,
     private messageService: MessageService
-  ) { }
+  ) {}
 
   signIn(authCredentials: AuthCredentialsDto) {
     return this.http.post<AuthResponseDto>(`${this.authUrl}/signin`, authCredentials, httpOptions).pipe(
@@ -83,7 +84,7 @@ export class AuthService {
 
         this.autoSignOut(expirationDuration);
         this.user.next(loadedUser);
-        this.router.navigate([`/auth/login`, { autoSignIn: 'REFRESH' }]);
+        //this.router.navigate([`/auth/login`, { autoSignIn: 'REFRESH' }]);
       }
     }
 

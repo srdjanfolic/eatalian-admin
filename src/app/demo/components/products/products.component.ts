@@ -31,7 +31,7 @@ interface City {
 export class ProductsComponent implements OnInit {
 
   sortOptions!: SelectItem[];
-  
+
   disabledDateOptions!: SelectItem[];
   disabledDateInfo?: DisabledUntilDate;
   customDate = false;
@@ -67,14 +67,14 @@ export class ProductsComponent implements OnInit {
   index: number = -1;
 
   output?: NgxCroppedEvent;
-  
+
   productForm!: FormGroup;
 
 
   private getProductsSubscription!: Subscription;
   private getCategoriesListSubscription!: Subscription;
 
-  
+
 
   constructor(
     private productsService: ProductsService,
@@ -124,7 +124,7 @@ export class ProductsComponent implements OnInit {
     this.getProductsSubscription = this.productsService.getProducts().subscribe(
       (products: GetProductDto[]) => {
         this.products = products;
-        this.clonedProducts= products;
+        this.clonedProducts = products;
       }
     );
     this.getCategoriesListSubscription = this.productsService.getCategoryList().subscribe(
@@ -251,9 +251,9 @@ export class ProductsComponent implements OnInit {
     this.disableProductDialog = false;
     this.productForm.reset();
     this.submitted = false;
-    this. disabledDateInfo = undefined;
+    this.disabledDateInfo = undefined;
     this.customDate = false;
-    this.disabledDate=undefined;
+    this.disabledDate = undefined;
   }
 
   editProduct(product: GetProductDto) {
@@ -263,7 +263,7 @@ export class ProductsComponent implements OnInit {
     this.previewImage = this.clonedProduct.image;
     this.productForm.patchValue(
       {
-        "name" : product.name,
+        "name": product.name,
         "category": product.category,
         "description": product.description,
         "price": product.price,
@@ -344,7 +344,7 @@ export class ProductsComponent implements OnInit {
   updateProduct() {
 
     this.submitted = true;
-  
+
     let productFormData: FormData = getFormData(this.productForm.getRawValue());
     this.productForm.reset();
     this.productsService.updateProduct(this.clonedProduct._id, productFormData).subscribe({
@@ -379,7 +379,7 @@ export class ProductsComponent implements OnInit {
     this.editMode = false;
     this.selectedSuggestedAddons = [];
     this.selectedSuggestedProducts = [];
-  
+
     this.productsService.updateSuggestedProducts(this.clonedProduct._id, updateSuggestedProductsDto).subscribe({
       next: (updatedProduct) => {
 
@@ -426,7 +426,20 @@ export class ProductsComponent implements OnInit {
   }
 
   applyFilterGlobal(event: any) {
-    return event.target.value;
+    const chars = {
+      'Š': 'S',
+      'Đ': 'DJ',
+      'Č': 'C',
+      'Ć': 'C',
+      'Ž': 'Z'
+    };
+    //return event.target.value;
+    if (event.target.value.trim() !== "") {
+      this.products = this.clonedProducts.filter(
+        product => product.name?.toUpperCase().replace(/[ŠĐČĆŽ]/g, (m: string | number) => (chars as any)[m]).includes(event.target.value.trim().toLocaleUpperCase().replace(/[ŠĐČĆŽ]/g, (m: string | number) => (chars as any)[m]).trim()))
+    } else
+      this.products = this.clonedProducts;
+
   }
 
   uploadFile(event: { files: any; }) {
@@ -434,7 +447,7 @@ export class ProductsComponent implements OnInit {
   }
 
   onSortChange(event: { value: any; }) {
-    
+
     let value = event.value;
 
     if (value.indexOf('!') === 0) {
@@ -447,10 +460,10 @@ export class ProductsComponent implements OnInit {
     }
   }
   onCategoryChange(event: { value: any; }) {
-    if(event.value) {
+    if (event.value) {
       this.products = this.clonedProducts.filter(
-        product =>  product.category?._id === event.value._id)
-    } else 
-    this.products = this.clonedProducts;
+        product => product.category?._id === event.value._id)
+    } else
+      this.products = this.clonedProducts;
   }
 }

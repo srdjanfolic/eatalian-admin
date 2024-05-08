@@ -7,7 +7,7 @@
                 (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0"></p-dropdown>
             <span class="p-input-icon-left mb-2 md:mb-0">
                 <i class="pi pi-search"></i>
-                <input type="search" pInputText placeholder="Naziv.." (input)="dv.filter(applyFilterGlobal($event))">
+                <input type="search" pInputText placeholder="Naziv.." (input)="applyFilterGlobal($event)">
             </span>
             <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
                 (click)="openNew()"></button>

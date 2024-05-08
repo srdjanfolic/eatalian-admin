@@ -14,3 +14,12 @@ $gutter: 1rem; //for primeflex grid system
 @import "assets/demo/styles/code.scss";
 
 @import "../node_modules/ngx-photo-editor/photo-editor.css";
+
+.grid-nogutter > .col, .grid-nogutter > [class*=col-] {
+    padding: 0;
+    margin-bottom: 2rem;
+}
+
+.card {
+    height: 100%;
+}

@@ -43,6 +43,8 @@ export class FacilityComponent implements OnInit, OnDestroy {
 
   previewImage?: SafeResourceUrl;
 
+  minDate: Date = new Date();
+
   private getFacilitiesSubscription!: Subscription;
 
   constructor(
@@ -205,6 +207,8 @@ export class FacilityComponent implements OnInit, OnDestroy {
         Validators.required as ValidatorFn,
         noWhitespaceValidator as ValidatorFn,
       ]),
+      nonWorkingDates: new FormControl(null),
+      
       deliveryTimeFrom: new FormControl(null, [
         Validators.required as ValidatorFn,
         noWhitespaceValidator as ValidatorFn,
@@ -240,6 +244,7 @@ export class FacilityComponent implements OnInit, OnDestroy {
     this.clonedFacility = this.facility;
     this.previewImage = this.clonedFacility.image;
     this.setHours();
+    console.log(this.facility.nonWorkingDates);
     this.facilityForm.patchValue(
       {
         "name": this.facility.name,
@@ -253,6 +258,7 @@ export class FacilityComponent implements OnInit, OnDestroy {
         "fee": this.facility.fee,
         "username": this.facility.username,
         "closed": this.facility.closed,
+        "nonWorkingDates": this.facility.nonWorkingDates?.map( date =>  new Date(date)),
         "mondayOpeningTime": this.mondayOpeningTime,
         "mondayClosingTime": this.mondayClosingTime,
         "tuesdayOpeningTime": this.tuesdayOpeningTime,
@@ -299,6 +305,7 @@ export class FacilityComponent implements OnInit, OnDestroy {
     this.clonedFacility.deliveryTime!.to = formValues.deliveryTimeTo;
     this.clonedFacility.additional!.minimum = formValues.additionalMinimum;
     this.clonedFacility.additional!.fee = formValues.additionalFee;
+    this.clonedFacility.nonWorkingDates = formValues.nonWorkingDates;
     this.clonedFacility.workingHours!.monday = new WorkingHours("PON", formValues.mondayOpeningTime!.getHours(), formValues.mondayOpeningTime!.getMinutes(), formValues.mondayClosingTime!.getHours(), formValues.mondayClosingTime!.getMinutes());
     this.clonedFacility.workingHours!.tuesday = new WorkingHours("UTO", formValues.tuesdayOpeningTime!.getHours(), formValues.tuesdayOpeningTime!.getMinutes(), formValues.tuesdayClosingTime!.getHours(), formValues.tuesdayClosingTime!.getMinutes());
     this.clonedFacility.workingHours!.wednesday = new WorkingHours("SRI", formValues.wednesdayOpeningTime!.getHours(), formValues.wednesdayOpeningTime!.getMinutes(), formValues.wednesdayClosingTime!.getHours(), formValues.wednesdayClosingTime!.getMinutes());
