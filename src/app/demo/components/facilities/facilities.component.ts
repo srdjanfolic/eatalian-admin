@@ -77,6 +77,12 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
       fee: new FormControl(0, [
         Validators.required as ValidatorFn
       ]),
+      additionalMinimum: new FormControl(null, [
+        Validators.required as ValidatorFn,
+      ]),
+      additionalFee: new FormControl(null, [
+        Validators.required as ValidatorFn,
+      ]),
       locationURL: new FormControl(null, []),
       frameURL: new FormControl(null, []),
       polygon: new FormControl(null, [
@@ -182,7 +188,9 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
         "closed" : facility.closed,
         "deleted" : facility.deleted,
         "selectedPaymentTypes": facility.selectedPaymentTypes,
-        "sortIndex": facility.sortIndex
+        "sortIndex": facility.sortIndex,
+        "additionalMinimum": facility.additional?.minimum,
+        "additionalFee": facility.additional?.fee,
       }
     );
     this.facilityForm.get('password')?.clearValidators();
@@ -215,9 +223,10 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
     
     this.submitted = true;
     this.facilityDialog = false;
-    let facilityFormData: FormData = getFormData(this.facilityForm.getRawValue());
-    // console.log(this.facilityForm.getRawValue());
-    // return;
+    let input = this.facilityForm.getRawValue();
+    input['additional']  =  {'minimum' : this.facilityForm.get('additionalMinimum')?.value, 'fee': this.facilityForm.get('additionalFee')?.value}
+    let facilityFormData: FormData = getFormData(input);
+   
     this.facilityForm.reset();
     this.facilityService.createFacility(facilityFormData).subscribe({
       next: (createdFacility) => {
@@ -234,12 +243,14 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
 
   updateFacility() {
 
-    // console.log(this.facilityForm.getRawValue());
-    // return;
+
     this.submitted = true;
     this.facilityDialog = false;
     this.editMode = false;
-    let facilityFormData: FormData = getFormData(this.facilityForm.getRawValue());
+    let input = this.facilityForm.getRawValue();
+    input['additional']  =  {'minimum' : this.facilityForm.get('additionalMinimum')?.value, 'fee': this.facilityForm.get('additionalFee')?.value}
+    let facilityFormData: FormData = getFormData(input);
+
     this.facilityService.updateFacility(this.facility._id, facilityFormData).subscribe({
       next: (updatedFacility) => {
         const index = this.facilities.indexOf(this.facility);

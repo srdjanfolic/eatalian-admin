@@ -380,26 +380,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="info border-solid border-1 border-round p-3 border-200 mt-3">
-                        <div class="formgrid grid align-items-center">
-                            <div class="field col-9">Minimalni iznos porudžbine</div>
-                            <div class="field col-3">
-                                <input id="additionalMinimum" formControlName="additionalMinimum" pInputText
-                                    [pKeyFilter]="'num'" />
-                                <small class="p-error"
-                                    *ngIf="!facilityForm.get('additionalMinimum')!.valid && facilityForm.get('additionalMinimum')!.touched">Unesite
-                                    iznos</small>
-                            </div>
-                            <div class="field col-9">Naknada za ispod limita</div>
-                            <div class="field col-3">
-                                <input id="additionalFee" formControlName="additionalFee" pInputText
-                                    [pKeyFilter]="'num'" />
-                                <small class="p-error"
-                                    *ngIf="!facilityForm.get('additionalFee')!.valid && facilityForm.get('additionalFee')!.touched">Unesite
-                                    iznos</small>
-                            </div>
-                        </div>
-                    </div>
+                  
                     <div class="info border-solid border-1 border-round p-3 border-200 mt-3">
                         <div class="formgrid grid align-items-center">
                             <div class="field col flex align-items-center mt-2">

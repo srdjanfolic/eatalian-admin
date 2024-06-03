@@ -63,7 +63,7 @@
         </ng-template>
         <ng-template pTemplate="summary">
             <div class="p-d-flex p-ai-center p-jc-between">
-                Broj objekata:  {{facilities ? facilities.length : 0 }}
+                Broj objekata: {{facilities ? facilities.length : 0 }}
             </div>
         </ng-template>
     </p-table>
@@ -71,86 +71,129 @@
 
 
 <form [formGroup]="facilityForm">
-<p-dialog [(visible)]="facilityDialog" [style]="{width: '60vw'}" header="Detalji Objekta" [modal]="true" (onHide)="modalHide()"
-    styleClass="p-fluid">
-    
+    <p-dialog [(visible)]="facilityDialog" [style]="{width: '60vw'}" header="Detalji Objekta" [modal]="true"
+        (onHide)="modalHide()" styleClass="p-fluid">
+
         <ng-template pTemplate="content">
             <div class="field">
                 <label for="name">Naziv</label>
                 <input type="text" pInputText id="name" formControlName="name" required autofocus />
-                <small class="p-error"*ngIf="!facilityForm.get('name')!.valid && facilityForm.get('name')!.touched">Unesite naziv objekta</small>
+                <small class="p-error"
+                    *ngIf="!facilityForm.get('name')!.valid && facilityForm.get('name')!.touched">Unesite naziv
+                    objekta</small>
             </div>
             <div class="field mt-2">
                 <label for="title">Naslov</label>
                 <input id="title" pInputTextarea formControlName="title" required />
-                <small class="p-error"*ngIf="!facilityForm.get('title')!.valid && facilityForm.get('title')!.touched">Unesite naslov objekta</small>
+                <small class="p-error"
+                    *ngIf="!facilityForm.get('title')!.valid && facilityForm.get('title')!.touched">Unesite naslov
+                    objekta</small>
             </div>
             <div class="field mt-2">
                 <label for="description">Opis</label>
-                <textarea id="description" pInputTextarea formControlName="description" required rows="3" cols="20"></textarea>
-                <small class="p-error"*ngIf="!facilityForm.get('description')!.valid && facilityForm.get('description')!.touched">Unesite opis objekta</small>
+                <textarea id="description" pInputTextarea formControlName="description" required rows="3"
+                    cols="20"></textarea>
+                <small class="p-error"
+                    *ngIf="!facilityForm.get('description')!.valid && facilityForm.get('description')!.touched">Unesite
+                    opis objekta</small>
             </div>
             <div class="formgrid grid">
                 <div class="field mt-2 col-8">
                     <label for="facilityType">Tip objekta</label>
-                    <p-dropdown [options]="facilityTypes" optionLabel="name" id="facilityType" formControlName="facilityType"
-                        filterBy="facilityType" [showClear]="true" placeholder="Izaberite...">
+                    <p-dropdown [options]="facilityTypes" optionLabel="name" id="facilityType"
+                        formControlName="facilityType" filterBy="facilityType" [showClear]="true"
+                        placeholder="Izaberite...">
                     </p-dropdown>
                 </div>
                 <div class="field mt-2 col-4">
                     <label for="fee">Cijena dostave</label>
                     <input id="fee" pInputText formControlName="fee" [pKeyFilter]="'num'" id="fee" required />
-                    <small class="p-error"*ngIf="!facilityForm.get('fee')!.valid && facilityForm.get('fee')!.touched">Unesite cijenu dostave</small>
+                    <small class="p-error"
+                        *ngIf="!facilityForm.get('fee')!.valid && facilityForm.get('fee')!.touched">Unesite cijenu
+                        dostave</small>
+                </div>
+            </div>
+
+            <div class="formgrid grid align-items-center">
+                <div class="field col-3">Minimalni iznos porudžbine</div>
+                <div class="field col-3">
+                    <input id="additionalMinimum" formControlName="additionalMinimum" pInputText [pKeyFilter]="'num'" />
+                    <small class="p-error"
+                        *ngIf="!facilityForm.get('additionalMinimum')!.valid && facilityForm.get('additionalMinimum')!.touched">Unesite
+                        iznos</small>
+                </div>
+                <div class="field col-3">Naknada za ispod limita</div>
+                <div class="field col-3">
+                    <input id="additionalFee" formControlName="additionalFee" pInputText [pKeyFilter]="'num'" />
+                    <small class="p-error"
+                        *ngIf="!facilityForm.get('additionalFee')!.valid && facilityForm.get('additionalFee')!.touched">Unesite
+                        iznos</small>
                 </div>
             </div>
             <div class="field mt-2">
                 <label for="locationURL">Lokacija URL</label>
-                <textarea id="locationURL" pInputTextarea formControlName="locationURL" required rows="1" cols="20"></textarea>
+                <textarea id="locationURL" pInputTextarea formControlName="locationURL" required rows="1"
+                    cols="20"></textarea>
             </div>
             <div class="field mt-2">
                 <label for="frameURL">Mapa URL</label>
-                <textarea id="frameURL" pInputTextarea formControlName="frameURL" required rows="1" cols="20"></textarea>
+                <textarea id="frameURL" pInputTextarea formControlName="frameURL" required rows="1"
+                    cols="20"></textarea>
             </div>
             <div class="field mt-2">
-                <label for="polygon">Poligon koordinate  <a href="https://www.google.com/maps/d/u/0/?hl=en" target="_blank">LINK</a></label>
+                <label for="polygon">Poligon koordinate <a href="https://www.google.com/maps/d/u/0/?hl=en"
+                        target="_blank">LINK</a></label>
                 <textarea id="polygon" pInputTextarea formControlName="polygon" required rows="1" cols="20"></textarea>
-                <small class="p-error"*ngIf="!facilityForm.get('polygon')!.valid && facilityForm.get('polygon')!.touched">Unesite koordinate</small>
+                <small class="p-error"
+                    *ngIf="!facilityForm.get('polygon')!.valid && facilityForm.get('polygon')!.touched">Unesite
+                    koordinate</small>
             </div>
             <div class="formgrid grid">
                 <div class="field mt-2 col">
                     <label for="phone">Telefon</label>
                     <input id="phone" pInputText formControlName="phone" [pKeyFilter]="'num'" id="phone" required />
-                    <small class="p-error"*ngIf="!facilityForm.get('phone')!.valid && facilityForm.get('phone')!.touched">Unesite broj telefona</small>
+                    <small class="p-error"
+                        *ngIf="!facilityForm.get('phone')!.valid && facilityForm.get('phone')!.touched">Unesite broj
+                        telefona</small>
                 </div>
                 <div class="field mt-2 col">
                     <label for="address">Adresa</label>
                     <input type="text" pInputText id="address" formControlName="address" />
-                    <small class="p-error"*ngIf="!facilityForm.get('address')!.valid && facilityForm.get('address')!.touched">Unesite adresu objekta</small>
+                    <small class="p-error"
+                        *ngIf="!facilityForm.get('address')!.valid && facilityForm.get('address')!.touched">Unesite
+                        adresu objekta</small>
                 </div>
                 <div class="field mt-2 col">
                     <label for="city">Grad</label>
                     <input type="text" pInputText id="city" formControlName="city" />
-                    <small class="p-error"*ngIf="!facilityForm.get('city')!.valid && facilityForm.get('city')!.touched">Unesite grad</small>
+                    <small class="p-error"
+                        *ngIf="!facilityForm.get('city')!.valid && facilityForm.get('city')!.touched">Unesite
+                        grad</small>
                 </div>
             </div>
             <div class="formgrid grid">
                 <div class="field mt-2 col">
                     <label for="username">Username</label>
                     <input type="text" pInputText id="username" formControlName="username" />
-                    <small class="p-error"*ngIf="!facilityForm.get('username')!.valid && facilityForm.get('username')!.touched">Unesite username</small>
+                    <small class="p-error"
+                        *ngIf="!facilityForm.get('username')!.valid && facilityForm.get('username')!.touched">Unesite
+                        username</small>
                 </div>
                 <div class="field mt-2 col">
                     <label for="password">Password</label>
                     <input type="password" pInputText id="password" formControlName="password" />
-                    <small class="p-error"*ngIf="!facilityForm.get('password')!.valid && facilityForm.get('password')!.touched">Unesite password</small>
+                    <small class="p-error"
+                        *ngIf="!facilityForm.get('password')!.valid && facilityForm.get('password')!.touched">Unesite
+                        password</small>
                 </div>
             </div>
             <div class="field mt-2">
                 <img [src]="previewImage" style="width: 400px;">
             </div>
             <div class="field mt-2">
-                <p-fileUpload mode="basic" #fileUpload accept="image/*" [maxFileSize]="1000000" label="Slika" chooseLabel="Slika"
-                    (onSelect)="fileChangeHandler($event, fileUpload)" class="p-mr-2 p-d-inline-block"></p-fileUpload>
+                <p-fileUpload mode="basic" #fileUpload accept="image/*" [maxFileSize]="1000000" label="Slika"
+                    chooseLabel="Slika" (onSelect)="fileChangeHandler($event, fileUpload)"
+                    class="p-mr-2 p-d-inline-block"></p-fileUpload>
             </div>
             <div class="field flex align-items-center mt-2">
                 <p-inputSwitch formControlName="closed" inputId="closed"></p-inputSwitch>&nbsp;Zatvoren?
@@ -161,49 +204,43 @@
             <div class="field mt-2">
                 <label for="group1">Načini plaćanja:</label>
                 <div class="p-field-checkbox mb-2">
-                    <p-checkbox
-                      name="group1"
-                      [value]="paymentMethodType.CASH"
-                      [formControl]="$any(facilityForm).get('selectedPaymentTypes')"
-                      [inputId]="paymentMethodType.CASH"
-                    ></p-checkbox>
+                    <p-checkbox name="group1" [value]="paymentMethodType.CASH"
+                        [formControl]="$any(facilityForm).get('selectedPaymentTypes')"
+                        [inputId]="paymentMethodType.CASH"></p-checkbox>
                     <label class="ml-2" [for]="paymentMethodType.CASH">{{paymentMethodType.CASH}}</label>
-                  </div>
-                  <div class="p-field-checkbox mb-2">
-                    <p-checkbox
-                      name="group1"
-                      [value]="paymentMethodType.CC"
-                      [formControl]="$any(facilityForm).get('selectedPaymentTypes')"
-                      [inputId]="paymentMethodType.CC"
-                    ></p-checkbox>
+                </div>
+                <div class="p-field-checkbox mb-2">
+                    <p-checkbox name="group1" [value]="paymentMethodType.CC"
+                        [formControl]="$any(facilityForm).get('selectedPaymentTypes')"
+                        [inputId]="paymentMethodType.CC"></p-checkbox>
                     <label class="ml-2" [for]="paymentMethodType.CC">{{paymentMethodType.CC}}</label>
-                  </div>
-                  <div class="p-field-checkbox">
-                    <p-checkbox
-                      name="group1"
-                      [value]="paymentMethodType.FACILITY"
-                      [formControl]="$any(facilityForm).get('selectedPaymentTypes')"
-                      inputId="paymentMethodType.FACILITY"
-                    ></p-checkbox>
+                </div>
+                <div class="p-field-checkbox">
+                    <p-checkbox name="group1" [value]="paymentMethodType.FACILITY"
+                        [formControl]="$any(facilityForm).get('selectedPaymentTypes')"
+                        inputId="paymentMethodType.FACILITY"></p-checkbox>
                     <label class="ml-2" [for]="paymentMethodType.FACILITY">{{paymentMethodType.FACILITY}}</label>
-                  </div>
-                  <small class="p-error mt-2" *ngIf="!facilityForm.get('selectedPaymentTypes')!.valid && facilityForm.get('selectedPaymentTypes')!.touched">Izaberite tip plaćanja</small>
+                </div>
+                <small class="p-error mt-2"
+                    *ngIf="!facilityForm.get('selectedPaymentTypes')!.valid && facilityForm.get('selectedPaymentTypes')!.touched">Izaberite
+                    tip plaćanja</small>
             </div>
             <div class="field mt-2">
                 <label for="sortIndex">Sortiranje</label>
-                <input type="number" pInputText id="sortIndex" formControlName="sortIndex" required autofocus [pKeyFilter]="'num'" />
+                <input type="number" pInputText id="sortIndex" formControlName="sortIndex" required autofocus
+                    [pKeyFilter]="'num'" />
             </div>
 
         </ng-template>
- 
+
         <ng-template pTemplate="footer">
             <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text"
                 (click)="hideDialog()"></button>
-            <button pButton *ngIf="!editMode" [disabled]="!facilityForm.valid" pRipple label="Save" icon="pi pi-check" class="p-button-text"
-                (click)="saveFacility()"></button>
-            <button pButton *ngIf="editMode" [disabled]="!facilityForm.valid" pRipple label="Update" icon="pi pi-check" class="p-button-text"
-                (click)="updateFacility()"></button>
-        </ng-template>   
-</p-dialog>
+            <button pButton *ngIf="!editMode" [disabled]="!facilityForm.valid" pRipple label="Save" icon="pi pi-check"
+                class="p-button-text" (click)="saveFacility()"></button>
+            <button pButton *ngIf="editMode" [disabled]="!facilityForm.valid" pRipple label="Update" icon="pi pi-check"
+                class="p-button-text" (click)="updateFacility()"></button>
+        </ng-template>
+    </p-dialog>
 </form>
 <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
