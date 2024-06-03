@@ -71,7 +71,7 @@
                     <div class="product-description">{{product.description}}</div>
                     <p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"></p-rating>
                 </div>
-                <div class="product-grid-item-bottom">
+                <div class="product-grid-item-bottom flex-grow-1">
                     <span class="product-price">{{product.price | number :'.2'}} Eur</span>
                     <div class="product-list-action">
                         <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
