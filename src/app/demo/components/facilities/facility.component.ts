@@ -2,14 +2,15 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GetFacilityDto } from './dto/get-facility-dto';
 import { FacilitiesService } from './facilities.service';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, Message, SelectItem } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { WorkingHours } from './dto/working-hours.dto';
 import { getFormData, noWhitespaceValidator } from '../../shared/sharedFunctions';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { NgxPhotoEditorService } from 'ngx-photo-editor';
-import { NumberFormatStyle } from '@angular/common';
+import { DatePipe, NumberFormatStyle } from '@angular/common';
 import { SafeResourceUrl } from '@angular/platform-browser';
+import { DisabledUntilDate } from '../../shared/dto/disabled-until-date.enum';
 
 @Component({
   selector: 'app-facility',
@@ -20,6 +21,14 @@ export class FacilityComponent implements OnInit, OnDestroy {
 
   facility!: GetFacilityDto;
   clonedFacility!: GetFacilityDto;
+
+  disabledDateOptions!: SelectItem[];
+  disabledDateInfo: DisabledUntilDate|null = null;
+  disabledDate: Date|null = null;
+
+  customDate: boolean = false;
+
+  messages?: Message[];
 
   facilityDialog!: boolean;
   submitted!: boolean;
@@ -105,6 +114,15 @@ export class FacilityComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
+    this.disabledDateOptions = [
+      { label: DisabledUntilDate.FOR_1_HOUR, value: DisabledUntilDate.FOR_1_HOUR },
+      { label: DisabledUntilDate.END_OF_DAY, value: DisabledUntilDate.END_OF_DAY },
+      { label: DisabledUntilDate.ALWAYS, value: DisabledUntilDate.ALWAYS },
+      { label: DisabledUntilDate.ENABLED, value: DisabledUntilDate.ENABLED },
+      { label: DisabledUntilDate.CUSTOM, value: DisabledUntilDate.CUSTOM },
+    ];
+
     this.getFacilitiesSubscription = this.facilityService.getOwnFacility().subscribe(
       (facility: GetFacilityDto) => {
         this.facility = facility;
@@ -150,7 +168,7 @@ export class FacilityComponent implements OnInit, OnDestroy {
       ]),
       password: new FormControl(null),
       pictureFile: new FormControl(null),
-      closed: new FormControl(null),
+      closedUntil: new FormControl(null),
       mondayOpeningTime: new FormControl(null, [
         Validators.required as ValidatorFn,
         noWhitespaceValidator as ValidatorFn,
@@ -227,6 +245,11 @@ export class FacilityComponent implements OnInit, OnDestroy {
   }
 
 
+  onDisabledChange() {
+
+    this.customDate = this.disabledDateInfo === DisabledUntilDate.CUSTOM;
+    
+  }
 
   hideDialog() {
     this.facilityDialog = false;
@@ -238,7 +261,11 @@ export class FacilityComponent implements OnInit, OnDestroy {
     this.clonedFacility = this.facility;
     this.previewImage = this.clonedFacility.image;
     this.setHours();
-    console.log(this.facility.nonWorkingDates);
+
+    if(this.facility.closed && this.facility.closedUntil) {
+      let detail = new DatePipe('en-US').transform(this.facility.closedUntil, 'YYYY') == '2222' ? `Zatvoreno` : `Zatvoreno do ${new DatePipe('en-US').transform(this.facility.closedUntil, 'dd.MM.YYYY HH:mm')}h`
+      this.messages = [{ severity: 'error', detail: detail },]
+    }
     this.facilityForm.patchValue(
       {
         "name": this.facility.name,
@@ -251,7 +278,6 @@ export class FacilityComponent implements OnInit, OnDestroy {
         "city": this.facility.city,
         "fee": this.facility.fee,
         "username": this.facility.username,
-        "closed": this.facility.closed,
         "nonWorkingDates": this.facility.nonWorkingDates?.map( date =>  new Date(date)),
         "mondayOpeningTime": this.mondayOpeningTime,
         "mondayClosingTime": this.mondayClosingTime,
@@ -279,6 +305,7 @@ export class FacilityComponent implements OnInit, OnDestroy {
 
   form2facility() {
     let formValues = this.facilityForm.getRawValue();
+
     this.clonedFacility.name = formValues.name;
     this.clonedFacility.title = formValues.title;
     this.clonedFacility.description = formValues.description;
@@ -303,6 +330,7 @@ export class FacilityComponent implements OnInit, OnDestroy {
     this.clonedFacility.workingHours!.friday = new WorkingHours("PET", formValues.fridayOpeningTime!.getHours(), formValues.fridayOpeningTime!.getMinutes(), formValues.fridayClosingTime!.getHours(), formValues.fridayClosingTime!.getMinutes());
     this.clonedFacility.workingHours!.saturday = new WorkingHours("SUB", formValues.saturdayOpeningTime!.getHours(), formValues.saturdayOpeningTime!.getMinutes(), formValues.saturdayClosingTime!.getHours(), formValues.saturdayClosingTime!.getMinutes());
     this.clonedFacility.workingHours!.sunday = new WorkingHours("NED", formValues.sundayOpeningTime!.getHours(), formValues.sundayOpeningTime!.getMinutes(), formValues.sundayClosingTime!.getHours(), formValues.sundayClosingTime!.getMinutes());
+    this.clonedFacility.closedUntil = {'until' : this.disabledDateInfo, 'value' : this.disabledDate};
   }
   updateFacility() {
     this.form2facility()
@@ -312,6 +340,8 @@ export class FacilityComponent implements OnInit, OnDestroy {
     this.editMode = false;
     let facilityFormData: FormData = getFormData(this.clonedFacility);
     this.facilityForm.reset();
+    this.disabledDateInfo = null;
+    this.disabledDate = null;
     this.facilityService.updateOwnFacility(this.clonedFacility._id, facilityFormData).subscribe({
       next: (updatedFacility) => {
         this.facility = updatedFacility;
@@ -334,6 +364,8 @@ export class FacilityComponent implements OnInit, OnDestroy {
 
   modalHide() {
     this.facilityForm.reset();
+    this.disabledDateInfo = null;
+    this.disabledDate = null;
   }
 
   fileChangeHandler($event: any, fileUpload: any) {

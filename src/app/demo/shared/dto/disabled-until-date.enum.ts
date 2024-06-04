@@ -3,5 +3,5 @@ export enum DisabledUntilDate {
     END_OF_DAY = "Do kraja radnog dana",
     ALWAYS = "Za stalno",
     CUSTOM = "Izaberi datum i vrijeme",
-    ENABLED = "Omogući proizvod"
+    ENABLED = "Omogući"
 }

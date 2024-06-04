@@ -25,6 +25,7 @@ export class GetFacilityDto {
         deliveryTime?: DeliveryTime;
         additional?: Additional;
         closed?: boolean;
+        closedUntil?: any;
         deleted?: boolean;
         selectedPaymentTypes?: PaymentMethodType[];
         sortIndex?: number;

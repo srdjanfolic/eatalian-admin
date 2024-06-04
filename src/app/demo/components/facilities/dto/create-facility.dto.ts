@@ -12,7 +12,7 @@ export class CreateFacilityDto {
     username: string,
     password: string,
     fee: number,
-    closed: boolean,
+    closedUntil: any,
     sortindex: number
   ) { }
 }

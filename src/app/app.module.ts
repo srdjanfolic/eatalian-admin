@@ -30,6 +30,7 @@ import {RatingModule} from 'primeng/rating';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import {ChipsModule} from 'primeng/chips';
 import {CheckboxModule} from 'primeng/checkbox';
+import { MessagesModule } from 'primeng/messages';
 
 import {NgxPhotoEditorModule} from "ngx-photo-editor";
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -42,6 +43,7 @@ import { StatsComponent } from './demo/components/stats/stats.component';
 import { MyStatsComponent } from './demo/components/stats/my-stats.component';
 import { ChartModule } from 'primeng/chart';
 import { FacilityTypesComponent } from './demo/components/facility-types/facility-types.component';
+
 
 
 const NG_MODULES=  [
@@ -69,7 +71,8 @@ const NG_MODULES=  [
     CalendarModule,
     ChartModule,
     ChipsModule,
-    CheckboxModule
+    CheckboxModule,
+    MessagesModule
     
 ];
 

@@ -195,8 +195,24 @@
                     chooseLabel="Slika" (onSelect)="fileChangeHandler($event, fileUpload)"
                     class="p-mr-2 p-d-inline-block"></p-fileUpload>
             </div>
-            <div class="field flex align-items-center mt-2">
-                <p-inputSwitch formControlName="closed" inputId="closed"></p-inputSwitch>&nbsp;Zatvoren?
+            <div class="formgrid grid" *ngIf="facility.closed && messages">
+                <div class="field mt-2 col">
+                    <p-messages [(value)]="messages" [closable]="false"></p-messages>
+                </div>
+            </div>
+            <div class="formgrid grid">
+                <div class="field mt-2 col">
+                    <label for="closedUntil">Zatvori/Otvori:</label>
+                    <p-dropdown [options]="disabledDateOptions" [(ngModel)]="disabledDateInfo"
+                        [ngModelOptions]="{standalone: true}" placeholder="Izaberi..." (onChange)="onDisabledChange()"
+                        appendTo="body" scrollHeight="300px" styleClass="mb-2 md:mb-0"></p-dropdown>
+                </div>
+                <div class="field mt-2 col">
+                    <label for="closedDate" *ngIf="customDate">Izaberi Datum</label>
+                    <p-calendar [style]="{'width':'70%'}" *ngIf="customDate" [(ngModel)]="disabledDate"
+                        [ngModelOptions]="{standalone: true}" [showTime]="true" [hourFormat]="'24'"
+                        [dateFormat]="'dd.mm.yy'" appendTo="body"></p-calendar>
+                </div>
             </div>
             <div class="field flex align-items-center mt-2">
                 <p-inputSwitch formControlName="deleted" inputId="deleted"></p-inputSwitch>&nbsp;Izbrisan?

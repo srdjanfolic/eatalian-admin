@@ -122,10 +122,12 @@
             </div>
         </div>
         <div class="col-12 md:col-3">
-            <div class="info border-solid border-1 border-round p-3 mb-3 border-200" *ngIf=" facility.additional!.minimum && facility.additional!.minimum > 0">
+            <div class="info border-solid border-1 border-round p-3 mb-3 border-200"
+                *ngIf=" facility.additional!.minimum && facility.additional!.minimum > 0">
                 <div class="grid">
                     <div class="col-12">Minimalni iznos porudžbine
-                        <br>Ispod <b>{{facility.additional?.minimum}} &euro; </b>- cijena dostave je <b>{{facility.additional?.fee}} &euro;</b>
+                        <br>Ispod <b>{{facility.additional?.minimum}} &euro; </b>- cijena dostave je
+                        <b>{{facility.additional?.fee}} &euro;</b>
                     </div>
                 </div>
             </div>
@@ -162,9 +164,10 @@
                     <label for="phone">Telefon</label>
                     <div class="p-inputgroup">
                         <span class="p-inputgroup-addon"><span class="me-1"></span> +382 </span>
-                        <input formControlName="phone" id="phone" type="number" placeholder="Unesite telefon..." required  pInputText>   
-                      </div>
-                
+                        <input formControlName="phone" id="phone" type="number" placeholder="Unesite telefon..."
+                            required pInputText>
+                    </div>
+
                     <small class="p-error"
                         *ngIf="!facilityForm.get('phone')!.valid && facilityForm.get('phone')!.touched">Unesite
                         telefon<br></small>
@@ -185,7 +188,7 @@
                         username<br></small>
                     <label for="password">Password</label>
                     <input class="mb-2" type="password" pInputText id="password" formControlName="password" />
-                
+
                     <img [src]="previewImage" style="width: 400px;">
                     <p-fileUpload class="mb-2" mode="basic" accept="image/*" [maxFileSize]="1000000" label="Slika"
                         chooseLabel="Slika" #fileUpload (onSelect)="fileChangeHandler($event, fileUpload)"
@@ -335,14 +338,8 @@
                     </div>
                     <div class="neradniDani border-200 mt-3">
                         Neradni dani
-                        <p-calendar formControlName="nonWorkingDates"
-                            [showIcon]="true"
-                            selectionMode="multiple"
-                            [showButtonBar]="true"
-                            dateFormat="dd.mm.yy"
-                            [minDate]="minDate"
-                            
-                        >
+                        <p-calendar formControlName="nonWorkingDates" [showIcon]="true" selectionMode="multiple"
+                            [showButtonBar]="true" dateFormat="dd.mm.yy" [minDate]="minDate">
                         </p-calendar>
                     </div>
                     <div class="info border-solid border-1 border-round p-3 border-200 mt-3">
@@ -372,24 +369,37 @@
                         <div class="formgrid grid align-items-center">
                             <div class="field col-6">Cijena dostave</div>
                             <div class="field col">
-                                <input id="fee" formControlName="fee" pInputText
-                                    [pKeyFilter]="'num'" />
+                                <input id="fee" formControlName="fee" pInputText [pKeyFilter]="'num'" />
                                 <small class="p-error"
                                     *ngIf="!facilityForm.get('fee')!.valid && facilityForm.get('fee')!.touched">Unesite
                                     cijenu dostave</small>
                             </div>
                         </div>
                     </div>
-                  
+
                     <div class="info border-solid border-1 border-round p-3 border-200 mt-3">
-                        <div class="formgrid grid align-items-center">
-                            <div class="field col flex align-items-center mt-2">
-                                <p-inputSwitch formControlName="closed" inputId="closed"></p-inputSwitch>&nbsp;Zatvoren
+                        <div class="formgrid grid align-items-center" *ngIf="facility.closed && messages">
+                            <div class="field mt-2 col-12">
+                                <p-messages [(value)]="messages" [closable]="false"></p-messages>
                             </div>
+                        </div>
+                        <div class="field mt-2 col-12">
+                            <label for="closedUntil">Zatvori/Otvori:</label>
+                            <p-dropdown [options]="disabledDateOptions" [(ngModel)]="disabledDateInfo"
+                                [ngModelOptions]="{standalone: true}" placeholder="Izaberi..."
+                                (onChange)="onDisabledChange()" appendTo="body" scrollHeight="300px"
+                                styleClass="mb-2 md:mb-0"></p-dropdown>
+                        </div>
+                        <div class="field mt-2 col-12">
+                            <label for="closedDate" *ngIf="customDate">Izaberi Datum</label>
+                            <p-calendar [style]="{'width':'70%'}" *ngIf="customDate" [(ngModel)]="disabledDate"
+                                [ngModelOptions]="{standalone: true}" [showTime]="true" [hourFormat]="'24'"
+                                [dateFormat]="'dd.mm.yy'" appendTo="body"></p-calendar>
                         </div>
                     </div>
                 </div>
             </div>
+
         </ng-template>
 
         <ng-template pTemplate="footer">

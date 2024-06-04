@@ -11,8 +11,8 @@ import { ProductsService } from './products.service';
 import { GetCategoryListDto } from '../categories/dto/get-category-list.dto';
 import { UpdateSuggestedProductsDto } from './dto/update-suggested-products.dto';
 import { FormArray, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { DisabledDateInfoDto } from './dto/disabled-date-info.dto';
-import { DisabledUntilDate } from './dto/disabled-until-date.enum';
+import { DisabledDateInfoDto } from '../../shared/dto/disabled-date-info.dto';
+import { DisabledUntilDate } from '../../shared/dto/disabled-until-date.enum';
 import { Unit } from './dto/unit.enum';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
@@ -398,8 +398,6 @@ export class ProductsComponent implements OnInit {
   onDisabledChange() {
 
     this.customDate = this.disabledDateInfo === DisabledUntilDate.CUSTOM;
-
-
 
   }
 

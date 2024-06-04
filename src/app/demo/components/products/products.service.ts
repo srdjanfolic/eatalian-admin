@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 import { GetCategoryListDto } from '../categories/dto/get-category-list.dto';
 import { GetFacilityDto } from '../facilities/dto/get-facility-dto';
 import { DeleteManyProductsDto } from './dto/delete-many-products.dto';
-import { DisabledDateInfoDto } from './dto/disabled-date-info.dto';
+import { DisabledDateInfoDto } from '../../shared/dto/disabled-date-info.dto';
 import { GetProductDto } from './dto/get-product.dto';
 import { UpdateSuggestedProductsDto } from './dto/update-suggested-products.dto';
 

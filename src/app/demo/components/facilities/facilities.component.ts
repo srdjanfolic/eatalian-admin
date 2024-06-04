@@ -3,7 +3,7 @@ import { FileUpload } from 'primeng/fileupload';
 import { Subscription } from 'rxjs';
 import { GetFacilityDto } from './dto/get-facility-dto';
 import { FacilitiesService } from './facilities.service';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, Message, SelectItem } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { DeleteManyFacilitiesDto } from './dto/delete-many-facilities.dto';
 import { getFormData, noWhitespaceValidator } from '../../shared/sharedFunctions';
@@ -14,6 +14,8 @@ import { FacilityTypesService } from '../facility-types/facility-types.service';
 import { GetFacilityTypeDto } from '../facility-types/dto/get-facility-type.dto';
 import { PaymentMethodType } from '../../shared/dto/payment-method-type.enum';
 import { SafeResourceUrl } from '@angular/platform-browser';
+import { DisabledUntilDate } from '../../shared/dto/disabled-until-date.enum';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -23,6 +25,12 @@ import { SafeResourceUrl } from '@angular/platform-browser';
 })
 export class FacilitiesComponent implements OnInit, OnDestroy {
 
+
+  disabledDateOptions!: SelectItem[];
+  disabledDateInfo: DisabledUntilDate | null = null;
+  disabledDate: Date | null = null;
+
+  customDate: boolean = false;
 
   facilities: GetFacilityDto[] = [];
   facilityTypes: GetFacilityTypeDto[] = [];
@@ -39,6 +47,8 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
   private getFacilitiesSubscription!: Subscription;
   private getFacilityTypesSubscription!: Subscription;
 
+  messages?: Message[];
+
   constructor(
     private facilityService: FacilitiesService,
     private facilityTypesService: FacilityTypesService,
@@ -50,6 +60,8 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+
+
     this.getFacilitiesSubscription = this.facilityService.getFacilities().subscribe(
       (facilities: GetFacilityDto[]) => {
         this.facilities = facilities;
@@ -60,6 +72,14 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
         this.facilityTypes = facilityTypes;
       }
     );
+    this.disabledDateOptions = [
+      { label: DisabledUntilDate.FOR_1_HOUR, value: DisabledUntilDate.FOR_1_HOUR },
+      { label: DisabledUntilDate.END_OF_DAY, value: DisabledUntilDate.END_OF_DAY },
+      { label: DisabledUntilDate.ALWAYS, value: DisabledUntilDate.ALWAYS },
+      { label: DisabledUntilDate.ENABLED, value: DisabledUntilDate.ENABLED },
+      { label: DisabledUntilDate.CUSTOM, value: DisabledUntilDate.CUSTOM },
+    ];
+
     this.facilityForm = new FormGroup({
       name: new FormControl(null, [
         Validators.required as ValidatorFn,
@@ -106,13 +126,14 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
         noWhitespaceValidator as ValidatorFn,
       ]),
       password: new FormControl(null, [
-          Validators.required as ValidatorFn,
-          noWhitespaceValidator as ValidatorFn,
-        ]),
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
+      ]),
       pictureFile: new FormControl(null),
-      closed: new FormControl(null),
+      closedUntil: new FormControl(null),
+
       deleted: new FormControl(null),
-      selectedPaymentTypes: new FormControl<PaymentMethodType[]|null>([], [Validators.required]),
+      selectedPaymentTypes: new FormControl<PaymentMethodType[] | null>([], [Validators.required]),
       sortIndex: new FormControl(1000),
     });
   }
@@ -124,6 +145,14 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
 
   modalHide() {
     this.facilityForm.reset();
+    this.disabledDateInfo = null;
+    this.disabledDate = null;
+  }
+
+  onDisabledChange() {
+
+    this.customDate = this.disabledDateInfo === DisabledUntilDate.CUSTOM;
+
   }
 
   deleteSelectedFacilities() {
@@ -162,31 +191,37 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
   hideDialog() {
     this.facilityDialog = false;
     this.facilityForm.reset();
+    this.disabledDateInfo = null;
+    this.disabledDate = null;
     this.submitted = false;
   }
 
   editFacility(facility: GetFacilityDto) {
     this.editMode = true;
     this.facility = facility;
+    console.log(typeof facility.closedUntil, facility.closedUntil)
+    if (facility.closed && facility.closedUntil) {
+      let detail = new DatePipe('en-US').transform(facility.closedUntil, 'YYYY') == '2222' ? `Zatvoreno` : `Zatvoreno do ${new DatePipe('en-US').transform(facility.closedUntil, 'dd.MM.YYYY HH:mm')}h`
+      this.messages = [{ severity: 'error', detail: detail },]
+    }
     this.previewImage = facility.image;
     this.submitted = false;
     this.facilityDialog = true;
     this.facilityForm.patchValue(
       {
-        "name" : facility.name,
-        "title" : facility.title,
-        "description" : facility.description,
-        "facilityType" : facility.facilityType,
-        "fee" : facility.fee,
-        "locationURL" : facility.locationURL,
-        "frameURL" : facility.frameURL,
-        "phone" : facility.phone,
-        "address" : facility.address,
-        "city" : facility.city,
-        "polygon" : facility.polygon,
-        "username" : facility.username,
-        "closed" : facility.closed,
-        "deleted" : facility.deleted,
+        "name": facility.name,
+        "title": facility.title,
+        "description": facility.description,
+        "facilityType": facility.facilityType,
+        "fee": facility.fee,
+        "locationURL": facility.locationURL,
+        "frameURL": facility.frameURL,
+        "phone": facility.phone,
+        "address": facility.address,
+        "city": facility.city,
+        "polygon": facility.polygon,
+        "username": facility.username,
+        "deleted": facility.deleted,
         "selectedPaymentTypes": facility.selectedPaymentTypes,
         "sortIndex": facility.sortIndex,
         "additionalMinimum": facility.additional?.minimum,
@@ -220,23 +255,30 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
   }
 
   saveFacility() {
-    
+
     this.submitted = true;
     this.facilityDialog = false;
     let input = this.facilityForm.getRawValue();
-    input['additional']  =  {'minimum' : this.facilityForm.get('additionalMinimum')?.value, 'fee': this.facilityForm.get('additionalFee')?.value}
+    input['closedUntil'] = { 'until': this.disabledDateInfo, 'value': this.disabledDate };
+    input['additional'] = { 'minimum': this.facilityForm.get('additionalMinimum')?.value, 'fee': this.facilityForm.get('additionalFee')?.value }
     let facilityFormData: FormData = getFormData(input);
-   
-    this.facilityForm.reset();
+
+
     this.facilityService.createFacility(facilityFormData).subscribe({
       next: (createdFacility) => {
         this.facility = {};
         this.facilities.push(createdFacility);
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facility created!', life: 5000 });
+        this.facilityForm.reset();
+        this.disabledDateInfo = null;
+        this.disabledDate = null;
       },
       error: () => {
         this.facility = {};
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error creating facility', life: 5000 });
+        this.facilityForm.reset();
+        this.disabledDateInfo = null;
+        this.disabledDate = null;
       }
     });
   }
@@ -248,7 +290,8 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
     this.facilityDialog = false;
     this.editMode = false;
     let input = this.facilityForm.getRawValue();
-    input['additional']  =  {'minimum' : this.facilityForm.get('additionalMinimum')?.value, 'fee': this.facilityForm.get('additionalFee')?.value}
+    input['closedUntil'] = { 'until': this.disabledDateInfo, 'value': this.disabledDate };
+    input['additional'] = { 'minimum': this.facilityForm.get('additionalMinimum')?.value, 'fee': this.facilityForm.get('additionalFee')?.value };
     let facilityFormData: FormData = getFormData(input);
 
     this.facilityService.updateFacility(this.facility._id, facilityFormData).subscribe({
