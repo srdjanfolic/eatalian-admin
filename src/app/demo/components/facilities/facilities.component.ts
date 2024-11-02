@@ -7,7 +7,7 @@ import { ConfirmationService, Message, SelectItem } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { DeleteManyFacilitiesDto } from './dto/delete-many-facilities.dto';
 import { getFormData, noWhitespaceValidator } from '../../shared/sharedFunctions';
-import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { NgxPhotoEditorService } from 'ngx-photo-editor';
 import { ValidateFn } from 'mongoose';
 import { FacilityTypesService } from '../facility-types/facility-types.service';
@@ -16,6 +16,8 @@ import { PaymentMethodType } from '../../shared/dto/payment-method-type.enum';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { DisabledUntilDate } from '../../shared/dto/disabled-until-date.enum';
 import { DatePipe } from '@angular/common';
+import { WorkingHours } from './dto/working-hours.dto';
+import { CreateFacilityDto } from './dto/create-facility.dto';
 
 
 @Component({
@@ -35,7 +37,9 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
   facilities: GetFacilityDto[] = [];
   facilityTypes: GetFacilityTypeDto[] = [];
   selectedFacilities: GetFacilityDto[] = [];
+
   facility!: GetFacilityDto;
+  clonedFacility!: GetFacilityDto;
 
   facilityDialog!: boolean;
   submitted!: boolean;
@@ -131,13 +135,31 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
       ]),
       pictureFile: new FormControl(null),
       closedUntil: new FormControl(null),
+      deliveryTimeFrom: new FormControl(null, [
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
+      ]),
+      deliveryTimeTo: new FormControl(null, [
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
+      ]),
 
       deleted: new FormControl(null),
       selectedPaymentTypes: new FormControl<PaymentMethodType[] | null>([], [Validators.required]),
       sortIndex: new FormControl(1000),
-    });
+    },
+      { validators: [this.validDeliveryTime] });
   }
 
+
+  validDeliveryTime(control: AbstractControl): ValidationErrors | null {
+
+    const from = control.get("deliveryTimeFrom")?.value;
+    const to = control.get("deliveryTimeTo")?.value;
+    if (from > to)
+      return { 'invalidInterval': true };
+    return null;
+  }
   ngOnDestroy(): void {
     this.getFacilitiesSubscription.unsubscribe();
     this.getFacilityTypesSubscription.unsubscribe();
@@ -153,6 +175,42 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
 
     this.customDate = this.disabledDateInfo === DisabledUntilDate.CUSTOM;
 
+  }
+
+  form2facility() {
+
+    
+
+    let formValues = this.facilityForm.getRawValue();
+    this.clonedFacility['name'] = formValues.name;
+    this.clonedFacility['title'] = formValues.title;
+    this.clonedFacility['description'] = formValues.description;
+    this.clonedFacility['facilityType'] = formValues.facilityType;
+    this.clonedFacility['fee'] = formValues.fee;
+    this.clonedFacility['additional'] = {'minimum': formValues.additionalMinimum, 'fee': formValues.additionalFee},
+    this.clonedFacility['locationURL'] = formValues.locationURL;
+    this.clonedFacility['frameURL'] = formValues.frameURL;
+    this.clonedFacility['polygon'] = formValues.polygon;
+    this.clonedFacility['city'] = formValues.city;
+    this.clonedFacility['address'] = formValues.address;
+    this.clonedFacility['phone'] = formValues.phone;
+    this.clonedFacility['username'] = formValues.username;
+    this.clonedFacility['password'] = formValues?.password;
+    this.clonedFacility['pictureFile'] = formValues?.pictureFile;
+    this.clonedFacility['deliveryTime'] = { 'from': formValues.deliveryTimeFrom, 'to': formValues.deliveryTimeTo };
+    this.clonedFacility['closedUntil'] = { 'until': this.disabledDateInfo, 'value': this.disabledDate };
+    this.clonedFacility['deleted'] = formValues.deleted;
+    this.clonedFacility['selectedPaymentTypes'] = formValues.selectedPaymentTypes;
+    this.clonedFacility['sortIndex'] = formValues.sortIndex;
+    /*
+    this.clonedFacility.workingHours!.monday = new WorkingHours("PON", formValues.mondayOpeningTime!.getHours(), formValues.mondayOpeningTime!.getMinutes(), formValues.mondayClosingTime!.getHours(), formValues.mondayClosingTime!.getMinutes());
+    this.clonedFacility.workingHours!.tuesday = new WorkingHours("UTO", formValues.tuesdayOpeningTime!.getHours(), formValues.tuesdayOpeningTime!.getMinutes(), formValues.tuesdayClosingTime!.getHours(), formValues.tuesdayClosingTime!.getMinutes());
+    this.clonedFacility.workingHours!.wednesday = new WorkingHours("SRI", formValues.wednesdayOpeningTime!.getHours(), formValues.wednesdayOpeningTime!.getMinutes(), formValues.wednesdayClosingTime!.getHours(), formValues.wednesdayClosingTime!.getMinutes());
+    this.clonedFacility.workingHours!.thursday = new WorkingHours("ČET", formValues.thursdayOpeningTime!.getHours(), formValues.thursdayOpeningTime!.getMinutes(), formValues.thursdayClosingTime!.getHours(), formValues.thursdayClosingTime!.getMinutes());
+    this.clonedFacility.workingHours!.friday = new WorkingHours("PET", formValues.fridayOpeningTime!.getHours(), formValues.fridayOpeningTime!.getMinutes(), formValues.fridayClosingTime!.getHours(), formValues.fridayClosingTime!.getMinutes());
+    this.clonedFacility.workingHours!.saturday = new WorkingHours("SUB", formValues.saturdayOpeningTime!.getHours(), formValues.saturdayOpeningTime!.getMinutes(), formValues.saturdayClosingTime!.getHours(), formValues.saturdayClosingTime!.getMinutes());
+    this.clonedFacility.workingHours!.sunday = new WorkingHours("NED", formValues.sundayOpeningTime!.getHours(), formValues.sundayOpeningTime!.getMinutes(), formValues.sundayClosingTime!.getHours(), formValues.sundayClosingTime!.getMinutes());
+    */
   }
 
   deleteSelectedFacilities() {
@@ -199,6 +257,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
   editFacility(facility: GetFacilityDto) {
     this.editMode = true;
     this.facility = facility;
+    this.clonedFacility = facility
     console.log(typeof facility.closedUntil, facility.closedUntil)
     if (facility.closed && facility.closedUntil) {
       let detail = new DatePipe('en-US').transform(facility.closedUntil, 'YYYY') == '2222' ? `Zatvoreno` : `Zatvoreno do ${new DatePipe('en-US').transform(facility.closedUntil, 'dd.MM.YYYY HH:mm')}h`
@@ -226,6 +285,8 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
         "sortIndex": facility.sortIndex,
         "additionalMinimum": facility.additional?.minimum,
         "additionalFee": facility.additional?.fee,
+        "deliveryTimeFrom": this.facility.deliveryTime?.from,
+        "deliveryTimeTo": this.facility.deliveryTime?.to,
       }
     );
     this.facilityForm.get('password')?.clearValidators();
@@ -258,11 +319,9 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
 
     this.submitted = true;
     this.facilityDialog = false;
-    let input = this.facilityForm.getRawValue();
-    input['closedUntil'] = { 'until': this.disabledDateInfo, 'value': this.disabledDate };
-    input['additional'] = { 'minimum': this.facilityForm.get('additionalMinimum')?.value, 'fee': this.facilityForm.get('additionalFee')?.value }
-    let facilityFormData: FormData = getFormData(input);
-
+    this.clonedFacility = new GetFacilityDto();
+    this.form2facility();
+    let facilityFormData: FormData = getFormData(this.clonedFacility);
 
     this.facilityService.createFacility(facilityFormData).subscribe({
       next: (createdFacility) => {
@@ -289,10 +348,8 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
     this.submitted = true;
     this.facilityDialog = false;
     this.editMode = false;
-    let input = this.facilityForm.getRawValue();
-    input['closedUntil'] = { 'until': this.disabledDateInfo, 'value': this.disabledDate };
-    input['additional'] = { 'minimum': this.facilityForm.get('additionalMinimum')?.value, 'fee': this.facilityForm.get('additionalFee')?.value };
-    let facilityFormData: FormData = getFormData(input);
+    this.form2facility();
+    let facilityFormData: FormData = getFormData(this.clonedFacility);
 
     this.facilityService.updateFacility(this.facility._id, facilityFormData).subscribe({
       next: (updatedFacility) => {

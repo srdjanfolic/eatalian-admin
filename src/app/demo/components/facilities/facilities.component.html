@@ -214,6 +214,27 @@
                         [dateFormat]="'dd.mm.yy'" appendTo="body"></p-calendar>
                 </div>
             </div>
+            <div class="formgrid grid">
+                <div class="field col-12">Vrijeme dostave(min)</div>
+                <div class="field col-3">
+                    <input id="deliveryTimeFrom" formControlName="deliveryTimeFrom" pInputText
+                        [pKeyFilter]="'num'" />
+                    <small class="p-error"
+                        *ngIf="!facilityForm.get('deliveryTimeFrom')!.valid && facilityForm.get('deliveryTimeFrom')!.touched">Unesite
+                        minute</small>
+                    <small class="p-error" *ngIf="facilityForm.errors?.['invalidInterval']">Opseg nije
+                        dobar</small>
+                </div>
+                <div class="field col-3">
+                    <input id="deliveryTimeTo" formControlName="deliveryTimeTo" pInputText
+                        [pKeyFilter]="'num'" />
+                    <small class="p-error"
+                        *ngIf="!facilityForm.get('deliveryTimeTo')!.valid && facilityForm.get('deliveryTimeTo')!.touched">Unesite
+                        minute</small>
+                    <small class="p-error" *ngIf="facilityForm.errors?.['invalidInterval']">Opseg nije
+                        dobar</small>
+                </div>
+            </div>
             <div class="field flex align-items-center mt-2">
                 <p-inputSwitch formControlName="deleted" inputId="deleted"></p-inputSwitch>&nbsp;Izbrisan?
             </div>
