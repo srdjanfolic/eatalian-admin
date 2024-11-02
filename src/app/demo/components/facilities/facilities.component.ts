@@ -51,6 +51,21 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
   private getFacilitiesSubscription!: Subscription;
   private getFacilityTypesSubscription!: Subscription;
 
+  mondayOpeningTime?: Date;
+  tuesdayOpeningTime?: Date;
+  wednesdayOpeningTime?: Date;
+  thursdayOpeningTime?: Date;
+  fridayOpeningTime?: Date;
+  saturdayOpeningTime?: Date;
+  sundayOpeningTime?: Date;
+  mondayClosingTime?: Date;
+  tuesdayClosingTime?: Date;
+  wednesdayClosingTime?: Date;
+  thursdayClosingTime?: Date;
+  fridayClosingTime?: Date;
+  saturdayClosingTime?: Date;
+  sundayClosingTime?: Date;
+
   messages?: Message[];
 
   constructor(
@@ -62,8 +77,90 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
   ) { }
 
 
+  setDefaultHours() {
+
+    this.mondayOpeningTime = new Date();
+    this.mondayOpeningTime.setHours(9, 0, 0, 0);
+    this.mondayClosingTime = new Date();
+    this.mondayClosingTime.setHours(22, 0, 0, 0);
+
+    this.tuesdayOpeningTime = new Date();
+    this.tuesdayOpeningTime.setHours(8, 0, 0, 0);
+    this.tuesdayClosingTime = new Date();
+    this.tuesdayClosingTime.setHours(22, 0, 0, 0);
+
+    this.wednesdayOpeningTime = new Date();
+    this.wednesdayOpeningTime.setHours(8, 0, 0, 0);
+    this.wednesdayClosingTime = new Date();
+    this.wednesdayClosingTime.setHours(22, 0, 0, 0);
+
+    this.thursdayOpeningTime = new Date();
+    this.thursdayOpeningTime.setHours(8, 0, 0, 0);
+    this.thursdayClosingTime = new Date();
+    this.thursdayClosingTime.setHours(22, 0, 0, 0);
+
+    this.fridayOpeningTime = new Date();
+    this.fridayOpeningTime.setHours(8, 0, 0, 0);
+    this.fridayClosingTime = new Date();
+    this.fridayClosingTime.setHours(22, 0, 0, 0);
+
+    this.saturdayOpeningTime = new Date();
+    this.saturdayOpeningTime.setHours(8, 0, 0, 0);
+    this.saturdayClosingTime = new Date();
+    this.saturdayClosingTime.setHours(22, 0, 0, 0);
+
+    this.sundayOpeningTime = new Date();
+    this.sundayOpeningTime.setHours(0, 0, 0, 0);
+    this.sundayClosingTime = new Date();
+    this.sundayClosingTime.setHours(0, 0, 0, 0);
+
+  }
+
+  setHours() {
+
+    this.mondayOpeningTime = new Date();
+    this.mondayOpeningTime.setHours(this.facility.workingHours?.monday?.openingHours || 0, this.facility.workingHours?.monday?.openingMinutes, 0, 0);
+    this.mondayClosingTime = new Date();
+    this.mondayClosingTime.setHours(this.facility.workingHours?.monday?.closingHours || 0, this.facility.workingHours?.monday?.closingMinutes, 0, 0);
+
+    this.tuesdayOpeningTime = new Date();
+    this.tuesdayOpeningTime.setHours(this.facility.workingHours?.tuesday?.openingHours || 0, this.facility.workingHours?.tuesday?.openingMinutes, 0, 0);
+    this.tuesdayClosingTime = new Date();
+    this.tuesdayClosingTime.setHours(this.facility.workingHours?.tuesday?.closingHours || 0, this.facility.workingHours?.tuesday?.closingMinutes, 0, 0);
+
+    this.wednesdayOpeningTime = new Date();
+    this.wednesdayOpeningTime.setHours(this.facility.workingHours?.wednesday?.openingHours || 0, this.facility.workingHours?.wednesday?.openingMinutes, 0, 0);
+    this.wednesdayClosingTime = new Date();
+    this.wednesdayClosingTime.setHours(this.facility.workingHours?.wednesday?.closingHours || 0, this.facility.workingHours?.wednesday?.closingMinutes, 0, 0);
+
+    this.thursdayOpeningTime = new Date();
+    this.thursdayOpeningTime.setHours(this.facility.workingHours?.thursday?.openingHours || 0, this.facility.workingHours?.thursday?.openingMinutes, 0, 0);
+    this.thursdayClosingTime = new Date();
+    this.thursdayClosingTime.setHours(this.facility.workingHours?.thursday?.closingHours || 0, this.facility.workingHours?.thursday?.closingMinutes, 0, 0);
+
+    this.fridayOpeningTime = new Date();
+    this.fridayOpeningTime.setHours(this.facility.workingHours?.friday?.openingHours || 0, this.facility.workingHours?.friday?.openingMinutes, 0, 0);
+    this.fridayClosingTime = new Date();
+    this.fridayClosingTime.setHours(this.facility.workingHours?.friday?.closingHours || 0, this.facility.workingHours?.friday?.closingMinutes, 0, 0);
+
+    this.saturdayOpeningTime = new Date();
+    this.saturdayOpeningTime.setHours(this.facility.workingHours?.saturday?.openingHours || 0, this.facility.workingHours?.saturday?.openingMinutes, 0, 0);
+    this.saturdayClosingTime = new Date();
+    this.saturdayClosingTime.setHours(this.facility.workingHours?.saturday?.closingHours || 0, this.facility.workingHours?.saturday?.closingMinutes, 0, 0);
+
+    this.sundayOpeningTime = new Date();
+    this.sundayOpeningTime.setHours(this.facility.workingHours?.sunday?.openingHours || 0, this.facility.workingHours?.sunday?.openingMinutes, 0, 0);
+    this.sundayClosingTime = new Date();
+    this.sundayClosingTime.setHours(this.facility.workingHours?.sunday?.closingHours || 0, this.facility.workingHours?.sunday?.closingMinutes, 0, 0);
+
+
+  }
+
+
 
   ngOnInit(): void {
+
+    this.setDefaultHours();
 
 
     this.getFacilitiesSubscription = this.facilityService.getFacilities().subscribe(
@@ -135,6 +232,62 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
       ]),
       pictureFile: new FormControl(null),
       closedUntil: new FormControl(null),
+      mondayOpeningTime: new FormControl(this.mondayOpeningTime, [
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
+      ]),
+      mondayClosingTime: new FormControl(this.mondayClosingTime, [
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
+      ]),
+      tuesdayOpeningTime: new FormControl(this.tuesdayOpeningTime, [
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
+      ]),
+      tuesdayClosingTime: new FormControl(this.tuesdayClosingTime, [
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
+      ]),
+      wednesdayOpeningTime: new FormControl(this.wednesdayOpeningTime, [
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
+      ]),
+      wednesdayClosingTime: new FormControl(this.wednesdayClosingTime, [
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
+      ]),
+      thursdayOpeningTime: new FormControl(this.thursdayOpeningTime, [
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
+      ]),
+      thursdayClosingTime: new FormControl(this.thursdayClosingTime, [
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
+      ]),
+      fridayOpeningTime: new FormControl(this.fridayOpeningTime, [
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
+      ]),
+      fridayClosingTime: new FormControl(this.fridayClosingTime, [
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
+      ]),
+      saturdayOpeningTime: new FormControl(this.saturdayOpeningTime, [
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
+      ]),
+      saturdayClosingTime: new FormControl(this.saturdayClosingTime, [
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
+      ]),
+      sundayOpeningTime: new FormControl(this.sundayOpeningTime, [
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
+      ]),
+      sundayClosingTime: new FormControl(this.sundayClosingTime, [
+        Validators.required as ValidatorFn,
+        noWhitespaceValidator as ValidatorFn,
+      ]),
       deliveryTimeFrom: new FormControl(null, [
         Validators.required as ValidatorFn,
         noWhitespaceValidator as ValidatorFn,
@@ -179,7 +332,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
 
   form2facility() {
 
-    
+
 
     let formValues = this.facilityForm.getRawValue();
     this.clonedFacility['name'] = formValues.name;
@@ -187,7 +340,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
     this.clonedFacility['description'] = formValues.description;
     this.clonedFacility['facilityType'] = formValues.facilityType;
     this.clonedFacility['fee'] = formValues.fee;
-    this.clonedFacility['additional'] = {'minimum': formValues.additionalMinimum, 'fee': formValues.additionalFee},
+    this.clonedFacility['additional'] = { 'minimum': formValues.additionalMinimum, 'fee': formValues.additionalFee },
     this.clonedFacility['locationURL'] = formValues.locationURL;
     this.clonedFacility['frameURL'] = formValues.frameURL;
     this.clonedFacility['polygon'] = formValues.polygon;
@@ -202,15 +355,17 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
     this.clonedFacility['deleted'] = formValues.deleted;
     this.clonedFacility['selectedPaymentTypes'] = formValues.selectedPaymentTypes;
     this.clonedFacility['sortIndex'] = formValues.sortIndex;
-    /*
-    this.clonedFacility.workingHours!.monday = new WorkingHours("PON", formValues.mondayOpeningTime!.getHours(), formValues.mondayOpeningTime!.getMinutes(), formValues.mondayClosingTime!.getHours(), formValues.mondayClosingTime!.getMinutes());
-    this.clonedFacility.workingHours!.tuesday = new WorkingHours("UTO", formValues.tuesdayOpeningTime!.getHours(), formValues.tuesdayOpeningTime!.getMinutes(), formValues.tuesdayClosingTime!.getHours(), formValues.tuesdayClosingTime!.getMinutes());
-    this.clonedFacility.workingHours!.wednesday = new WorkingHours("SRI", formValues.wednesdayOpeningTime!.getHours(), formValues.wednesdayOpeningTime!.getMinutes(), formValues.wednesdayClosingTime!.getHours(), formValues.wednesdayClosingTime!.getMinutes());
-    this.clonedFacility.workingHours!.thursday = new WorkingHours("ČET", formValues.thursdayOpeningTime!.getHours(), formValues.thursdayOpeningTime!.getMinutes(), formValues.thursdayClosingTime!.getHours(), formValues.thursdayClosingTime!.getMinutes());
-    this.clonedFacility.workingHours!.friday = new WorkingHours("PET", formValues.fridayOpeningTime!.getHours(), formValues.fridayOpeningTime!.getMinutes(), formValues.fridayClosingTime!.getHours(), formValues.fridayClosingTime!.getMinutes());
-    this.clonedFacility.workingHours!.saturday = new WorkingHours("SUB", formValues.saturdayOpeningTime!.getHours(), formValues.saturdayOpeningTime!.getMinutes(), formValues.saturdayClosingTime!.getHours(), formValues.saturdayClosingTime!.getMinutes());
-    this.clonedFacility.workingHours!.sunday = new WorkingHours("NED", formValues.sundayOpeningTime!.getHours(), formValues.sundayOpeningTime!.getMinutes(), formValues.sundayClosingTime!.getHours(), formValues.sundayClosingTime!.getMinutes());
-    */
+    
+    this.clonedFacility['workingHours'] = {
+      monday : new WorkingHours("PON", formValues.mondayOpeningTime!.getHours(), formValues.mondayOpeningTime!.getMinutes(), formValues.mondayClosingTime!.getHours(), formValues.mondayClosingTime!.getMinutes()),
+      tuesday : new WorkingHours("UTO", formValues.tuesdayOpeningTime!.getHours(), formValues.tuesdayOpeningTime!.getMinutes(), formValues.tuesdayClosingTime!.getHours(), formValues.tuesdayClosingTime!.getMinutes()),
+      wednesday : new WorkingHours("SRI", formValues.wednesdayOpeningTime!.getHours(), formValues.wednesdayOpeningTime!.getMinutes(), formValues.wednesdayClosingTime!.getHours(), formValues.wednesdayClosingTime!.getMinutes()),
+      thursday : new WorkingHours("ČET", formValues.thursdayOpeningTime!.getHours(), formValues.thursdayOpeningTime!.getMinutes(), formValues.thursdayClosingTime!.getHours(), formValues.thursdayClosingTime!.getMinutes()),
+      friday : new WorkingHours("PET", formValues.fridayOpeningTime!.getHours(), formValues.fridayOpeningTime!.getMinutes(), formValues.fridayClosingTime!.getHours(), formValues.fridayClosingTime!.getMinutes()),
+      saturday : new WorkingHours("SUB", formValues.saturdayOpeningTime!.getHours(), formValues.saturdayOpeningTime!.getMinutes(), formValues.saturdayClosingTime!.getHours(), formValues.saturdayClosingTime!.getMinutes()),
+      sunday : new WorkingHours("NED", formValues.sundayOpeningTime!.getHours(), formValues.sundayOpeningTime!.getMinutes(), formValues.sundayClosingTime!.getHours(), formValues.sundayClosingTime!.getMinutes())
+    }
+
   }
 
   deleteSelectedFacilities() {
@@ -239,6 +394,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
 
   openNew() {
     this.previewImage = undefined;
+    this.clonedFacility = new GetFacilityDto();
     this.facility = {};
     this.editMode = false;
     this.submitted = false;
@@ -258,6 +414,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
     this.editMode = true;
     this.facility = facility;
     this.clonedFacility = facility
+    this.setHours();
     console.log(typeof facility.closedUntil, facility.closedUntil)
     if (facility.closed && facility.closedUntil) {
       let detail = new DatePipe('en-US').transform(facility.closedUntil, 'YYYY') == '2222' ? `Zatvoreno` : `Zatvoreno do ${new DatePipe('en-US').transform(facility.closedUntil, 'dd.MM.YYYY HH:mm')}h`
@@ -287,6 +444,20 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
         "additionalFee": facility.additional?.fee,
         "deliveryTimeFrom": this.facility.deliveryTime?.from,
         "deliveryTimeTo": this.facility.deliveryTime?.to,
+        "mondayOpeningTime": this.mondayOpeningTime,
+        "mondayClosingTime": this.mondayClosingTime,
+        "tuesdayOpeningTime": this.tuesdayOpeningTime,
+        "tuesdayClosingTime": this.tuesdayClosingTime,
+        "wednesdayOpeningTime": this.wednesdayOpeningTime,
+        "wednesdayClosingTime": this.wednesdayClosingTime,
+        "thursdayOpeningTime": this.thursdayOpeningTime,
+        "thursdayClosingTime": this.thursdayClosingTime,
+        "fridayOpeningTime": this.fridayOpeningTime,
+        "fridayClosingTime": this.fridayClosingTime,
+        "saturdayOpeningTime": this.saturdayOpeningTime,
+        "saturdayClosingTime": this.saturdayClosingTime,
+        "sundayOpeningTime": this.sundayOpeningTime,
+        "sundayClosingTime": this.sundayClosingTime,
       }
     );
     this.facilityForm.get('password')?.clearValidators();
@@ -315,17 +486,22 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
     });
   }
 
+  test() {
+    this.form2facility();
+    let facilityFormData: FormData = getFormData(this.clonedFacility);
+    console.log(facilityFormData, this.clonedFacility)
+  }
+
   saveFacility() {
 
     this.submitted = true;
-    this.facilityDialog = false;
-    this.clonedFacility = new GetFacilityDto();
     this.form2facility();
     let facilityFormData: FormData = getFormData(this.clonedFacility);
 
     this.facilityService.createFacility(facilityFormData).subscribe({
       next: (createdFacility) => {
         this.facility = {};
+        this.facilityDialog = false;
         this.facilities.push(createdFacility);
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Facility created!', life: 5000 });
         this.facilityForm.reset();
@@ -335,7 +511,7 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
       error: () => {
         this.facility = {};
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error creating facility', life: 5000 });
-        this.facilityForm.reset();
+        //this.facilityForm.reset();
         this.disabledDateInfo = null;
         this.disabledDate = null;
       }
