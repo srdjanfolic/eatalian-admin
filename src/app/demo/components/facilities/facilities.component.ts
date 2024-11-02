@@ -339,5 +339,9 @@ export class FacilitiesComponent implements OnInit, OnDestroy {
       this.facilityForm.controls["pictureFile"].setValue(data.file);
     });
   }
+  beforeUpload($event: any, fileUpload: any) {
+    //const file = $event.currentFiles[0];
+    console.log("Zartvoren");
+  }
 
 }

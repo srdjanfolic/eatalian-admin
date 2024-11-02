@@ -252,7 +252,7 @@
         <ng-template pTemplate="footer">
             <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text"
                 (click)="hideDialog()"></button>
-            <button pButton *ngIf="!editMode" [disabled]="!facilityForm.valid" pRipple label="Save" icon="pi pi-check"
+            <button pButton *ngIf="!editMode" [disabled]="!facilityForm.valid || !previewImage" pRipple label="Save" icon="pi pi-check"
                 class="p-button-text" (click)="saveFacility()"></button>
             <button pButton *ngIf="editMode" [disabled]="!facilityForm.valid" pRipple label="Update" icon="pi pi-check"
                 class="p-button-text" (click)="updateFacility()"></button>
