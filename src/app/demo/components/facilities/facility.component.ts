@@ -162,12 +162,7 @@ export class FacilityComponent implements OnInit, OnDestroy {
         Validators.required as ValidatorFn,
         noWhitespaceValidator as ValidatorFn,
       ]),
-      fee: new FormControl(0, [
-        Validators.required as ValidatorFn,
-        noWhitespaceValidator as ValidatorFn,
-      ]),
       password: new FormControl(null),
-      pictureFile: new FormControl(null),
       closedUntil: new FormControl(null),
       mondayOpeningTime: new FormControl(null, [
         Validators.required as ValidatorFn,
@@ -227,16 +222,7 @@ export class FacilityComponent implements OnInit, OnDestroy {
       ]),
       nonWorkingDates: new FormControl(null),
       
-      deliveryTimeFrom: new FormControl(null, [
-        Validators.required as ValidatorFn,
-        noWhitespaceValidator as ValidatorFn,
-      ]),
-      deliveryTimeTo: new FormControl(null, [
-        Validators.required as ValidatorFn,
-        noWhitespaceValidator as ValidatorFn,
-      ]),
-    },
-      { validators: [this.validDeliveryTime] }
+    }
     );
   }
 
@@ -276,7 +262,6 @@ export class FacilityComponent implements OnInit, OnDestroy {
         "phone": this.facility.phone,
         "address": this.facility.address,
         "city": this.facility.city,
-        "fee": this.facility.fee,
         "username": this.facility.username,
         "nonWorkingDates": this.facility.nonWorkingDates?.map( date =>  new Date(date)),
         "mondayOpeningTime": this.mondayOpeningTime,
@@ -313,15 +298,11 @@ export class FacilityComponent implements OnInit, OnDestroy {
     this.clonedFacility.frameURL = formValues.frameURL;
     this.clonedFacility.address = formValues.address;
     this.clonedFacility.phone = formValues.phone;
-    this.clonedFacility.fee = formValues.fee;
     this.clonedFacility.city = formValues.city;
     this.clonedFacility.username = formValues.username;
     this.clonedFacility.closed = formValues.closed;
     this.clonedFacility.password = formValues?.password;
-    this.clonedFacility.pictureFile = formValues?.pictureFile;
     this.clonedFacility.name = formValues.name;
-    this.clonedFacility.deliveryTime!.from = formValues.deliveryTimeFrom;
-    this.clonedFacility.deliveryTime!.to = formValues.deliveryTimeTo;
     this.clonedFacility.nonWorkingDates = formValues.nonWorkingDates;
     this.clonedFacility.workingHours!.monday = new WorkingHours("PON", formValues.mondayOpeningTime!.getHours(), formValues.mondayOpeningTime!.getMinutes(), formValues.mondayClosingTime!.getHours(), formValues.mondayClosingTime!.getMinutes());
     this.clonedFacility.workingHours!.tuesday = new WorkingHours("UTO", formValues.tuesdayOpeningTime!.getHours(), formValues.tuesdayOpeningTime!.getMinutes(), formValues.tuesdayClosingTime!.getHours(), formValues.tuesdayClosingTime!.getMinutes());
@@ -358,42 +339,11 @@ export class FacilityComponent implements OnInit, OnDestroy {
   }
 
 
-  uploadFile(event: { files: any; }) {
-    this.clonedFacility.pictureFile = event.files[0];
-  }
-
   modalHide() {
     this.facilityForm.reset();
     this.disabledDateInfo = null;
     this.disabledDate = null;
   }
 
-  fileChangeHandler($event: any, fileUpload: any) {
-    const file = $event.currentFiles[0];
-    let extensionAllowed = ["png", "jpeg", "jpg"];
-    if (file!.size / 1024 / 1024 > 20) {
-      alert("File size should be less than 20MB")
-      fileUpload.clear()
-      return;
-    }
-    if (extensionAllowed) {
-      var nam = file!.name.split('.').pop() || "xxx";
-
-      if (!extensionAllowed.includes(nam)) {
-        alert("Please upload " + extensionAllowed.toString() + " file.")
-        fileUpload.clear()
-        return;
-      }
-    }
-    this.ngxPhotoEditorService.open($event.currentFiles[0], {
-      aspectRatio: 10 / 3,
-      autoCropArea: 1,
-      resizeToWidth: 1000,
-      resizeToHeight: 300
-    }).subscribe(data => {
-      this.previewImage = data.base64;
-      this.facilityForm.controls["pictureFile"].setValue(data.file);
-    });
-  }
 
 }

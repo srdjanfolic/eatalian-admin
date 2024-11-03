@@ -190,9 +190,6 @@
                     <input class="mb-2" type="password" pInputText id="password" formControlName="password" />
 
                     <img [src]="previewImage" style="width: 400px;">
-                    <p-fileUpload class="mb-2" mode="basic" accept="image/*" [maxFileSize]="1000000" label="Slika"
-                        chooseLabel="Slika" #fileUpload (onSelect)="fileChangeHandler($event, fileUpload)"
-                        class="p-mr-2 p-d-inline-block"></p-fileUpload>
                 </div>
                 <div class="field col-5">
                     <div class="radnoVrijeme border-solid border-1 border-round p-3 border-200">
@@ -342,41 +339,6 @@
                             [showButtonBar]="true" dateFormat="dd.mm.yy" [minDate]="minDate">
                         </p-calendar>
                     </div>
-                    <div class="info border-solid border-1 border-round p-3 border-200 mt-3">
-                        <div class="formgrid grid align-items-center">
-                            <div class="field col-6">Vrijeme dostave(min)</div>
-                            <div class="field col">
-                                <input id="deliveryTimeFrom" formControlName="deliveryTimeFrom" pInputText
-                                    [pKeyFilter]="'num'" />
-                                <small class="p-error"
-                                    *ngIf="!facilityForm.get('deliveryTimeFrom')!.valid && facilityForm.get('deliveryTimeFrom')!.touched">Unesite
-                                    minute</small>
-                                <small class="p-error" *ngIf="facilityForm.errors?.['invalidInterval']">Opseg nije
-                                    dobar</small>
-                            </div>
-                            <div class="field col">
-                                <input id="deliveryTimeTo" formControlName="deliveryTimeTo" pInputText
-                                    [pKeyFilter]="'num'" />
-                                <small class="p-error"
-                                    *ngIf="!facilityForm.get('deliveryTimeTo')!.valid && facilityForm.get('deliveryTimeTo')!.touched">Unesite
-                                    minute</small>
-                                <small class="p-error" *ngIf="facilityForm.errors?.['invalidInterval']">Opseg nije
-                                    dobar</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="info border-solid border-1 border-round p-3 border-200 mt-3">
-                        <div class="formgrid grid align-items-center">
-                            <div class="field col-6">Cijena dostave</div>
-                            <div class="field col">
-                                <input id="fee" formControlName="fee" pInputText [pKeyFilter]="'num'" />
-                                <small class="p-error"
-                                    *ngIf="!facilityForm.get('fee')!.valid && facilityForm.get('fee')!.touched">Unesite
-                                    cijenu dostave</small>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="info border-solid border-1 border-round p-3 border-200 mt-3">
                         <div class="formgrid grid align-items-center" *ngIf="facility.closed && messages">
                             <div class="field mt-2 col-12">
